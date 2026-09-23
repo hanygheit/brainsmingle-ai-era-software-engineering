@@ -43,6 +43,25 @@ const slideAt = (i: number) => slides[Math.max(0, Math.min(TOTAL_SLIDES - 1, i))
 const CHANNEL = "agent-deck-sync";
 const LS_KEY = "agent-deck-state";
 
+function normalizeState(value: unknown): DeckState | null {
+  if (!value || typeof value !== "object") return null;
+  const candidate = value as Partial<DeckState>;
+  if (!Number.isInteger(candidate.index) || !Number.isInteger(candidate.step)) return null;
+  const index = Math.max(0, Math.min(TOTAL_SLIDES - 1, candidate.index ?? 0));
+  const step = Math.max(0, Math.min(slideAt(index).steps, candidate.step ?? 0));
+  return { index, step };
+}
+
+function readStoredState(): DeckState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? normalizeState(JSON.parse(raw)) : null;
+  } catch {
+    return null;
+  }
+}
+
 function readHash(): number | null {
   if (typeof window === "undefined") return null;
   const m = window.location.hash.match(/^#\/(\d+)/);
@@ -69,7 +88,8 @@ export function DeckProvider({
     calm: false,
   });
   const channelRef = useRef<BroadcastChannel | null>(null);
-  const applyingRemote = useRef(false);
+  const remoteStateRef = useRef<string | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
   // honour prefers-reduced-motion by starting in Calm mode
   useEffect(() => {
@@ -78,34 +98,43 @@ export function DeckProvider({
     }
   }, []);
 
-  // hydrate from hash / storage
+  // A clean audience URL always means slide 1. Presenter windows inherit the
+  // current audience state when they are opened without an explicit hash.
   useEffect(() => {
     const fromHash = readHash();
     if (fromHash !== null) {
       setState({ index: fromHash, step: 0 });
-      return;
+    } else if (isPresenter) {
+      setState(readStoredState() ?? { index: 0, step: 0 });
+    } else {
+      setState({ index: 0, step: 0 });
     }
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (raw) setState(JSON.parse(raw) as DeckState);
-    } catch {
-      /* ignore */
-    }
-  }, []);
+    setHydrated(true);
+  }, [isPresenter]);
 
   // cross-window sync
   useEffect(() => {
     if (typeof window === "undefined" || typeof BroadcastChannel === "undefined") return;
     const ch = new BroadcastChannel(CHANNEL);
     channelRef.current = ch;
+    const applyRemote = (value: unknown) => {
+      const nextState = normalizeState(value);
+      if (!nextState) return;
+      remoteStateRef.current = JSON.stringify(nextState);
+      setState((current) =>
+        current.index === nextState.index && current.step === nextState.step ? current : nextState,
+      );
+    };
     ch.onmessage = (e: MessageEvent<DeckState>) => {
-      applyingRemote.current = true;
-      setState(e.data);
+      applyRemote(e.data);
     };
     const onStorage = (e: StorageEvent) => {
       if (e.key === LS_KEY && e.newValue) {
-        applyingRemote.current = true;
-        setState(JSON.parse(e.newValue) as DeckState);
+        try {
+          applyRemote(JSON.parse(e.newValue));
+        } catch {
+          /* ignore malformed storage from an older session */
+        }
       }
     };
     window.addEventListener("storage", onStorage);
@@ -117,30 +146,37 @@ export function DeckProvider({
 
   // publish state
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !hydrated) return;
+    const serialized = JSON.stringify(state);
     try {
-      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      localStorage.setItem(LS_KEY, serialized);
     } catch {
       /* ignore */
     }
-    if (!applyingRemote.current) {
+    if (remoteStateRef.current !== serialized) {
       channelRef.current?.postMessage(state);
-      const hash = `#/${state.index + 1}`;
-      if (window.location.hash !== hash) {
-        window.history.pushState(null, "", hash);
-      }
     }
-    applyingRemote.current = false;
-  }, [state]);
+    remoteStateRef.current = null;
+
+    const hash = `#/${state.index + 1}`;
+    if (window.location.hash !== hash) {
+      window.history.replaceState(null, "", hash);
+    }
+  }, [state, hydrated]);
 
   // browser back/forward
   useEffect(() => {
     const onPop = () => {
       const n = readHash();
-      if (n !== null) setState((s) => (s.index === n ? s : { index: n, step: 0 }));
+      const index = n ?? 0;
+      setState((s) => (s.index === index ? s : { index, step: 0 }));
     };
     window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
+    window.addEventListener("hashchange", onPop);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      window.removeEventListener("hashchange", onPop);
+    };
   }, []);
 
   const goto = useCallback((index: number, step = 0) => {
@@ -160,7 +196,7 @@ export function DeckProvider({
 
   const prev = useCallback(() => {
     setState((s) => {
-            if (s.index > 0) return { index: s.index - 1, step: 0 };
+      if (s.index > 0) return { index: s.index - 1, step: 0 };
       return s;
     });
   }, []);
