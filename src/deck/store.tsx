@@ -143,8 +143,9 @@ export function DeckProvider({
 
   const next = useCallback(() => {
     setState((s) => {
+      // One click reveals the whole slide; builds auto-play in SlideRenderer.
       const maxStep = slideAt(s.index).steps;
-      if (s.step < maxStep) return { ...s, step: s.step + 1 };
+      if (s.step < maxStep) return { ...s, step: maxStep };
       if (s.index < TOTAL_SLIDES - 1) return { index: s.index + 1, step: 0 };
       return s;
     });
@@ -152,7 +153,7 @@ export function DeckProvider({
 
   const prev = useCallback(() => {
     setState((s) => {
-      if (s.step > 0) return { ...s, step: s.step - 1 };
+      if (s.step > 0) return { ...s, step: 0 };
       if (s.index > 0) return { index: s.index - 1, step: slideAt(s.index - 1).steps };
       return s;
     });
