@@ -47,7 +47,7 @@ export function useTypedLines(lines: string[], active: boolean, charMs = 12) {
       cancelled = true;
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [lines, active, charMs]);
+  }, [stable, active, charMs]);
 
   const complete = () => {
     if (timer.current) clearTimeout(timer.current);
