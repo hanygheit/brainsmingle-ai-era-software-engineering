@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import type { Slide } from "@/content/types";
 import type { LayoutProps } from "./layouts/frame";
 import {
@@ -53,5 +54,40 @@ export function SlideRenderer({
       </div>
     );
   }
-  return <Layout slide={slide} step={step} calm={calm} onGoto={onGoto} />;
+  return <AutoPlay Layout={Layout} slide={slide} step={step} calm={calm} onGoto={onGoto} />;
+}
+
+/** Plays a slide's internal builds automatically after a single click. */
+function AutoPlay({
+  Layout,
+  slide,
+  step,
+  calm,
+  onGoto,
+}: {
+  Layout: (p: LayoutProps) => React.ReactElement;
+  slide: Slide;
+  step: number;
+  calm: boolean;
+  onGoto?: ((index: number) => void) | undefined;
+}) {
+  const [shown, setShown] = useState(step);
+  const prevTarget = useRef(step);
+  useEffect(() => {
+    const from = prevTarget.current;
+    prevTarget.current = step;
+    if (calm || step <= from || step - from <= 1) {
+      setShown(step);
+      return;
+    }
+    let cur = from + 1;
+    setShown(cur);
+    const id = window.setInterval(() => {
+      cur += 1;
+      setShown(cur);
+      if (cur >= step) window.clearInterval(id);
+    }, 650);
+    return () => window.clearInterval(id);
+  }, [step, calm]);
+  return <Layout slide={slide} step={Math.min(shown, step)} calm={calm} onGoto={onGoto} />;
 }
