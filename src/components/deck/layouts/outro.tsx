@@ -1,5 +1,3 @@
-import { usePrintMode } from "@/deck/print-mode";
-import { DownloadMenu } from "../DownloadPdf";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import githubRepoQr from "@/assets/github-repo-qr.png.asset.json";
@@ -322,7 +320,6 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
     thanks: string;
   };
   const words = slide.title.split(" ");
-  const printing = usePrintMode();
 
   return (
     <div className="relative h-full w-full bg-gold-bg">
@@ -396,11 +393,6 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
           <span className="block font-sans text-[17px] text-gray-light">{SPEAKER.role}</span>
         </span>
         <div className="flex items-end gap-6">
-          {!printing ? (
-            <div className="self-center">
-              <DownloadMenu label="PDF" />
-            </div>
-          ) : null}
           <div className="flex items-center gap-5">
             <div className="flex flex-col items-end gap-[4px] text-right">
               <span className="font-mono text-[14px] tracking-[0.14em] text-gold uppercase">
@@ -414,7 +406,7 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
               >
                 github.com/hanygheit/ai-agent-on-call
               </a>
-              <span className="font-sans text-[15px] text-gray-light">Scan, fork it, run it on Monday →</span>
+              <span className="font-sans text-[15px] text-gray-light">Scan, fork it, run it →</span>
             </div>
             <a
               href={GITHUB_REPO_URL}
