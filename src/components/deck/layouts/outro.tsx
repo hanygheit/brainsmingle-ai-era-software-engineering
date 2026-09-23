@@ -2,9 +2,12 @@ import { usePrintMode } from "@/deck/print-mode";
 import { DownloadMenu } from "../DownloadPdf";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { KIT_URL, SPEAKER } from "@/content/types";
-import { BigNumeral, Chip, Icon, IconDisc, LinkedInQR, Monogram, Reveal } from "../primitives";
+import githubRepoQr from "@/assets/github-repo-qr.png.asset.json";
+import { SPEAKER } from "@/content/types";
+import { BigNumeral, Chip, IconDisc, Monogram, Reveal } from "../primitives";
 import { SlideFrame, type LayoutProps } from "./frame";
+
+const GITHUB_REPO_URL = "https://github.com/hanygheit/ai-agent-on-call";
 
 /* ---------------------------------------------------------- 18 · timeline */
 
@@ -398,15 +401,36 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
               <DownloadMenu label="PDF" />
             </div>
           ) : null}
-          <LinkedInQR size={86} caption={false} />
-          <a href={KIT_URL} className="flex flex-col items-center gap-1">
-            <span className="flex h-[86px] w-[86px] items-center justify-center bg-white">
-              <Icon name="qr-code" size={64} className="text-navy" />
-            </span>
-            <span className="font-mono text-[12px] tracking-[0.12em] text-gray-light">
-              Get the kit
-            </span>
+          <div className="flex items-center gap-5">
+            <div className="flex flex-col items-end gap-[5px] text-right">
+              <span className="font-mono text-[12px] tracking-[0.14em] text-gold uppercase">
+                THE STARTER REPO · SLIDES + HOOKS + TESTS
+              </span>
+              <a
+                href={GITHUB_REPO_URL}
+                target="_blank"
+                rel="noopener"
+                className="font-mono text-[15px] font-bold text-white"
+              >
+                github.com/hanygheit/ai-agent-on-call
+              </a>
+              <span className="font-sans text-[13px] text-gray-light">Scan, fork it, run it on Monday →</span>
+            </div>
+            <a
+              href={GITHUB_REPO_URL}
+              target="_blank"
+              rel="noopener"
+              aria-label="Open the GitHub repo hanygheit/ai-agent-on-call"
+              className="shrink-0 rounded-[4px] bg-white p-2"
+            >
+              <img
+                src={githubRepoQr.url}
+                alt="QR code to the GitHub repo hanygheit/ai-agent-on-call"
+                className="h-[86px] w-[86px] object-contain"
+              />
+            </a>
           </a>
+          </div>
         </div>
       </Reveal>
     </div>
