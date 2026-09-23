@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { slides } from "@/content/slides";
 import { SECTIONS } from "@/content/types";
 import { useDeck } from "@/deck/store";
+import { DownloadMenu } from "./DownloadPdf";
 import { Icon } from "./primitives";
 import { MiniStage } from "./Stage";
 import { SlideRenderer } from "./SlideRenderer";
@@ -75,7 +76,7 @@ export function SectionIndicator() {
 
 /* ------------------------------------------------------------ control bar */
 
-export function ControlBar({ onDownload }: { onDownload?: () => void }) {
+export function ControlBar() {
   const deck = useDeck();
   const visible = useAutoHide();
   const [jump, setJump] = useState("");
@@ -165,11 +166,7 @@ export function ControlBar({ onDownload }: { onDownload?: () => void }) {
         >
           <Icon name={copied ? "check" : "link"} size={20} />
         </button>
-        {onDownload ? (
-          <button className={btn} onClick={onDownload} aria-label="Download PDF">
-            <Icon name="download" size={20} />
-          </button>
-        ) : null}
+        <DownloadMenu />
         <button className={btn} onClick={() => deck.setOverlay("help")} aria-label="Help">
           <Icon name="circle-help" size={20} />
         </button>
