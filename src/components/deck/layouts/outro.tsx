@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import githubRepoQr from "@/assets/github-repo-qr.png.asset.json";
 import { SPEAKER } from "@/content/types";
-import { BigNumeral, Chip, IconDisc, LinkedInQR, Monogram, Reveal } from "../primitives";
+import { ASSETS, BigNumeral, Chip, IconDisc, Monogram, Reveal } from "../primitives";
 import { SlideFrame, type LayoutProps } from "./frame";
 
 const GITHUB_REPO_URL = "https://github.com/hanygheit/ai-agent-on-call";
@@ -432,7 +432,11 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
               </span>
             </div>
             <div className="shrink-0 rounded-[4px] bg-white p-[6px]">
-              <LinkedInQR size={70} caption={false} />
+              <img
+                src={ASSETS.qr.url}
+                alt="LinkedIn QR code for Hany Saad"
+                className="h-[70px] w-[70px] object-contain"
+              />
             </div>
           </div>
         </div>
