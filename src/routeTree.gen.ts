@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OverviewRouteImport } from './routes/overview'
+import { Route as PresenterRouteImport } from './routes/presenter'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const OverviewRoute = OverviewRouteImport.update({
   path: '/overview',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PresenterRoute = PresenterRouteImport.update({
+  id: '/presenter',
+  path: '/presenter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/overview': typeof OverviewRoute
+  '/presenter': typeof PresenterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/overview': typeof OverviewRoute
+  '/presenter': typeof PresenterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/overview': typeof OverviewRoute
+  '/presenter': typeof PresenterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/overview'
+  fullPaths: '/' | '/overview' | '/presenter'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/overview'
-  id: '__root__' | '/' | '/overview'
+  to: '/' | '/overview' | '/presenter'
+  id: '__root__' | '/' | '/overview' | '/presenter'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   OverviewRoute: typeof OverviewRoute
+  PresenterRoute: typeof PresenterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OverviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/presenter': {
+      id: '/presenter'
+      path: '/presenter'
+      fullPath: '/presenter'
+      preLoaderRoute: typeof PresenterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   OverviewRoute: OverviewRoute,
+  PresenterRoute: PresenterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
