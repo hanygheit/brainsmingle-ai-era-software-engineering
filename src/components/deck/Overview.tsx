@@ -1,6 +1,7 @@
 import { slides } from "@/content/slides";
 import { SECTIONS } from "@/content/types";
 import { useDeck } from "@/deck/store";
+import { DownloadMenu } from "./DownloadPdf";
 import { Icon } from "./primitives";
 import { MiniStage } from "./Stage";
 import { SlideRenderer } from "./SlideRenderer";
@@ -17,11 +18,14 @@ export function OverviewGrid({ onClose }: { onClose?: () => void }) {
             {slides.length} SLIDES
           </span>
         </h1>
+        <div className="flex items-center gap-4">
+        <DownloadMenu up={false} label="DOWNLOAD PDF" />
         {onClose ? (
           <button onClick={onClose} className="text-term-text hover:text-gold" aria-label="Close overview">
             <Icon name="x" size={28} />
           </button>
         ) : null}
+        </div>
       </div>
 
       {SECTIONS.map((section) => {

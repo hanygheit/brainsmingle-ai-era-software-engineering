@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { SPEAKER } from "@/content/types";
+import { usePrintMode } from "@/deck/print-mode";
+import { usePoll, type Choice } from "@/lib/poll";
 import {
   BigNumeral,
   Chip,
@@ -306,8 +308,16 @@ export function FourCardsSlide({ slide, step, calm }: LayoutProps) {
     cards: { icon: string; date: string; tool: string; what: string; then: string }[];
     bottom: string;
   };
+  const printing = usePrintMode();
+  const { tally } = usePoll(!printing);
+  const total = Object.values(tally).reduce((a, q) => a + q.allow + q.depends + q.block, 0);
   return (
     <SlideFrame slide={slide} calm={calm}>
+      {!printing ? (
+        <p className="absolute top-[-6px] right-0 font-mono text-[18px] tracking-[0.16em] text-gray-light">
+          VOTE LIVE · <span className="text-gold">{typeof window !== "undefined" ? window.location.host : ""}/vote</span>
+        </p>
+      ) : null}
       <div className="flex h-full flex-col gap-[30px]">
         <div className="grid flex-1 grid-cols-4 gap-[22px]">
           {d.cards.map((c, i) => (
@@ -353,8 +363,16 @@ export function PollSlide({ slide, step, calm }: LayoutProps) {
     options: { icon: string; verdict: string; tone: string; action: string; hint: string }[];
     bottom: string;
   };
+  const printing = usePrintMode();
+  const { tally } = usePoll(!printing);
+  const total = Object.values(tally).reduce((a, q) => a + q.allow + q.depends + q.block, 0);
   return (
     <SlideFrame slide={slide} calm={calm}>
+      {!printing ? (
+        <p className="absolute top-[-6px] right-0 font-mono text-[18px] tracking-[0.16em] text-gray-light">
+          VOTE LIVE · <span className="text-gold">{typeof window !== "undefined" ? window.location.host : ""}/vote</span>
+        </p>
+      ) : null}
       <div className="flex h-full flex-col gap-[30px]">
         <div className="grid flex-1 grid-cols-4 gap-[22px]">
           {d.options.map((o, i) => (
@@ -378,6 +396,7 @@ export function PollSlide({ slide, step, calm }: LayoutProps) {
                 <p className="mt-[12px] flex-1 font-serif text-[21px] italic text-gray-light">
                   {o.hint}
                 </p>
+                {total > 0 ? <ResultBars counts={tally[i + 1]!} /> : null}
               </div>
             </Reveal>
           ))}
@@ -390,6 +409,37 @@ export function PollSlide({ slide, step, calm }: LayoutProps) {
         </Reveal>
       </div>
     </SlideFrame>
+  );
+}
+
+const BAR: [Choice, string, string][] = [
+  ["allow", "ALLOW", "bg-ok"],
+  ["depends", "DEPENDS", "bg-gold"],
+  ["block", "BLOCK", "bg-deny"],
+];
+
+function ResultBars({ counts }: { counts: Record<Choice, number> }) {
+  const sum = counts.allow + counts.depends + counts.block;
+  return (
+    <div className="mt-[18px] flex flex-col gap-[8px]" aria-label="Live poll results">
+      {BAR.map(([c, label, tone]) => {
+        const pct = sum ? Math.round((counts[c] / sum) * 100) : 0;
+        return (
+          <div key={c} className="flex items-center gap-[10px]">
+            <span className="w-[92px] font-mono text-[14px] tracking-[0.12em] text-gray-light">{label}</span>
+            <div className="h-[6px] flex-1 bg-navy-line">
+              <motion.div
+                className={`h-full ${tone}`}
+                initial={false}
+                animate={{ width: `${pct}%` }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+              />
+            </div>
+            <span className="w-[52px] text-right font-mono text-[14px] text-white tabular-nums">{pct}%</span>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
