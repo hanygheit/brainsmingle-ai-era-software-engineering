@@ -36,9 +36,17 @@ export function OverviewGrid({ onClose }: { onClose?: () => void }) {
               {group.map((s) => {
                 const i = slides.indexOf(s);
                 return (
-                  <button
+                  <div
                     key={s.id}
-                    type="button"
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        goto(i);
+                        setOverlay(null);
+                        onClose?.();
+                      }
+                    }}
                     onClick={() => {
                       goto(i);
                       setOverlay(null);
@@ -55,7 +63,7 @@ export function OverviewGrid({ onClose }: { onClose?: () => void }) {
                     <span className="block px-2 py-1 font-mono text-[13px] text-term-comment">
                       {String(s.id).padStart(2, "0")} · {s.title.replace("\n", " ")}
                     </span>
-                  </button>
+                  </div>
                 );
               })}
             </div>

@@ -186,9 +186,13 @@ export function ThumbDrawer() {
   return (
     <div className="fixed right-0 bottom-[78px] left-0 z-40 flex gap-3 overflow-x-auto bg-navy/95 px-6 py-4">
       {slides.map((s, i) => (
-        <button
+        <div
           key={s.id}
-          type="button"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") deck.goto(i);
+          }}
           onClick={() => deck.goto(i)}
           className={`shrink-0 border-2 ${i === deck.index ? "border-gold" : "border-transparent"}`}
           aria-label={`Slide ${s.id}`}
@@ -196,7 +200,7 @@ export function ThumbDrawer() {
           <MiniStage width={220}>
             <SlideRenderer slide={s} step={s.steps} calm />
           </MiniStage>
-        </button>
+        </div>
       ))}
     </div>
   );
