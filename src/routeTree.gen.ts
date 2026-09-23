@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OverviewRouteImport } from './routes/overview'
 import { Route as PresenterRouteImport } from './routes/presenter'
+import { Route as PrintRouteImport } from './routes/print'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const PresenterRoute = PresenterRouteImport.update({
   path: '/presenter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrintRoute = PrintRouteImport.update({
+  id: '/print',
+  path: '/print',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/overview': typeof OverviewRoute
   '/presenter': typeof PresenterRoute
+  '/print': typeof PrintRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/overview': typeof OverviewRoute
   '/presenter': typeof PresenterRoute
+  '/print': typeof PrintRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/overview': typeof OverviewRoute
   '/presenter': typeof PresenterRoute
+  '/print': typeof PrintRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/overview' | '/presenter'
+  fullPaths: '/' | '/overview' | '/presenter' | '/print'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/overview' | '/presenter'
-  id: '__root__' | '/' | '/overview' | '/presenter'
+  to: '/' | '/overview' | '/presenter' | '/print'
+  id: '__root__' | '/' | '/overview' | '/presenter' | '/print'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   OverviewRoute: typeof OverviewRoute
   PresenterRoute: typeof PresenterRoute
+  PrintRoute: typeof PrintRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PresenterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/print': {
+      id: '/print'
+      path: '/print'
+      fullPath: '/print'
+      preLoaderRoute: typeof PrintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   OverviewRoute: OverviewRoute,
   PresenterRoute: PresenterRoute,
+  PrintRoute: PrintRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
