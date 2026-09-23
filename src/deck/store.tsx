@@ -71,6 +71,13 @@ export function DeckProvider({
   const channelRef = useRef<BroadcastChannel | null>(null);
   const applyingRemote = useRef(false);
 
+  // honour prefers-reduced-motion by starting in Calm mode
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      setFlags((f) => ({ ...f, calm: true }));
+    }
+  }, []);
+
   // hydrate from hash / storage
   useEffect(() => {
     const fromHash = readHash();
