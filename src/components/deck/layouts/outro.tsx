@@ -314,73 +314,55 @@ export function OfferLetterSlide({ slide, step, calm }: LayoutProps) {
 
 export function CloseSlide({ slide, step, calm }: LayoutProps) {
   const d = slide.data as {
-    lead: string;
-    takeaways: { n: string; title: string; body: string }[];
+    response: string;
+    takeaways: { n: string; duration: string; title: string; body: string; rule: string }[];
     final: string;
-    thanks: string;
   };
-  const words = slide.title.split(" ");
 
   return (
     <div className="relative h-full w-full bg-gold-bg">
-      <div className="relative z-10 flex h-full flex-col px-[84px] pt-[70px] pb-[242px]">
+      <img
+        src={ASSETS.arcsLight.url}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-[330px] -right-[160px] w-[1080px] opacity-20 select-none"
+      />
+      <div className="relative z-10 flex h-full flex-col px-[64px] pt-[52px] pb-[242px]">
         <div className="flex items-center gap-5">
           <span className="block h-[3px] w-[38px] bg-ink" />
-          <span className="font-mono text-[20px] tracking-[0.3em] text-ink uppercase">
+          <span className="font-mono text-[18px] font-bold tracking-[0.3em] text-ink uppercase">
             {slide.kicker}
           </span>
         </div>
 
-        <div className="mt-[30px] grid min-h-0 flex-1 grid-cols-[430px_1fr] gap-[54px]">
-          <div className="relative flex items-center justify-center">
-            <svg viewBox="0 0 400 400" className="absolute h-[380px] w-[380px]">
-              <circle cx="200" cy="200" r="186" fill="none" stroke="#8A5E06" strokeWidth="4" />
-            </svg>
-            <BigNumeral size={280} className="text-gold-deep">
-              9
-            </BigNumeral>
-          </div>
+        <Reveal show={step >= 1} className="mt-[48px]">
+          <h1 className="font-serif text-[74px] leading-none font-bold text-ink">{slide.title}</h1>
+          <p className="mt-[42px] font-serif text-[68px] leading-none font-bold italic text-ink">
+            <span className="text-gold-deep">9 minutes</span>{d.response.slice("9 minutes".length)}
+          </p>
+        </Reveal>
 
-          <div className="flex min-h-0 flex-col justify-center">
-            <p className="font-sans text-[28px] text-ink">{d.lead}</p>
-            <h1 className="mt-[14px] font-serif text-[56px] leading-[1.15] font-bold italic text-ink">
-              {words.map((w, i) => (
-                <motion.span
-                  key={`${w}-${i}`}
-                  className="mr-[14px] inline-block"
-                  initial={calm ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: step >= 1 ? 1 : 0, y: step >= 1 ? 0 : 12 }}
-                  transition={{ delay: step >= 1 && !calm ? i * 0.07 : 0, duration: 0.25 }}
-                >
-                  {w}
-                </motion.span>
-              ))}
-            </h1>
-
-            <div className="mt-[34px] grid grid-cols-3 gap-[22px]">
-              {d.takeaways.map((t, i) => (
-                <Reveal key={t.n} show={step >= 2} delay={i * 0.12}>
-                  <div className="border-t-[3px] border-t-gold-deep pt-[14px]">
-                    <span className="font-serif text-[46px] leading-none font-bold text-gold-deep">
-                      {t.n}
-                    </span>
-                    <p className="mt-[10px] font-sans text-[24px] leading-[1.25] font-bold text-ink">
-                      {t.title}
-                    </p>
-                    <p className="mt-[8px] font-sans text-[19px] leading-[1.3] text-gold-deep">
-                      {t.body}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal show={step >= 3} className="mt-[34px]">
-              <p className="font-sans text-[34px] font-bold text-ink">{d.final}</p>
-              <p className="mt-[8px] font-serif text-[26px] italic text-gold-deep">{d.thanks}</p>
+        <div className="mt-[70px] grid grid-cols-3 gap-[36px]">
+          {d.takeaways.map((t, i) => (
+            <Reveal key={t.n} show={step >= 2} delay={i * 0.12}>
+              <div className="flex h-[312px] flex-col bg-cream/70 px-[36px] py-[28px]">
+                <div className="flex items-start justify-between">
+                  <span className="font-serif text-[64px] leading-none font-bold text-gold-deep">{t.n}</span>
+                  <span className="rounded-[5px] bg-ink px-[44px] py-[12px] font-mono text-[17px] font-bold tracking-[0.18em] text-gold">
+                    {t.duration}
+                  </span>
+                </div>
+                <p className="mt-[28px] font-sans text-[30px] leading-[1.15] font-bold text-ink">{t.title}</p>
+                <p className="mt-[8px] flex-1 font-sans text-[20px] leading-[1.35] text-ink">{t.body}</p>
+                <p className="font-mono text-[15px] tracking-[0.08em] text-gold-deep">{t.rule}</p>
+              </div>
             </Reveal>
-          </div>
+          ))}
         </div>
+
+        <Reveal show={step >= 3} className="mt-[38px]">
+          <p className="font-sans text-[38px] font-bold text-ink">{d.final}</p>
+        </Reveal>
       </div>
 
       <Reveal
