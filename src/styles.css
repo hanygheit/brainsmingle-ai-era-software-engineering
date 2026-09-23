@@ -132,6 +132,125 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+/* ---------------------------------------------------------------
+ * Deck design system — "Before You Put an AI Agent on Call"
+ * Brand values are exact hex from the source PowerPoint.
+ * ------------------------------------------------------------- */
+:root {
+  --navy: #16283a;
+  --navy-card: #1e3348;
+  --navy-line: #2c4560;
+  --terminal: #0f1c2b;
+  --ink: #132038;
+  --gold: #e39a16;
+  --gold-bg: #e9a322;
+  --gold-dark: #b0730a;
+  --gold-deep: #8a5e06;
+  --paper: #fbf9f6;
+  --cream: #f6efe3;
+  --sand: #f1ebe0;
+  --line: #e6e0d5;
+  --gray-ink: #6b7381;
+  --gray-light: #aeb9c6;
+  --taupe: #9c8e76;
+  --taupe-light: #c9bfa9;
+  --teal: #1d6f8b;
+  --ok: #2e7d5b;
+  --deny: #b5443a;
+  --term-text: #e7e2d8;
+  --term-comment: #7e93ae;
+  --term-key: #e39a16;
+  --term-string: #a8d5c2;
+  --term-ok: #4fa37b;
+  --term-error: #e06c5a;
+  --shadow-card: 0 2px 10px rgba(19, 32, 56, 0.06);
+  --shadow-card-hover: 0 10px 26px rgba(19, 32, 56, 0.12);
+}
+
+@theme inline {
+  --font-sans: "Lato", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --color-navy: var(--navy);
+  --color-navy-card: var(--navy-card);
+  --color-navy-line: var(--navy-line);
+  --color-terminal: var(--terminal);
+  --color-ink: var(--ink);
+  --color-gold: var(--gold);
+  --color-gold-bg: var(--gold-bg);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-deep: var(--gold-deep);
+  --color-paper: var(--paper);
+  --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-line: var(--line);
+  --color-gray-ink: var(--gray-ink);
+  --color-gray-light: var(--gray-light);
+  --color-taupe: var(--taupe);
+  --color-taupe-light: var(--taupe-light);
+  --color-teal: var(--teal);
+  --color-ok: var(--ok);
+  --color-deny: var(--deny);
+  --color-term-text: var(--term-text);
+  --color-term-comment: var(--term-comment);
+  --color-term-key: var(--term-key);
+  --color-term-string: var(--term-string);
+  --color-term-ok: var(--term-ok);
+  --color-term-error: var(--term-error);
+}
+
+@utility deck-stage {
+  position: absolute;
+  width: 1920px;
+  height: 1080px;
+  left: 50%;
+  top: 50%;
+  margin-left: -960px;
+  margin-top: -540px;
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+@utility deck-viewport {
+  position: relative;
+  overflow: hidden;
+  background: var(--terminal);
+}
+
+@utility deck-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+
+@utility deck-card-dark {
+  background: var(--navy-card);
+  border: 1px solid var(--navy-line);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.calm *,
+.calm *::before,
+.calm *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -141,4 +260,10 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
 }
+
