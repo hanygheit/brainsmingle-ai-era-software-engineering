@@ -39,7 +39,7 @@ export const exportPdf = createServerFn({ method: "POST" })
       if (!process.env["APP_PDF_RENDERER_URL"] && !process.env["BROWSERLESS_TOKEN"]) {
         return {
           ok: false as const,
-          error: "PDF rendering is not configured yet — the Browserless key is missing.",
+          error: "The PDF for the latest slides has not been generated yet.",
         };
       }
 
