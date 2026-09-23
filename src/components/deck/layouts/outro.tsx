@@ -338,7 +338,7 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
         <Reveal show={step >= 1} className="mt-[48px]">
           <h1 className="font-serif text-[74px] leading-none font-bold text-ink">{slide.title}</h1>
           <p className="mt-[42px] font-serif text-[68px] leading-none font-bold italic text-ink">
-            <span className="text-gold-deep">9 minutes</span> on Monday to protect it.
+            <span className="text-gold-deep">9 minutes</span>{d.response.slice("9 minutes".length)}
           </p>
         </Reveal>
 
