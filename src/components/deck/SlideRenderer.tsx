@@ -54,7 +54,7 @@ export function SlideRenderer({
       </div>
     );
   }
-  return <AutoPlay Layout={Layout} slide={slide} step={step} calm={calm} onGoto={onGoto} />;
+  return <AutoPlay key={slide.id} Layout={Layout} slide={slide} step={step} calm={calm} onGoto={onGoto} />;
 }
 
 /** Plays a slide's internal builds automatically after a single click. */
