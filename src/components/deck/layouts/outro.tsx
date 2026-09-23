@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import githubRepoQr from "@/assets/github-repo-qr.png.asset.json";
 import { SPEAKER } from "@/content/types";
-import { BigNumeral, Chip, IconDisc, Monogram, Reveal } from "../primitives";
+import { BigNumeral, Chip, IconDisc, LinkedInQR, Monogram, Reveal } from "../primitives";
 import { SlideFrame, type LayoutProps } from "./frame";
 
 const GITHUB_REPO_URL = "https://github.com/hanygheit/ai-agent-on-call";
@@ -323,7 +323,7 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
 
   return (
     <div className="relative h-full w-full bg-gold-bg">
-      <div className="relative z-10 flex h-full flex-col px-[84px] pt-[70px] pb-[150px]">
+      <div className="relative z-10 flex h-full flex-col px-[84px] pt-[70px] pb-[242px]">
         <div className="flex items-center gap-5">
           <span className="block h-[3px] w-[38px] bg-ink" />
           <span className="font-mono text-[20px] tracking-[0.3em] text-ink uppercase">
@@ -385,16 +385,16 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
 
       <Reveal
         show={step >= 3}
-        className="absolute right-0 bottom-0 left-0 flex items-center gap-6 bg-navy px-[84px] py-[18px]"
+        className="absolute right-0 bottom-0 left-0 flex h-[226px] items-center gap-8 bg-navy px-[84px] py-[18px]"
       >
         <Monogram size={46} />
         <span className="flex-1">
           <span className="block font-sans text-[22px] font-bold text-white">{SPEAKER.name}</span>
           <span className="block font-sans text-[17px] text-gray-light">{SPEAKER.role}</span>
         </span>
-        <div className="flex items-end gap-6">
-          <div className="flex items-center gap-5">
-            <div className="flex flex-col items-end gap-[4px] text-right">
+        <div className="flex w-[680px] shrink-0 flex-col border-l border-navy-line pl-8">
+          <div className="flex min-h-[94px] items-center justify-end gap-5 border-b border-navy-line pb-2">
+            <div className="flex flex-1 flex-col items-end gap-[3px] text-right">
               <span className="font-mono text-[14px] tracking-[0.14em] text-gold uppercase">
                 THE STARTER REPO · SLIDES + HOOKS + TESTS
               </span>
@@ -402,25 +402,38 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
                 href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener"
-                className="font-mono text-[18px] font-bold text-white"
+                className="font-mono text-[17px] font-bold text-white"
               >
                 github.com/hanygheit/ai-agent-on-call
               </a>
-              <span className="font-sans text-[15px] text-gray-light">Scan, fork it, run it →</span>
+              <span className="font-sans text-[14px] text-gray-light">Scan, fork it, run it →</span>
             </div>
             <a
               href={GITHUB_REPO_URL}
               target="_blank"
               rel="noopener"
               aria-label="Open the GitHub repo hanygheit/ai-agent-on-call"
-              className="shrink-0 rounded-[4px] bg-white p-2"
+              className="shrink-0 rounded-[4px] bg-white p-[6px]"
             >
               <img
                 src={githubRepoQr.url}
                 alt="QR code to the GitHub repo hanygheit/ai-agent-on-call"
-                className="h-[86px] w-[86px] object-contain"
+                className="h-[70px] w-[70px] object-contain"
               />
             </a>
+          </div>
+          <div className="flex min-h-[94px] items-center justify-end gap-5 pt-2">
+            <div className="flex flex-1 flex-col items-end gap-[4px] text-right">
+              <span className="font-mono text-[14px] tracking-[0.14em] text-gold uppercase">
+                CONNECT ON LINKEDIN
+              </span>
+              <span className="font-sans text-[15px] text-gray-light">
+                Continue the conversation with Hany →
+              </span>
+            </div>
+            <div className="shrink-0 rounded-[4px] bg-white p-[6px]">
+              <LinkedInQR size={70} caption={false} />
+            </div>
           </div>
         </div>
       </Reveal>
