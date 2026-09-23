@@ -300,7 +300,7 @@ function CodeBlock({
   };
   const any = highlight.length > 0;
   return (
-    <pre className="no-scrollbar min-h-0 flex-1 overflow-auto px-6 py-5 font-mono text-[18px] leading-[1.5] whitespace-pre">
+    <pre className="no-scrollbar min-h-0 flex-1 overflow-auto px-6 py-5 font-mono text-[16px] leading-[1.5]">
       {lines.map((l, i) => {
         const on = highlight.includes(i);
         return (
@@ -309,7 +309,9 @@ function CodeBlock({
             className={`flex ${any && !on ? "opacity-35" : "opacity-100"} transition-opacity`}
           >
             <span className={`mr-4 w-[4px] shrink-0 ${on ? "bg-gold" : "bg-transparent"}`} />
-            {token(l)}
+            <span className="min-w-0 flex-1 pl-[4ch] -indent-[4ch] break-all whitespace-pre-wrap">
+              {token(l)}
+            </span>
           </div>
         );
       })}

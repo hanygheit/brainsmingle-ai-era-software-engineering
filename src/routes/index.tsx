@@ -19,6 +19,9 @@ import { slides } from "@/content/slides";
 import { DeckProvider, useDeck } from "@/deck/store";
 import { useKeyboard } from "@/deck/useKeyboard";
 
+const OG_IMAGE =
+  "https://devopsdays-cairo-2026.lovable.app/__l5e/assets-v1/ccf904d5-7194-430b-874d-3bcd10626a55/og-slide-1.jpg";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -35,6 +38,15 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Before You Put an AI Agent on Call" },
+      {
+        name: "twitter:description",
+        content: "20 rules for safe production autonomy — DevOpsDays Cairo 2026 · Hany Saad",
+      },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:width", content: "1920" },
+      { property: "og:image:height", content: "1080" },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
   }),
   component: DeckRoute,
