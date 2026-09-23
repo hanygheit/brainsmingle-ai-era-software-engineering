@@ -144,13 +144,13 @@ function PresenterView() {
         <div className="mt-auto">
           <p className="mb-2 font-mono text-[13px] tracking-[0.2em] text-term-comment">NEXT</p>
           {next ? (
-            <div className="flex items-start gap-3">
-              <div className="border border-navy-line">
-                <MiniStage width={300}>
+            <div className="flex flex-col gap-2">
+              <div className="w-fit border border-navy-line">
+                <MiniStage width={280}>
                   <SlideRenderer slide={next} step={next.steps} calm />
                 </MiniStage>
               </div>
-              <p className="font-sans text-[17px] text-term-text">{next.title.replace("\n", " ")}</p>
+              <p className="font-sans text-[16px] text-term-comment">{next.title.replace("\n", " ")}</p>
             </div>
           ) : (
             <p className="font-sans text-[17px] text-term-comment">End of deck.</p>
