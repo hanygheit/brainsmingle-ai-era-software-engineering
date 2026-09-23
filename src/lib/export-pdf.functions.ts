@@ -36,15 +36,12 @@ export const exportPdf = createServerFn({ method: "POST" })
         return { ok: true as const, url: signed.signedUrl, pages, cached: true };
       }
 
-      const ip =
-        getRequestHeader("cf-connecting-ip") ??
-        getRequestHeader("x-forwarded-for")?.split(",")[0]?.trim() ??
-        "unknown";
-      const now = Date.now();
-      if (now - (lastRenderByIp.get(ip) ?? 0) < 30_000) {
-        return { ok: false as const, error: "A render just ran. Try again in 30 seconds." };
+      if (!process.env["APP_PDF_RENDERER_URL"] && !process.env["BROWSERLESS_TOKEN"]) {
+        return {
+          ok: false as const,
+          error: "PDF rendering is not configured yet — the Browserless key is missing.",
+        };
       }
-      lastRenderByIp.set(ip, now);
 
       const base = (process.env["PUBLIC_APP_URL"] ?? data.origin).replace(/\/$/, "");
       const host = new URL(base).hostname;
@@ -55,14 +52,30 @@ export const exportPdf = createServerFn({ method: "POST" })
         };
       }
 
+      const ip =
+        getRequestHeader("cf-connecting-ip") ??
+        getRequestHeader("x-forwarded-for")?.split(",")[0]?.trim() ??
+        "unknown";
+      const now = Date.now();
+      if (now - (lastRenderByIp.get(ip) ?? 0) < 30_000) {
+        return { ok: false as const, error: "A render just ran. Try again in 30 seconds." };
+      }
+      lastRenderByIp.set(ip, now);
+
       const token = await signPrintToken(data.variant);
       const url = `${base}/print?variant=${data.variant}&token=${encodeURIComponent(token)}`;
-      const pdf = await renderPdf(url, {
-        width: 1920,
-        height: 1080,
-        readySelector: 'body[data-print-ready="true"]',
-        timeoutMs: 30_000,
-      });
+      let pdf: Uint8Array;
+      try {
+        pdf = await renderPdf(url, {
+          width: 1920,
+          height: 1080,
+          readySelector: 'body[data-print-ready="true"]',
+          timeoutMs: 30_000,
+        });
+      } catch (e) {
+        lastRenderByIp.delete(ip);
+        throw e;
+      }
       const pages = countPdfPages(pdf);
 
       const { error: upErr } = await bucket.upload(path, pdf, {
