@@ -14,13 +14,76 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      poll_sessions: {
+        Row: {
+          is_open: boolean
+          session_code: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          is_open?: boolean
+          session_code: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          is_open?: boolean
+          session_code?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
+      poll_votes: {
+        Row: {
+          choice: string
+          created_at: string
+          id: string
+          question_id: number
+          session_code: string
+          voter_id: string
+        }
+        Insert: {
+          choice: string
+          created_at?: string
+          id?: string
+          question_id: number
+          session_code: string
+          voter_id: string
+        }
+        Update: {
+          choice?: string
+          created_at?: string
+          id?: string
+          question_id?: number
+          session_code?: string
+          voter_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cast_vote: {
+        Args: {
+          _choice: string
+          _question: number
+          _session: string
+          _voter: string
+        }
+        Returns: undefined
+      }
+      poll_results: {
+        Args: { _session: string }
+        Returns: {
+          choice: string
+          question_id: number
+          votes: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
