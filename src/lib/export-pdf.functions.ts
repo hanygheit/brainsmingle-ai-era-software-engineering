@@ -31,7 +31,8 @@ export const exportPdf = createServerFn({ method: "POST" })
       if (hit) {
         const { data: signed, error } = await bucket.createSignedUrl(path, 600);
         if (error) throw error;
-        const pages = Number((hit.metadata as { pages?: number } | null)?.pages) || 0;
+        const { TOTAL_SLIDES } = await import("@/content/slides");
+        const pages = TOTAL_SLIDES * (data.variant === "notes" ? 2 : 1);
         return { ok: true as const, url: signed.signedUrl, pages, cached: true };
       }
 
