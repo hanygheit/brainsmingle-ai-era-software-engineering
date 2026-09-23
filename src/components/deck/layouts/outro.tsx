@@ -429,7 +429,6 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
                 className="h-[86px] w-[86px] object-contain"
               />
             </a>
-          </a>
           </div>
         </div>
       </Reveal>
