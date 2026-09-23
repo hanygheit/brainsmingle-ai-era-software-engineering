@@ -119,7 +119,7 @@ function DeckView() {
           onClickHalf={(dir) => (dir === 1 ? deck.next() : deck.prev())}
           onSwipe={(dir) => (dir === 1 ? deck.next() : deck.prev())}
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="sync" initial={false}>
             <motion.div
               key={deck.slide.id}
               className="h-full w-full"
