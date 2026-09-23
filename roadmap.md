@@ -1,2 +1,3 @@
 - [x] PDF download without Browserless: pre-render PDFs and store them
 - [x] Match the closing slide GitHub QR block to the supplied sample
+- [x] Add a professional LinkedIn QR block below the GitHub QR on the closing slide
