@@ -1,1 +1,2 @@
 - [x] PDF download without Browserless: pre-render PDFs and store them
+- [ ] Match the closing slide GitHub QR block to the supplied sample
