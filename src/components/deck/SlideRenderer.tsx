@@ -54,7 +54,7 @@ export function SlideRenderer({
       </div>
     );
   }
-  return <AutoPlay key={slide.id} Layout={Layout} slide={slide} step={step} calm={calm} onGoto={onGoto} />;
+  return <AutoPlay key={slide.id} Layout={Layout} slide={slide} step={slide.steps} calm={calm} onGoto={onGoto} />;
 }
 
 /** Plays a slide's internal builds automatically after a single click. */
@@ -71,12 +71,12 @@ function AutoPlay({
   calm: boolean;
   onGoto?: ((index: number) => void) | undefined;
 }) {
-  const [shown, setShown] = useState(step);
-  const prevTarget = useRef(step);
+  const [shown, setShown] = useState(calm ? step : 0);
+  const prevTarget = useRef(calm ? step : 0);
   useEffect(() => {
     const from = prevTarget.current;
     prevTarget.current = step;
-    if (calm || step <= from || step - from <= 1) {
+    if (calm || step <= from || false) {
       setShown(step);
       return;
     }
@@ -86,7 +86,7 @@ function AutoPlay({
       cur += 1;
       setShown(cur);
       if (cur >= step) window.clearInterval(id);
-    }, 650);
+    }, 550);
     return () => window.clearInterval(id);
   }, [step, calm]);
   return <Layout slide={slide} step={Math.min(shown, step)} calm={calm} onGoto={onGoto} />;
