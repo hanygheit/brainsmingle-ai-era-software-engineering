@@ -1,3 +1,5 @@
+import { usePrintMode } from "@/deck/print-mode";
+import { DownloadMenu } from "../DownloadPdf";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { KIT_URL, SPEAKER } from "@/content/types";
@@ -317,6 +319,7 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
     thanks: string;
   };
   const words = slide.title.split(" ");
+  const printing = usePrintMode();
 
   return (
     <div className="relative h-full w-full bg-gold-bg">
@@ -390,6 +393,11 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
           <span className="block font-sans text-[17px] text-gray-light">{SPEAKER.role}</span>
         </span>
         <div className="flex items-end gap-6">
+          {!printing ? (
+            <div className="self-center">
+              <DownloadMenu label="PDF" />
+            </div>
+          ) : null}
           <LinkedInQR size={86} caption={false} />
           <a href={KIT_URL} className="flex flex-col items-center gap-1">
             <span className="flex h-[86px] w-[86px] items-center justify-center bg-white">

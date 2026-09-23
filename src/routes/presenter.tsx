@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
+import { pollAdmin, verifyPin } from "@/lib/presenter.functions";
+import { readPin, savePin, usePresenterPin } from "@/lib/presenter-pin";
+import { POLL_SESSION, usePoll } from "@/lib/poll";
 import { MiniStage } from "@/components/deck/Stage";
 import { SlideRenderer } from "@/components/deck/SlideRenderer";
 import { fmt, useStopwatch } from "@/components/deck/Timers";
@@ -31,10 +36,84 @@ export const Route = createFileRoute("/presenter")({
 });
 
 function PresenterRoute() {
+  const pin = usePresenterPin();
+  const [checked, setChecked] = useState(false);
+  const [needsPin, setNeedsPin] = useState(true);
+  const [value, setValue] = useState("");
+  const [err, setErr] = useState("");
+  const check = useServerFn(verifyPin);
+
+  useEffect(() => {
+    void check({ data: { pin: pin ?? "" } }).then((r) => {
+      setNeedsPin(r.configured && !r.ok);
+      setChecked(true);
+    });
+  }, [pin, check]);
+
+  if (!checked) return <main className="h-screen bg-terminal" />;
+  if (needsPin) {
+    return (
+      <main className="flex h-screen items-center justify-center bg-terminal">
+        <form
+          className="w-[340px] border border-navy-line bg-navy-card p-6"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const r = await check({ data: { pin: value } });
+            if (r.ok) savePin(value);
+            else setErr("Wrong PIN.");
+          }}
+        >
+          <p className="font-mono text-[13px] tracking-[0.2em] text-gold">PRESENTER VIEW</p>
+          <label htmlFor="pin" className="mt-3 block font-sans text-[18px] font-bold text-white">
+            Enter presenter PIN
+          </label>
+          <input
+            id="pin"
+            type="password"
+            inputMode="numeric"
+            autoFocus
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            className="mt-3 w-full border border-navy-line bg-terminal px-3 py-2 font-mono text-[18px] text-white"
+          />
+          {err ? <p className="mt-2 font-mono text-[13px] text-deny">{err}</p> : null}
+          <button className="mt-4 w-full bg-gold py-2 font-mono text-[14px] font-bold text-navy">UNLOCK</button>
+        </form>
+      </main>
+    );
+  }
   return (
     <DeckProvider isPresenter>
       <PresenterView />
     </DeckProvider>
+  );
+}
+
+function PollControls() {
+  const { open, tally } = usePoll();
+  const admin = useServerFn(pollAdmin);
+  const total = Object.values(tally).reduce((a, q) => a + q.allow + q.depends + q.block, 0);
+  const act = async (action: "reset" | "open" | "close") => {
+    if (action === "reset" && !window.confirm("Delete all poll votes?")) return;
+    const r = await admin({ data: { pin: readPin() ?? "", session: POLL_SESSION, action } });
+    if (!r.ok) toast.error(r.error);
+    else toast.success(action === "reset" ? "Poll reset" : `Poll ${action === "open" ? "opened" : "closed"}`);
+  };
+  return (
+    <div className="flex items-center gap-2 border border-navy-line bg-navy-card px-3 py-2">
+      <span className="font-mono text-[13px] tracking-[0.16em] text-term-comment">
+        POLL · {total} VOTES
+      </span>
+      <button
+        onClick={() => void act(open ? "close" : "open")}
+        className={`ml-auto px-3 py-1 font-mono text-[13px] ${open ? "bg-ok text-white" : "border border-navy-line"}`}
+      >
+        {open ? "OPEN" : "CLOSED"}
+      </button>
+      <button onClick={() => void act("reset")} className="border border-navy-line px-3 py-1 font-mono text-[13px] hover:text-deny">
+        RESET POLL
+      </button>
+    </div>
   );
 }
 
@@ -140,6 +219,8 @@ function PresenterView() {
             ) : null}
           </div>
         ) : null}
+
+        <PollControls />
 
         <div className="mt-auto">
           <p className="mb-2 font-mono text-[13px] tracking-[0.2em] text-term-comment">NEXT</p>
