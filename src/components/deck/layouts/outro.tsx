@@ -402,19 +402,19 @@ export function CloseSlide({ slide, step, calm }: LayoutProps) {
             </div>
           ) : null}
           <div className="flex items-center gap-5">
-            <div className="flex flex-col items-end gap-[5px] text-right">
-              <span className="font-mono text-[12px] tracking-[0.14em] text-gold uppercase">
+            <div className="flex flex-col items-end gap-[4px] text-right">
+              <span className="font-mono text-[14px] tracking-[0.14em] text-gold uppercase">
                 THE STARTER REPO · SLIDES + HOOKS + TESTS
               </span>
               <a
                 href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener"
-                className="font-mono text-[15px] font-bold text-white"
+                className="font-mono text-[18px] font-bold text-white"
               >
                 github.com/hanygheit/ai-agent-on-call
               </a>
-              <span className="font-sans text-[13px] text-gray-light">Scan, fork it, run it on Monday →</span>
+              <span className="font-sans text-[15px] text-gray-light">Scan, fork it, run it on Monday →</span>
             </div>
             <a
               href={GITHUB_REPO_URL}
