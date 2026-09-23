@@ -310,12 +310,14 @@ export function FourCardsSlide({ slide, step, calm }: LayoutProps) {
   };
   const printing = usePrintMode();
   const { tally } = usePoll(!printing);
+  const [host, setHost] = useState("");
+  useEffect(() => setHost(window.location.host), []);
   const total = Object.values(tally).reduce((a, q) => a + q.allow + q.depends + q.block, 0);
   return (
     <SlideFrame slide={slide} calm={calm}>
       {!printing ? (
         <p className="absolute top-[-6px] right-0 font-mono text-[18px] tracking-[0.16em] text-gray-light">
-          VOTE LIVE · <span className="text-gold">{typeof window !== "undefined" ? window.location.host : ""}/vote</span>
+          VOTE LIVE · <span className="text-gold">{host}/vote</span>
         </p>
       ) : null}
       <div className="flex h-full flex-col gap-[30px]">
@@ -365,12 +367,14 @@ export function PollSlide({ slide, step, calm }: LayoutProps) {
   };
   const printing = usePrintMode();
   const { tally } = usePoll(!printing);
+  const [host, setHost] = useState("");
+  useEffect(() => setHost(window.location.host), []);
   const total = Object.values(tally).reduce((a, q) => a + q.allow + q.depends + q.block, 0);
   return (
     <SlideFrame slide={slide} calm={calm}>
       {!printing ? (
         <p className="absolute top-[-6px] right-0 font-mono text-[18px] tracking-[0.16em] text-gray-light">
-          VOTE LIVE · <span className="text-gold">{typeof window !== "undefined" ? window.location.host : ""}/vote</span>
+          VOTE LIVE · <span className="text-gold">{host}/vote</span>
         </p>
       ) : null}
       <div className="flex h-full flex-col gap-[30px]">
