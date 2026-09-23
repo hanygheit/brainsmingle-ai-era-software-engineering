@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * Types an array of lines sequentially. Returns how many lines are complete
@@ -8,8 +8,13 @@ export function useTypedLines(lines: string[], active: boolean, charMs = 12) {
   const [done, setDone] = useState(0);
   const [partial, setPartial] = useState("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const key = lines.join("\u0000");
+  // Callers pass a fresh array each render; key on content so typing doesn't restart.
+  const stable = useMemo(() => key.split("\u0000"), [key]);
 
   useEffect(() => {
+    const lines = stable;
+
     if (!active) {
       setDone(0);
       setPartial("");
