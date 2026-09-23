@@ -8,13 +8,17 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// DECK_VERSION = short hash of the slide content, so cached PDFs invalidate when slides change.
+// DECK_VERSION covers slide content and slide-specific presentation assets so cached PDFs stay current.
 let deckVersion = "dev";
 try {
-  deckVersion = createHash("sha256")
-    .update(readFileSync(new URL("./src/content/slides.ts", import.meta.url)))
-    .digest("hex")
-    .slice(0, 12);
+  const deckFiles = [
+    "./src/content/slides.ts",
+    "./src/components/deck/layouts/outro.tsx",
+    "./src/assets/github-repo-qr.png.asset.json",
+  ];
+  const hash = createHash("sha256");
+  deckFiles.forEach((file) => hash.update(readFileSync(new URL(file, import.meta.url))));
+  deckVersion = hash.digest("hex").slice(0, 12);
 } catch {
   /* keep "dev" */
 }
