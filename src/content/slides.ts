@@ -979,7 +979,7 @@ esac`,
     title: "9 seconds to lose production.",
     steps: 3,
     data: {
-      response: "9 minutes on Monday to protect it.",
+      response: "9 minutes  to protect it.",
       takeaways: [
         {
           n: "1",
