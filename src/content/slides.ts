@@ -1000,9 +1000,9 @@ exit 0   # silent = normal permission flow`,
       final: "Agents can act. Accountability stays human.",
     },
     notes: {
-      cue: "Slow down. This is the landing. Point back at the 9.",
-      say: "I started with nine seconds, so I'll end there. Before you ask what your agent can do, ask: what is the worst thing it can do in nine seconds? Plan first — you're the lead. Prompts ask, hooks decide. A human name on every page. Agents can act. Accountability stays human. Thank you.",
-      targetSec: 20,
+      cue: "Slow down. This is the landing. Point back at the 9; leave the QR codes visible for questions.",
+      say: "I started with nine seconds. So before you ask what your agent can do, ask what the worst thing it can do in nine seconds. Lead it. Bound it. Make it earn trust. The goal is not less AI — it is engineered autonomy. Three minutes: write the Never list. Three minutes: copy the guard from the starter repo. Three minutes: scope or revoke one token. Agents can act. Accountability stays human. Thank you — questions?",
+      targetSec: 25,
     },
   },
 ];
