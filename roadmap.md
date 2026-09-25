@@ -1,3 +1,5 @@
 - [x] PDF download without Browserless: pre-render PDFs and store them
 - [x] Match the closing slide GitHub QR block to the supplied sample
 - [x] Add a professional LinkedIn QR block below the GitHub QR on the closing slide
+- [ ] Align the web deck's rules, examples, order, and speaker notes with the approved presentation
+- [ ] Verify all approved slides, navigation, and current PDF availability
