@@ -12,9 +12,9 @@ export const SECTIONS: SectionMeta[] = [
   { id: "intro", label: "Intro", short: "INTRO" },
   { id: "gate1", label: "Gate I · Lead", short: "GATE I · LEAD" },
   { id: "gate2", label: "Gate II · Context", short: "GATE II · CONTEXT" },
-  { id: "gate3", label: "Gate III · Scope", short: "GATE III · SCOPE" },
-  { id: "gate4", label: "Gate IV · Proof", short: "GATE IV · PROOF" },
-  { id: "gate5", label: "Gate V · Ownership", short: "GATE V · OWNERSHIP" },
+  { id: "gate3", label: "Gate III · Isolate", short: "GATE III · ISOLATE" },
+  { id: "gate4", label: "Gate IV · Bound", short: "GATE IV · BOUND" },
+  { id: "gate5", label: "Gate V · Prove", short: "GATE V · PROVE" },
   { id: "outro", label: "Outro", short: "OUTRO" },
 ];
 
@@ -49,5 +49,5 @@ export const SPEAKER = {
   event: "DevOpsDays Cairo 2026",
 };
 
-export const KIT_URL = "#";
+export const KIT_URL = "https://github.com/hanygheit/ai-agent-on-call";
 export const TOTAL_SLOT_SEC = 600;

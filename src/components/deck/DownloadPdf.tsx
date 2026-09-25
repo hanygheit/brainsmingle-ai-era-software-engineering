@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TOTAL_SLIDES } from "@/content/slides";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { exportPdf } from "@/lib/export-pdf.functions";
@@ -55,7 +56,7 @@ export function DownloadMenu({
   const pin = usePresenterPin();
   const [open, setOpen] = useState(false);
 
-  const items: [("slides" | "notes"), string][] = [["slides", "Slides (PDF, 21 pages)"]];
+  const items: [("slides" | "notes"), string][] = [["slides", `Slides (PDF, ${TOTAL_SLIDES} pages)`]];
   if (pin) items.push(["notes", "Slides + speaker notes"]);
 
   return (
