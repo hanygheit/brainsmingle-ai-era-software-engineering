@@ -60,7 +60,7 @@ export const slides: Slide[] = [
     bg: "paper",
     layout: "shift",
     kicker: "THE SHIFT · AGENTIC DEVELOPMENT",
-    title: "The job moved from writing code to authorizing risk",
+    title: "The job is shifting from typing code to directing agents.",
     steps: 2,
     sources:
       "Google Cloud Next blog (Apr 2026) · TechCrunch (Apr 2025) · Fortune Brainstorm Tech (Jun 2026) · Karpathy on X (Feb 2026)",
@@ -74,12 +74,12 @@ export const slides: Slide[] = [
       stats: [
         {
           value: "75%",
-          body: "of all new code at Google is now AI-generated and approved by engineers.",
+          body: "of new code at Google is AI-generated and then reviewed / approved by engineers.",
           label: "SUNDAR PICHAI · GOOGLE · APR 2026",
         },
         {
           value: "20–30%",
-          body: "of the code in Microsoft's repos is “written by software.”",
+          body: "of code in some Microsoft repositories was described as “written by software.”",
           label: "SATYA NADELLA · MICROSOFT · APR 2025",
         },
         {
@@ -97,7 +97,7 @@ export const slides: Slide[] = [
     notes: {
       cue: "Hands up first. Then point across the four verbs.",
       say: "Show of hands: who shipped code this month that an agent wrote? [pause] Google says three-quarters of its new code is AI-generated. The person who builds Claude Code hasn't typed a line by hand in eight months. Writing got cheap. Directing and reviewing became the job. And production adds one more verb: authorize. That's where the risk lives.",
-      targetSec: 25,
+      targetSec: 30,
     },
   },
   {
@@ -139,7 +139,7 @@ export const slides: Slide[] = [
     notes: {
       cue: "Walk the terminal top to bottom, then the band.",
       say: "Here's a real session on a sample repo. I gave it a ticket. It read our AGENTS.md, read our architecture decision, checked for callers, and wrote a plan — no code. It asked a good question and stopped for approval. That's not magic; the repo told it how we work. An agent is a model, tools, a loop — and permissions. Permission is blast radius.",
-      targetSec: 25,
+      targetSec: 30,
     },
   },
   {
@@ -189,7 +189,7 @@ export const slides: Slide[] = [
       cue: "One sentence per card, finger on each.",
       say: "Now the other side. Replit's agent deleted a production database during a code freeze, then said rollback was impossible. It wasn't. Antigravity was asked to clear a cache and wiped a drive. The FT reported Amazon's Kiro chose to 'delete and recreate' an environment; Amazon says misconfigured access. And nine seconds. One root cause: the agent could do something nobody meant to allow.",
       fact: "Replit/SaaStr (The Register, Jul 2025). Antigravity (Tom's Hardware, Dec 2025). Kiro: Financial Times via The Decoder/GeekWire, Feb 2026 — AWS Cost Explorer, one China region; Amazon disputes the AI framing. PocketOS (The Register, Apr 2026).",
-      targetSec: 25,
+      targetSec: 30,
     },
   },
   {
@@ -236,7 +236,7 @@ export const slides: Slide[] = [
     notes: {
       cue: "AUDIENCE MOMENT. Read each card, get a quick shout of yes / no / depends. Do not debate.",
       say: "You're on call. 03:07. Would you let it read logs? [pause] Propose a rollback? Restart one pod? Delete, DNS, secrets? If you said 'it depends' — good. The next twenty rules are what it depends on.",
-      targetSec: 15,
+      targetSec: 20,
     },
   },
   {
@@ -295,7 +295,7 @@ export const slides: Slide[] = [
     notes: {
       cue: "Fast — the table of contents.",
       say: "Five gates, from your laptop to production: lead, context, isolate, bound, prove. Every gate is an engineering control, not a better prompt.",
-      targetSec: 10,
+      targetSec: 13,
     },
   },
   {
