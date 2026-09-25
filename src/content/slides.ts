@@ -255,7 +255,7 @@ export const slides: Slide[] = [
           question: "Who is leading?",
           name: "Gate I · Lead",
           rules: "RULES 01–04",
-          slide: 8,
+          slide: 9,
         },
         {
           numeral: "II",
@@ -263,7 +263,7 @@ export const slides: Slide[] = [
           question: "What does it know?",
           name: "Gate II · Context",
           rules: "RULES 05–08",
-          slide: 9,
+          slide: 11,
         },
         {
           numeral: "III",
@@ -271,7 +271,7 @@ export const slides: Slide[] = [
           question: "Where does its work land?",
           name: "Gate III · Isolate",
           rules: "RULES 09–12",
-          slide: 14,
+          slide: 13,
         },
         {
           numeral: "IV",
@@ -279,7 +279,7 @@ export const slides: Slide[] = [
           question: "What can it touch?",
           name: "Gate IV · Bound",
           rules: "RULES 13–16",
-          slide: 16,
+          slide: 15,
         },
         {
           numeral: "V",
@@ -287,7 +287,7 @@ export const slides: Slide[] = [
           question: "Has it earned more?",
           name: "Gate V · Prove",
           rules: "RULES 17–20",
-          slide: 17,
+          slide: 18,
         },
       ],
       line: "Every gate is an engineering control — not a better prompt.",
@@ -449,7 +449,7 @@ export const slides: Slide[] = [
     section: "gate2",
     bg: "paper",
     layout: "repoTree",
-    kicker: "COPY THIS · A CLAUDE CODE PROJECT, SHARED IN GIT",
+    kicker: "COPY THIS · PHOTOGRAPH IT",
     title: "The repo is the agent's operating manual",
     steps: 3,
     data: {
@@ -475,10 +475,13 @@ export const slides: Slide[] = [
 1. Plan first: docs/specs/<ticket>.md, human approves
 2. One task, one branch: agent/<ticket>-<slug>
 3. Small diffs, tests with every change
+## Stop and ask when
+- You would need to guess
+- Production, secrets or deletes are involved
 ## Never
 - Act on production or read .env / secrets/
 - Skip a failing test to make CI green
-- Guess. Stop and ask.`,
+- Use a token you found in a file.`,
       chips: [
         { tag: "shared", label: "SHARED", body: "AGENTS.md, settings.json, hooks, skills, agents" },
         { tag: "personal", label: "PERSONAL", body: "settings.local.json, CLAUDE.local.md" },
@@ -719,7 +722,7 @@ export const slides: Slide[] = [
         code: `# runs before every Bash call the agent makes
 cmd=$(jq -r '.tool_input.command')
 
-DENY='delete (ns|namespace)|terraform destroy|DROP (TABLE|DATABASE)|curl .*-X ?DELETE'
+DENY='delete (ns|namespace)|terraform destroy|DROP (TABLE|DATABASE)|volumeDelete'
 ASK='kubectl (delete|scale|rollout undo|apply)|terraform apply|helm (upgrade|rollback)'
 
 decide() {  # $1 = allow | ask | deny
@@ -734,12 +737,12 @@ exit 0   # silent = normal permission flow`,
         highlight: { 1: [], 2: [3, 4], 3: [12, 13] },
       },
       captions: [
-        "Condensed for the slide. Full kit: 7 hooks + 14 offline tests.",
+        "Other hooks: kill-switch · change-freeze · protect-files · action-budget · audit-log · notify-oncall. Full kit: 7 hooks + 46 offline tests at github.com/hanygheit/ai-agent-on-call. Seatbelt, not sandbox: the real wall is still IAM.",
       ],
     },
     notes: {
       cue: "Photo slide. Pause two seconds.",
-      say: "Two files. Settings says: run the guard before every Bash call. The guard answers allow, ask, or deny. Commit both; every session inherits them.",
+      say: "Two files. Settings says: run the guard before every shell command. The guard answers allow, ask or deny — notice volumeDelete on the deny list. Commit both; every session inherits them. Honest caveat: it's a seatbelt, not a sandbox. The real wall is still IAM.",
       targetSec: 15,
     },
   },
@@ -843,7 +846,7 @@ exit 0   # silent = normal permission flow`,
           time: "03:11:00",
           icon: "shield-check",
           title: "Recovered",
-          body: "SLO green. Reasoning and actions in the audit log.",
+          body: "SLO green. Evidence and decisions in the audit log.",
           rules: "R18 · R19",
         },
       ],
