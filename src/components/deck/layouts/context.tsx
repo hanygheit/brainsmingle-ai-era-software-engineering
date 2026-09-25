@@ -345,6 +345,8 @@ export function TwoCodeSlide({ slide, step, calm }: LayoutProps) {
           <p className="font-mono text-[15px] tracking-[0.14em] text-taupe">{d.captions[0]}</p>
           <a
             href={KIT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-gold px-6 py-[10px] font-mono text-[16px] tracking-[0.16em] text-navy uppercase"
           >
             Get the kit

@@ -49,5 +49,5 @@ export const SPEAKER = {
   event: "DevOpsDays Cairo 2026",
 };
 
-export const KIT_URL = "#";
+export const KIT_URL = "https://github.com/hanygheit/ai-agent-on-call";
 export const TOTAL_SLOT_SEC = 600;

@@ -13,6 +13,7 @@ let deckVersion = "dev";
 try {
   const deckFiles = [
     "./src/content/slides.ts",
+    "./src/content/types.ts",
     "./src/components/deck/layouts/approved.tsx",
     "./src/components/deck/layouts/intro.tsx",
     "./src/components/deck/layouts/context.tsx",
