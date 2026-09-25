@@ -56,7 +56,7 @@ export function DownloadMenu({
   const pin = usePresenterPin();
   const [open, setOpen] = useState(false);
 
-  const items: [("slides" | "notes"), string][] = [["slides", "Slides (PDF, 21 pages)"]];
+  const items: [("slides" | "notes"), string][] = [["slides", `Slides (PDF, ${TOTAL_SLIDES} pages)`]];
   if (pin) items.push(["notes", "Slides + speaker notes"]);
 
   return (
