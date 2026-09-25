@@ -14,9 +14,11 @@ import { GateSlide } from "./layouts/gate";
 import { HookDemoSlide, RepoTreeSlide, SixCardsSlide, TwoCodeSlide } from "./layouts/context";
 import { BranchesSlide } from "./layouts/scope";
 import { CloseSlide, GearboxSlide, OfferLetterSlide, TimelineSlide } from "./layouts/outro";
+import { OpeningQuestionSlide, RewindSlide } from "./layouts/approved";
 
 const LAYOUTS: Record<string, (p: LayoutProps) => React.ReactElement> = {
   title: TitleSlide,
+  openingQuestion: OpeningQuestionSlide,
   bigNumber: BigNumberSlide,
   shift: ShiftSlide,
   terminalPlusList: TerminalListSlide,
@@ -33,6 +35,7 @@ const LAYOUTS: Record<string, (p: LayoutProps) => React.ReactElement> = {
   gearbox: GearboxSlide,
   offerLetter: OfferLetterSlide,
   close: CloseSlide,
+  rewind: RewindSlide,
 };
 
 export function SlideRenderer({

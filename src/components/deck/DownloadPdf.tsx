@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TOTAL_SLIDES } from "@/content/slides";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { exportPdf } from "@/lib/export-pdf.functions";
