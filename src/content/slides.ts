@@ -32,7 +32,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 2,
+    id: 3,
     section: "intro",
     bg: "navy",
     layout: "bigNumber",
@@ -55,7 +55,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 3,
+    id: 4,
     section: "intro",
     bg: "paper",
     layout: "shift",
@@ -101,7 +101,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 4,
+    id: 5,
     section: "intro",
     bg: "paper",
     layout: "terminalPlusList",
@@ -143,7 +143,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 5,
+    id: 6,
     section: "intro",
     bg: "navy",
     layout: "fourCards",
@@ -193,7 +193,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 6,
+    id: 7,
     section: "intro",
     bg: "navy",
     layout: "poll",
@@ -240,7 +240,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 7,
+    id: 8,
     section: "intro",
     bg: "paper",
     layout: "gates",
@@ -299,7 +299,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 8,
+    id: 9,
     section: "gate1",
     bg: "cream",
     layout: "gate",
@@ -390,7 +390,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 9,
+    id: 11,
     section: "gate2",
     bg: "cream",
     layout: "gate",
@@ -445,7 +445,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 10,
+    id: 12,
     section: "gate2",
     bg: "paper",
     layout: "repoTree",
@@ -492,183 +492,7 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: 11,
-    section: "gate2",
-    bg: "paper",
-    layout: "hookDemo",
-    kicker: "DEMO · CLAUDE CODE HOOKS · RULES 13 · 14 · 15 · 18",
-    title: "The prompt asks. The hook decides.",
-    steps: 5,
-    data: {
-      terminalTitle: "claude — ~/checkout-service (hooks: .claude/settings.json)",
-      lines: [
-        { t: "> checkout-api is crash-looping in prod. Investigate and restore.", k: "prompt", step: 1 },
-        { t: "● Bash kubectl get pods -n prod", stamp: "allowed", step: 1 },
-        { t: "● Bash kubectl logs checkout-api-… --previous", stamp: "allowed", step: 1 },
-        { t: "FATAL DB_POOL_SIZE must be > 0 (got \"\")", k: "comment", step: 1 },
-        { t: "● Bash kubectl rollout history deploy/checkout", stamp: "allowed", step: 1 },
-        { t: "Root cause: rev 4812 blanked DB_POOL_SIZE. Fix: roll back to 4811.", k: "plain", step: 3 },
-        { t: "● Bash kubectl rollout undo deploy/checkout-api", stamp: "ask", step: 2 },
-        { t: "prod-guard: this changes production. A human must approve.", k: "amber", step: 2 },
-        { t: "● Bash kubectl delete namespace prod", stamp: "deny", step: 4 },
-        { t: "BLOCKED by prod-guard: irreversible, high blast radius.", k: "error", step: 4 },
-      ],
-      caption: "REAL RUN · CLAUDE CODE 2.1 · KUBECTL STUBBED · DENY LINE FROM THE KIT'S TEST HARNESS",
-      legend: [
-        { key: "allow", icon: "check", tone: "ok", title: "ALLOW", sub: "Read-only", body: "Hook stays silent. Rule 13" },
-        { key: "ask", icon: "hand", tone: "gold", title: "ASK", sub: "Changes prod", body: "A human presses it. Rule 14" },
-        { key: "deny", icon: "octagon-x", tone: "deny", title: "DENY", sub: "Catastrophic", body: "Never — even if asked. Rule 15" },
-        { key: "log", icon: "scroll-text", tone: "navy", title: "LOG", sub: "Every step", body: "agent-actions.jsonl. Rule 18" },
-      ],
-      audit: [
-        '{"ts":"03:08:31Z","tool":"Bash","decision":"ask","cmd":"kubectl rollout undo …"}',
-        '{"ts":"03:09:10Z","actor":"human:on-call","decision":"approved","incident":"INC-88"}',
-        '{"ts":"03:09:44Z","tool":"Bash","decision":"deny","cmd":"kubectl delete namespace prod"}',
-      ],
-    },
-    notes: {
-      cue: "DEMO SLIDE — no live terminal. Walk the lines, then the four boxes.",
-      say: "A real run. On-call prompt: crash-looping in prod. Read-only commands pass. It finds the root cause — a blanked config value. It tries the rollback: the hook stops it and asks a human. Delete the namespace? Denied — even if asked. Every step logged. Don't rely on the model's manners. Rely on the hook.",
-      fact: "Captured from a real headless run (Claude Code 2.1, kubectl replaced by a harmless stub). The DENY line comes from the kit's test-hooks.sh — in the live run the model declined to try it.",
-      targetSec: 25,
-    },
-  },
-  {
-    id: 12,
-    section: "gate2",
-    bg: "cream",
-    layout: "twoCode",
-    kicker: "COPY THIS · TWO FILES, COMMITTED TO THE REPO",
-    title: "Wire it once. Every session inherits it.",
-    steps: 3,
-    data: {
-      left: {
-        title: ".claude/settings.json",
-        lang: "json",
-        code: `{
-  "hooks": {
-    "PreToolUse": [{
-      "matcher": "Bash",
-      "hooks": [{
-        "type": "command",
-        "command": "\\"$CLAUDE_PROJECT_DIR\\"/.claude/hooks/prod-guard.sh"
-      }]
-    }],
-    "PostToolUse": [ { "matcher": "Bash|Edit|Write", "hooks": [ { "type": "command",
-      "command": "\\"$CLAUDE_PROJECT_DIR\\"/.claude/hooks/audit-log.sh" } ] } ]
-  }
-}`,
-        highlight: { 1: [2, 6], 2: [], 3: [] },
-      },
-      right: {
-        title: ".claude/hooks/prod-guard.sh (PreToolUse)",
-        lang: "bash",
-        code: `# runs before every Bash call the agent makes
-cmd=$(jq -r '.tool_input.command')
-
-DENY='delete (ns|namespace)|terraform destroy|DROP (TABLE|DATABASE)|curl .*-X ?DELETE'
-ASK='kubectl (delete|scale|rollout undo|apply)|terraform apply|helm (upgrade|rollback)'
-
-decide() {  # $1 = allow | ask | deny
-  jq -n --arg d "$1" --arg r "$2" '{hookSpecificOutput:
-    {hookEventName:"PreToolUse", permissionDecision:$d, permissionDecisionReason:$r}}'
-  exit 0
-}
-
-grep -qiE "$DENY" <<<"$cmd" && decide deny "Irreversible. Page a human."
-grep -qiE "$ASK"  <<<"$cmd" && decide ask  "Changes prod. A human approves."
-exit 0   # silent = normal permission flow`,
-        highlight: { 1: [], 2: [3, 4], 3: [12, 13] },
-      },
-      captions: [
-        "Condensed for the slide. Full kit: 7 hooks + 14 offline tests.",
-      ],
-    },
-    notes: {
-      cue: "Photo slide. Pause two seconds.",
-      say: "Two files. Settings says: run the guard before every Bash call. The guard answers allow, ask, or deny. Commit both; every session inherits them.",
-      targetSec: 15,
-    },
-  },
-  {
     id: 13,
-    section: "gate2",
-    bg: "paper",
-    layout: "sixCards",
-    kicker: "THE KIT'S OTHER SIX HOOKS · RULE 16",
-    title: "One hook per rule you can't afford to leave to a prompt",
-    steps: 2,
-    data: {
-      cards: [
-        {
-          icon: "power",
-          file: "kill-switch.sh",
-          event: "PreToolUse · *",
-          body: "If .claude/AGENT_STOP exists, every tool call is denied.",
-          rule: "R16",
-          back: `[[ -f "$CLAUDE_PROJECT_DIR/.claude/AGENT_STOP" ]] \\
-  && deny "KILL SWITCH ENGAGED"`,
-        },
-        {
-          icon: "snowflake",
-          file: "change-freeze.sh",
-          event: "PreToolUse · Bash",
-          body: "A FREEZE file blocks every mutating command.",
-          rule: "R16",
-          back: `[[ -f .claude/FREEZE ]] && grep -qiE "$MUTATING" <<<"$cmd" \\
-  && deny "Change freeze in effect."`,
-        },
-        {
-          icon: "lock",
-          file: "protect-files.sh",
-          event: "PreToolUse · Edit|Write",
-          body: ".env, secrets/, *.tfstate, CI workflows: off-limits.",
-          rule: "R16",
-          back: `case "$path" in
-  .env|secrets/*|*.tfstate|.github/workflows/*) deny "Protected path." ;;
-esac`,
-        },
-        {
-          icon: "gauge",
-          file: "action-budget.sh",
-          event: "PreToolUse · Bash",
-          body: "More than 10 commands a minute? Stop and page a human.",
-          rule: "R16",
-          back: `n=$(recent_actions 60)
-(( n > 10 )) && deny "Action budget exceeded ($n/min)."`,
-        },
-        {
-          icon: "scroll-text",
-          file: "audit-log.sh",
-          event: "PostToolUse · Bash|Edit|Write",
-          body: "One JSON line per action, in the same sink as humans.",
-          rule: "R18",
-          back: `jq -c '{ts:now|todate, tool:.tool_name, input:.tool_input}' \\
-  >> ops/agent-actions.jsonl`,
-        },
-        {
-          icon: "bell-ring",
-          file: "notify-oncall.sh",
-          event: "Notification · permission_prompt",
-          body: "Agent waiting for approval? Post it to Slack or Teams.",
-          rule: "R20",
-          back: `curl -s -X POST "$SLACK_WEBHOOK" \\
-  -d "{\\"text\\":\\"Agent waiting: $reason\\"}"`,
-        },
-      ],
-      quote:
-        "“There is no way to enforce a code freeze in vibe coding apps.” — Jason Lemkin, Jul 2025",
-      quoteAfter: "Now there is.",
-      caveat: "Seatbelt, not sandbox: the real wall is still IAM.",
-    },
-    notes: {
-      cue: "Sweep the six cards; land on the caveat.",
-      say: "Same pattern: a kill switch, a change freeze — Replit's user said you couldn't enforce one; now you can — protected files, an action budget, an audit line, a ping to on-call. Honest caveat: a seatbelt, not a sandbox. The real wall is still IAM.",
-      targetSec: 20,
-    },
-  },
-  {
-    id: 14,
     section: "gate3",
     bg: "cream",
     layout: "gate",
@@ -726,7 +550,7 @@ esac`,
     },
   },
   {
-    id: 15,
+    id: 14,
     section: "gate3",
     bg: "paper",
     layout: "branches",
@@ -766,7 +590,7 @@ esac`,
     },
   },
   {
-    id: 16,
+    id: 15,
     section: "gate4",
     bg: "cream",
     layout: "gate",
@@ -821,7 +645,106 @@ esac`,
     },
   },
   {
+    id: 16,
+    section: "gate4",
+    bg: "paper",
+    layout: "hookDemo",
+    kicker: "DEMO · CLAUDE CODE HOOKS · RULES 13 · 14 · 15 · 18",
+    title: "The prompt asks. The hook decides.",
+    steps: 5,
+    data: {
+      terminalTitle: "claude — ~/checkout-service (hooks: .claude/settings.json)",
+      lines: [
+        { t: "> checkout-api is crash-looping in prod. Investigate and restore.", k: "prompt", step: 1 },
+        { t: "● Bash kubectl get pods -n prod", stamp: "allowed", step: 1 },
+        { t: "● Bash kubectl logs checkout-api-… --previous", stamp: "allowed", step: 1 },
+        { t: "FATAL DB_POOL_SIZE must be > 0 (got \"\")", k: "comment", step: 1 },
+        { t: "● Bash kubectl rollout history deploy/checkout", stamp: "allowed", step: 1 },
+        { t: "Root cause: rev 4812 blanked DB_POOL_SIZE. Fix: roll back to 4811.", k: "plain", step: 3 },
+        { t: "● Bash kubectl rollout undo deploy/checkout-api", stamp: "ask", step: 2 },
+        { t: "prod-guard: this changes production. A human must approve.", k: "amber", step: 2 },
+        { t: "● Bash kubectl delete namespace prod", stamp: "deny", step: 4 },
+        { t: "BLOCKED by prod-guard: irreversible, high blast radius.", k: "error", step: 4 },
+      ],
+      caption: "REAL RUN · CLAUDE CODE 2.1 · KUBECTL STUBBED · DENY LINE FROM THE KIT'S TEST HARNESS",
+      legend: [
+        { key: "allow", icon: "check", tone: "ok", title: "ALLOW", sub: "Read-only", body: "Hook stays silent. Rule 13" },
+        { key: "ask", icon: "hand", tone: "gold", title: "ASK", sub: "Changes prod", body: "A human presses it. Rule 14" },
+        { key: "deny", icon: "octagon-x", tone: "deny", title: "DENY", sub: "Catastrophic", body: "Never — even if asked. Rule 15" },
+        { key: "log", icon: "scroll-text", tone: "navy", title: "LOG", sub: "Every step", body: "agent-actions.jsonl. Rule 18" },
+      ],
+      audit: [
+        '{"ts":"03:08:31Z","tool":"Bash","decision":"ask","cmd":"kubectl rollout undo …"}',
+        '{"ts":"03:09:10Z","actor":"human:on-call","decision":"approved","incident":"INC-88"}',
+        '{"ts":"03:09:44Z","tool":"Bash","decision":"deny","cmd":"kubectl delete namespace prod"}',
+      ],
+    },
+    notes: {
+      cue: "DEMO SLIDE — no live terminal. Walk the lines, then the four boxes.",
+      say: "A real run. On-call prompt: crash-looping in prod. Read-only commands pass. It finds the root cause — a blanked config value. It tries the rollback: the hook stops it and asks a human. Delete the namespace? Denied — even if asked. Every step logged. Don't rely on the model's manners. Rely on the hook.",
+      fact: "Captured from a real headless run (Claude Code 2.1, kubectl replaced by a harmless stub). The DENY line comes from the kit's test-hooks.sh — in the live run the model declined to try it.",
+      targetSec: 25,
+    },
+  },
+  {
     id: 17,
+    section: "gate4",
+    bg: "cream",
+    layout: "twoCode",
+    kicker: "COPY THIS · TWO FILES, COMMITTED TO THE REPO",
+    title: "Wire it once. Every session inherits it.",
+    steps: 3,
+    data: {
+      left: {
+        title: ".claude/settings.json",
+        lang: "json",
+        code: `{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{
+        "type": "command",
+        "command": "\\"$CLAUDE_PROJECT_DIR\\"/.claude/hooks/prod-guard.sh"
+      }]
+    }],
+    "PostToolUse": [ { "matcher": "Bash|Edit|Write", "hooks": [ { "type": "command",
+      "command": "\\"$CLAUDE_PROJECT_DIR\\"/.claude/hooks/audit-log.sh" } ] } ]
+  }
+}`,
+        highlight: { 1: [2, 6], 2: [], 3: [] },
+      },
+      right: {
+        title: ".claude/hooks/prod-guard.sh (PreToolUse)",
+        lang: "bash",
+        code: `# runs before every Bash call the agent makes
+cmd=$(jq -r '.tool_input.command')
+
+DENY='delete (ns|namespace)|terraform destroy|DROP (TABLE|DATABASE)|curl .*-X ?DELETE'
+ASK='kubectl (delete|scale|rollout undo|apply)|terraform apply|helm (upgrade|rollback)'
+
+decide() {  # $1 = allow | ask | deny
+  jq -n --arg d "$1" --arg r "$2" '{hookSpecificOutput:
+    {hookEventName:"PreToolUse", permissionDecision:$d, permissionDecisionReason:$r}}'
+  exit 0
+}
+
+grep -qiE "$DENY" <<<"$cmd" && decide deny "Irreversible. Page a human."
+grep -qiE "$ASK"  <<<"$cmd" && decide ask  "Changes prod. A human approves."
+exit 0   # silent = normal permission flow`,
+        highlight: { 1: [], 2: [3, 4], 3: [12, 13] },
+      },
+      captions: [
+        "Condensed for the slide. Full kit: 7 hooks + 14 offline tests.",
+      ],
+    },
+    notes: {
+      cue: "Photo slide. Pause two seconds.",
+      say: "Two files. Settings says: run the guard before every Bash call. The guard answers allow, ask, or deny. Commit both; every session inherits them.",
+      targetSec: 15,
+    },
+  },
+  {
+    id: 18,
     section: "gate5",
     bg: "cream",
     layout: "gate",
@@ -877,7 +800,7 @@ esac`,
     },
   },
   {
-    id: 18,
+    id: 19,
     section: "outro",
     bg: "paper",
     layout: "timeline",
@@ -934,7 +857,7 @@ esac`,
     },
   },
   {
-    id: 19,
+    id: 20,
     section: "outro",
     bg: "paper",
     layout: "gearbox",
@@ -981,7 +904,7 @@ esac`,
     },
   },
   {
-    id: 20,
+    id: 21,
     section: "outro",
     bg: "cream",
     layout: "offerLetter",
