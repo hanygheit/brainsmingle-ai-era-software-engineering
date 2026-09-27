@@ -77,7 +77,7 @@ export function RepoTreeSlide({ slide, step, calm }: LayoutProps) {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-gold px-4 py-[6px] font-mono text-[14px] tracking-[0.14em] text-navy uppercase hover:bg-gold-deep"
                   >
-                    <Icon name="github" size={15} />
+                    <Icon name="external-link" size={15} />
                     Starter repo
                   </a>
                   <CopyButton text={d.excerpt} />
