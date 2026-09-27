@@ -66,11 +66,22 @@ export function RepoTreeSlide({ slide, step, calm }: LayoutProps) {
 
           <Reveal show={step >= 2} className="flex min-h-0">
             <div className="deck-card flex min-h-0 w-full flex-col border-t-[4px] border-t-gold p-[26px]">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-[14px]">
                 <p className="font-mono text-[16px] tracking-[0.18em] text-teal">
                   {d.excerptTitle}
                 </p>
-                <CopyButton text={d.excerpt} />
+                <div className="flex shrink-0 items-center gap-[10px]">
+                  <a
+                    href={KIT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-gold px-4 py-[6px] font-mono text-[14px] tracking-[0.14em] text-navy uppercase hover:bg-gold-deep"
+                  >
+                    <Icon name="external-link" size={15} />
+                    Starter repo
+                  </a>
+                  <CopyButton text={d.excerpt} />
+                </div>
               </div>
               <pre className="no-scrollbar mt-[18px] min-h-0 flex-1 overflow-auto font-mono text-[19px] leading-[1.55] whitespace-pre-wrap text-ink">
                 {d.excerpt.split("\n").map((line) => (
