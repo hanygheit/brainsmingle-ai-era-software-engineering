@@ -19,8 +19,7 @@ import { slides } from "@/content/slides";
 import { DeckProvider, useDeck } from "@/deck/store";
 import { useKeyboard } from "@/deck/useKeyboard";
 
-const OG_IMAGE =
-  "https://devopsdays-cairo-2026.lovable.app/__l5e/assets-v1/ccf904d5-7194-430b-874d-3bcd10626a55/og-slide-1.jpg";
+const OG_IMAGE = "https://ai-agent-on-call.lovable.app/og-image.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
