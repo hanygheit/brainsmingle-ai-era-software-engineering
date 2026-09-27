@@ -458,35 +458,48 @@ export function GatesSlide({ slide, step, calm, onGoto }: LayoutProps) {
       name: string;
       rules: string;
       slide: number;
+      items: { n: string; title: string }[];
     }[];
     line: string;
   };
   return (
     <SlideFrame slide={slide} calm={calm}>
-      <div className="flex h-full flex-col gap-[34px]">
+      <div className="flex h-full flex-col gap-[26px]">
         <div className="grid flex-1 grid-cols-5 gap-[20px]">
           {d.gates.map((g, i) => (
             <motion.button
               key={g.numeral}
               type="button"
               onClick={() => onGoto?.(g.slide - 1)}
-              className="deck-card flex h-full flex-col p-[26px] text-left transition-shadow hover:shadow-[var(--shadow-card-hover)]"
+              className="deck-card flex h-full flex-col p-[24px] text-left transition-shadow hover:shadow-[var(--shadow-card-hover)]"
               initial={calm ? false : { opacity: 0, rotateY: -35 }}
               animate={{ opacity: step >= 1 ? 1 : 0, rotateY: step >= 1 ? 0 : -35 }}
               transition={{ delay: step >= 1 ? i * 0.12 : 0, duration: 0.4 }}
               aria-label={`Jump to ${g.name}`}
             >
               <div className="flex items-center justify-between">
-                <IconDisc name={g.icon} size={62} />
-                <span className="font-serif text-[46px] font-bold text-taupe-light">
+                <IconDisc name={g.icon} size={56} />
+                <span className="font-serif text-[42px] font-bold text-taupe-light">
                   {g.numeral}
                 </span>
               </div>
-              <p className="mt-[22px] flex-1 font-sans text-[25px] leading-[1.25] font-bold text-ink">
+              <p className="mt-[16px] font-sans text-[23px] leading-[1.2] font-bold text-ink">
                 {g.question}
               </p>
-              <p className="font-serif text-[21px] italic text-teal">{g.name}</p>
-              <p className="mt-[8px] font-mono text-[14px] tracking-[0.16em] text-taupe">
+              <p className="mt-[6px] font-serif text-[19px] italic text-teal">{g.name}</p>
+              <ul className="mt-[14px] space-y-[8px] border-t border-line pt-[14px]">
+                {g.items.map((it) => (
+                  <li key={it.n} className="flex gap-[9px]">
+                    <span className="pt-[1px] font-mono text-[13px] font-bold tracking-[0.06em] text-gold">
+                      {it.n}
+                    </span>
+                    <span className="font-sans text-[16px] leading-[1.25] text-gray-ink">
+                      {it.title}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-auto pt-[12px] font-mono text-[13px] tracking-[0.16em] text-taupe">
                 {g.rules}
               </p>
             </motion.button>
