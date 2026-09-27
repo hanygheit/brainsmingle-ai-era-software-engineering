@@ -483,17 +483,17 @@ export function GatesSlide({ slide, step, calm, onGoto }: LayoutProps) {
                   {g.numeral}
                 </span>
               </div>
-              <p className="mt-[16px] font-sans text-[23px] leading-[1.2] font-bold text-ink">
+              <p className="mt-[18px] font-sans text-[24px] leading-[1.2] font-bold text-ink">
                 {g.question}
               </p>
-              <p className="mt-[6px] font-serif text-[19px] italic text-teal">{g.name}</p>
-              <ul className="mt-[14px] space-y-[8px] border-t border-line pt-[14px]">
+              <p className="mt-[7px] font-serif text-[20px] italic text-teal">{g.name}</p>
+              <ul className="mt-[16px] space-y-[11px] border-t border-line pt-[16px]">
                 {g.items.map((it) => (
-                  <li key={it.n} className="flex gap-[9px]">
-                    <span className="pt-[1px] font-mono text-[13px] font-bold tracking-[0.06em] text-gold">
+                  <li key={it.n} className="flex gap-[10px]">
+                    <span className="pt-[2px] font-mono text-[14px] font-bold tracking-[0.06em] text-gold">
                       {it.n}
                     </span>
-                    <span className="font-sans text-[16px] leading-[1.25] text-gray-ink">
+                    <span className="font-sans text-[18px] leading-[1.3] text-gray-ink">
                       {it.title}
                     </span>
                   </li>
