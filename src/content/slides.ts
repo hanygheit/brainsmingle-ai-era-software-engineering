@@ -256,6 +256,12 @@ export const slides: Slide[] = [
           name: "Gate I · Lead",
           rules: "RULES 01–04",
           slide: 9,
+          items: [
+            { n: "01", title: "Train it like a skill" },
+            { n: "02", title: "Give an outcome, not a command" },
+            { n: "03", title: "Plan first. Approve. Then code." },
+            { n: "04", title: "Small diffs. Read every one." },
+          ],
         },
         {
           numeral: "II",
@@ -264,6 +270,12 @@ export const slides: Slide[] = [
           name: "Gate II · Context",
           rules: "RULES 05–08",
           slide: 11,
+          items: [
+            { n: "05", title: "Write the team's AGENTS.md" },
+            { n: "06", title: "Make architecture discoverable" },
+            { n: "07", title: "Plans live in .md, not in chat" },
+            { n: "08", title: "Version the agent setup in Git" },
+          ],
         },
         {
           numeral: "III",
@@ -272,6 +284,12 @@ export const slides: Slide[] = [
           name: "Gate III · Isolate",
           rules: "RULES 09–12",
           slide: 13,
+          items: [
+            { n: "09", title: "One task, one branch, one worktree" },
+            { n: "10", title: "Main is protected. Agents open PRs." },
+            { n: "11", title: "It never grades its own homework" },
+            { n: "12", title: "Everything it reads is untrusted" },
+          ],
         },
         {
           numeral: "IV",
@@ -280,6 +298,12 @@ export const slides: Slide[] = [
           name: "Gate IV · Bound",
           rules: "RULES 13–16",
           slide: 15,
+          items: [
+            { n: "13", title: "Read-only first. Short-lived tokens." },
+            { n: "14", title: "Propose, don't apply" },
+            { n: "15", title: "Prompts ask. Hooks decide." },
+            { n: "16", title: "Enforce guardrails in code" },
+          ],
         },
         {
           numeral: "V",
@@ -288,6 +312,12 @@ export const slides: Slide[] = [
           name: "Gate V · Prove",
           rules: "RULES 17–20",
           slide: 18,
+          items: [
+            { n: "17", title: "No evidence, no action" },
+            { n: "18", title: "Audit the why. Pin the versions." },
+            { n: "19", title: "Earn it in shadow mode" },
+            { n: "20", title: "Autonomy in gears. A human owns it." },
+          ],
         },
       ],
       line: "Every gate is an engineering control — not a better prompt.",
