@@ -74,7 +74,7 @@ function PrintRoute() {
           .print-page.stage { background: #0F1B33; }
           .print-page.stage .glow { position:absolute; inset:0;
             background: radial-gradient(ellipse 70% 65% at 32% 30%, #1A2C52 0%, transparent 70%); }
-          .print-bp { width: 1920px; zoom: 1.5; }
+          .print-bp { width: 1280px; zoom: 1.5; }
           .print-bp .bp-section { break-before: page; border-top: 0; }
           .print-bp .bp-avoid { break-inside: avoid; }
         `}</style>
