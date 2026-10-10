@@ -258,7 +258,7 @@ export function S17({ choice }: ScreenProps) {
                 <div key={label as string}>
                   <div className="mb-[6px] flex justify-between text-[22px]"><span className="text-text">{label as string}</span><span className="font-mono text-muted">{v}</span></div>
                   <div className="h-[14px] rounded-full bg-line">
-                    <motion.div key={dropped ? `d-${sel}` : "s"} className="h-full rounded-full" initial={false} animate={{ width: `${v * 20}%`, backgroundColor: dropped ? ["var(--validate-fill)", "var(--validate)", "var(--own)"] : "var(--own)" }} transition={{ duration: 0.6, ease: EASE }} />
+                    <motion.div key={dropped ? `d-${sel}` : "s"} className="h-full rounded-full" initial={false} animate={{ width: `${v * 20}%`, backgroundColor: dropped ? ["var(--validate-fill)", "var(--validate)", "var(--own-fill)"] : "var(--own-fill)" }} transition={{ duration: 0.6, ease: EASE }} />
                   </div>
                 </div>
               );

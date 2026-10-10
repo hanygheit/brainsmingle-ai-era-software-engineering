@@ -312,7 +312,7 @@ export function AudienceCards({
                 <div className="mt-[20px]">
                   <div className="h-[6px] w-full rounded-full bg-line">
                     <motion.div
-                      className="h-full rounded-full bg-[var(--accent)]"
+                      className="h-full rounded-full bg-[var(--accent-fill,var(--accent))]"
                       animate={{ width: `${pct}%` }}
                       transition={{ duration: 0.5, ease: EASE }}
                     />
