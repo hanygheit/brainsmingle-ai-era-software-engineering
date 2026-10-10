@@ -208,15 +208,15 @@ export function S21(_: ScreenProps) {
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <p className={`${H} max-w-[1400px] text-[64px]`}>{rv.s21.headline}</p>
-      <div className="absolute inset-x-0 top-0" style={{ transform: "translateY(-120px)" }}>
+      <div className="absolute inset-x-0 top-[-120px] bottom-0">
         <AudienceCards labels={op.s2.cards} tally={counts} active={lead} />
       </div>
       <div className="absolute right-[96px] bottom-[60px] left-[96px] flex items-end justify-between">
         <FrameworkWords />
         <div className="flex gap-[28px]">
-          <QRTile url={LINKEDIN_URL} label={rv.s21.qr[0]} image={qrLinkedin.url} size={200} />
-          <QRTile url={BRAINSMINGLE_URL} label={rv.s21.qr[1]} image={qrBrains.url} size={200} />
-          <QRTile url={PRESENTATION_URL} label={rv.s21.qr[2]} image={qrPres.url} size={200} />
+          <QRTile url={LINKEDIN_URL} label={rv.s21.qr[0]!} image={qrLinkedin.url} size={200} />
+          <QRTile url={BRAINSMINGLE_URL} label={rv.s21.qr[1]!} image={qrBrains.url} size={200} />
+          <QRTile url={PRESENTATION_URL} label={rv.s21.qr[2]!} image={qrPres.url} size={200} />
         </div>
       </div>
     </div>
@@ -292,7 +292,7 @@ export function S23(_: ScreenProps) {
           ))}
         </div>
       </Reveal>
-      <Reveal on delay={1.3} className="absolute top-[600px] right-[96px] left-[96px]">
+      <Reveal on delay={1.3} className="absolute top-[650px] right-[96px] left-[96px]">
         <div className="flex justify-between border-y border-line py-[16px] text-[22px]">
           {s.band.map(([k, w, col]) => (
             <span key={k}><span className="font-display font-bold" style={{ color: COL[col!] }}>{k}</span> <span className="text-muted">{w}</span></span>
@@ -304,9 +304,9 @@ export function S23(_: ScreenProps) {
         <DownloadPdfButton className="mt-[24px] rounded-full border-2 border-own px-[28px] py-[12px] text-[22px] text-own" />
       </Reveal>
       <Reveal on delay={1.8} className="absolute right-[96px] bottom-[60px] flex gap-[40px]">
-        <QRTile url={LINKEDIN_URL} label={s.qr[0]} image={qrLinkedin.url} size={260} />
-        <QRTile url={BRAINSMINGLE_URL} label={s.qr[1]} image={qrBrains.url} size={260} />
-        <QRTile url={PRESENTATION_URL} label={s.qr[2]} image={qrPres.url} size={260} />
+        <QRTile url={LINKEDIN_URL} label={s.qr[0]!} image={qrLinkedin.url} size={260} />
+        <QRTile url={BRAINSMINGLE_URL} label={s.qr[1]!} image={qrBrains.url} size={260} />
+        <QRTile url={PRESENTATION_URL} label={s.qr[2]!} image={qrPres.url} size={260} />
       </Reveal>
     </div>
   );
