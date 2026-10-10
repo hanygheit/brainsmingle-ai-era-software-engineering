@@ -141,7 +141,7 @@ export function S4({ step }: ScreenProps) {
   const idx = Math.min(step, 2);
   const pts = s.points;
   const W = 760, Hh = 300;
-  const xy = (i: number) => [40 + (i * (W - 80)) / 2, Hh - 30 - ((pts[i]?.value ?? 0) / 100) * (Hh - 60)] as const;
+  const xy = (i: number) => [80 + (i * (W - 160)) / 2, Hh - 30 - ((pts[i]?.value ?? 0) / 100) * (Hh - 60)] as const;
   let d = "";
   for (let i = 0; i <= idx; i++) {
     const [x, y] = xy(i);
