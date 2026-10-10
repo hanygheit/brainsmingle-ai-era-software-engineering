@@ -94,7 +94,7 @@ export function S14({ step }: ScreenProps) {
   const s = c.s14;
   const grown = step >= 1;
   const outer = grown ? 330 : 110;
-  const inner = grown ? 100 : 85;
+  const inner = grown ? 115 : 100;
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <div className="absolute top-[96px] right-[96px] font-mono text-[28px] text-muted">{grown ? "2026" : "2022"}</div>
