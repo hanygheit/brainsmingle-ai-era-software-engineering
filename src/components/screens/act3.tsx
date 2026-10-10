@@ -204,7 +204,7 @@ export function S16({ step }: ScreenProps) {
           </div>
         </div>
         <div className="w-[720px]">
-          <div className="overflow-hidden rounded-[16px] border border-line bg-surface">
+          <div className="theme-stage overflow-hidden rounded-[16px] border border-line bg-surface">
             <div className="border-b border-line px-[24px] py-[12px] t-tag text-muted">{s.file}</div>
             <div className="space-y-[6px] p-[24px] font-mono text-[20px] leading-[1.5]">
               {s.code.map((l, i) => (

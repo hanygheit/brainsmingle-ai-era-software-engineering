@@ -185,7 +185,7 @@ export function Terminal({
   const reduce = useReducedMotion();
   const shown = lines.slice(0, visible);
   return (
-    <div className="w-[1100px] overflow-hidden rounded-[16px] border border-line bg-surface">
+    <div className="theme-stage w-[1100px] overflow-hidden rounded-[16px] border border-line bg-surface">
       <div className="flex items-center gap-[10px] border-b border-line px-[24px] py-[14px]">
         <span className="h-[12px] w-[12px] rounded-full bg-line" />
         <span className="h-[12px] w-[12px] rounded-full bg-line" />
