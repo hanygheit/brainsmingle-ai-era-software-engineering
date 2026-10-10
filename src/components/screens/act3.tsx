@@ -39,9 +39,9 @@ export function S12({ step }: ScreenProps) {
       <SrcTag items={[s.statSrc, step >= 1 && s.stanfordSrc, step >= 2 && "The Register, Aug 2025"]} />
       <p className={`${H} text-[72px]`}>{s.headline}</p>
       <div className="mt-[48px] flex gap-[72px]">
-        <div className="grid grid-cols-10 gap-[8px]">
+        <div className="grid grid-cols-10 gap-[6px] self-start">
           {Array.from({ length: 100 }, (_, i) => (
-            <div key={i} className="relative h-[40px] w-[40px] overflow-hidden rounded-[6px] bg-line">
+            <div key={i} className="relative h-[28px] w-[28px] overflow-hidden rounded-[5px] bg-line">
               {i < 5 ? <div className="absolute inset-y-0 left-0 bg-own" style={{ width: i === 4 ? "50%" : "100%" }} /> : null}
             </div>
           ))}
@@ -93,26 +93,26 @@ export function S13({ step }: ScreenProps) {
 export function S14({ step }: ScreenProps) {
   const s = c.s14;
   const grown = step >= 1;
-  const outer = grown ? 420 : 140;
-  const inner = grown ? 120 : 100;
+  const outer = grown ? 330 : 110;
+  const inner = grown ? 100 : 85;
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <div className="absolute top-[96px] right-[96px] font-mono text-[28px] text-muted">{grown ? "2026" : "2022"}</div>
-      <div className="absolute top-[560px] left-[700px]">
+      <div className="absolute top-[440px] left-[640px]">
         <motion.div className="absolute rounded-full border-[3px] border-direct" initial={false} animate={{ width: outer * 2, height: outer * 2, x: -outer, y: -outer }} transition={{ duration: 0.9, ease: EASE }} style={{ background: "color-mix(in oklab, var(--direct) 6%, transparent)" }} />
         <motion.div className="absolute rounded-full border-[3px] border-own" initial={false} animate={{ width: inner * 2, height: inner * 2, x: -inner, y: -inner }} transition={{ duration: 0.9, ease: EASE }} style={{ background: "color-mix(in oklab, var(--own) 18%, var(--bg))" }} />
-        <p className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-display text-[26px] font-bold text-own">{s.judgment}<span className="block text-[16px] font-normal text-muted">{s.judgmentSub}</span></p>
-        <motion.p className="absolute -translate-x-1/2 text-center font-display text-[26px] font-bold text-direct" initial={false} animate={{ y: -outer - 70 }} transition={{ duration: 0.9, ease: EASE }}>
+        <p className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-own">{s.judgment}<span className="block text-[16px] font-normal text-muted">{s.judgmentSub}</span></p>
+        <motion.p className="absolute -translate-x-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-direct" initial={false} animate={{ y: -outer - 70 }} transition={{ duration: 0.9, ease: EASE }}>
           {s.reach}<span className="block text-[16px] font-normal text-muted">{s.reachSub}</span>
         </motion.p>
         <Reveal on={grown} delay={0.6} className="absolute -translate-x-1/2" >
-          <p className="-translate-y-[270px] font-mono text-[20px] text-muted">{s.zone}</p>
+          <p className="-translate-y-[220px] whitespace-nowrap font-mono text-[20px] text-muted">{s.zone}</p>
         </Reveal>
         {s.examples.map((ex, i) => {
-          const a = (-60 + i * 30) * (Math.PI / 180);
+          const a = (-50 + i * 25) * (Math.PI / 180);
           return (
             <Reveal key={ex} on={grown} delay={0.3 + i * 0.1} className="absolute">
-              <span className="block whitespace-nowrap rounded-full border border-direct bg-surface px-[16px] py-[6px] text-[20px] text-text" style={{ transform: `translate(${Math.cos(a) * 440}px, ${Math.sin(a) * 440 - 18}px)` }}>{ex}</span>
+              <span className="block whitespace-nowrap rounded-full border border-direct bg-surface px-[16px] py-[6px] text-[20px] text-text" style={{ transform: `translate(${Math.cos(a) * 350}px, ${Math.sin(a) * 350 - 18}px)` }}>{ex}</span>
             </Reveal>
           );
         })}
