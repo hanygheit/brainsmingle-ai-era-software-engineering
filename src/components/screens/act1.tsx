@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ArcMotif, EASE, Eyebrow, StatNumber } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import c from "@/content/act1.json";
-import { Chip, Reveal, Tag } from "./shared";
+import { Chip, Reveal, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
 
@@ -40,6 +40,7 @@ export function S3({ step }: ScreenProps) {
             </p>
           </div>
         </Reveal>
+        <SrcTag items={["Fortune, Nov 2025", "Stack Overflow 2026", "GitHub, Apr 2026"]} />
       </div>
     );
   }
@@ -87,6 +88,7 @@ export function S3({ step }: ScreenProps) {
             {s.popover}
           </div>
         ) : null}
+        <SrcTag items={["Fortune, Nov 2025", "Stack Overflow 2026", step >= 6 && "GitHub, Apr 2026"]} />
       </div>
     );
   }
@@ -131,6 +133,7 @@ export function S3({ step }: ScreenProps) {
           </Reveal>
         </div>
       </div>
+      <SrcTag items={[step >= 2 && "Fortune, Nov 2025", step >= 4 && "Stack Overflow 2026"]} />
     </div>
   );
 }
@@ -149,7 +152,8 @@ export function S4({ step }: ScreenProps) {
     else d += ` H${x} V${y}`;
   }
   return (
-    <div className="flex h-full w-full flex-col p-[96px]">
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <SrcTag items={["Google Q3 2024 earnings, Oct 2024", "Google Cloud Next '26, Apr 2026", step >= 2 && "Stack Overflow, Oct 2026", step >= 2 && "JetBrains, Aug 2026"]} />
       <div className="flex items-end gap-[80px]">
         <div>
           <StatNumber value={pts[idx]?.value ?? 0} suffix="%" color="var(--own)" label={`${s.statLabel} · ${pts[idx]?.label ?? ""}`} />
@@ -196,7 +200,8 @@ export function S5({ step }: ScreenProps) {
   const reduce = useReducedMotion();
   const ci = 3;
   return (
-    <div className="flex h-full w-full flex-col p-[96px]">
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <SrcTag items={[step >= 1 && "Anthropic, 14 Sep 2026", "Axios, Jan 2026"]} />
       <div className="relative">
         <div className="flex gap-[16px]">
           {s.stages.map((st, i) => {
@@ -247,7 +252,8 @@ export function S6({ step }: ScreenProps) {
   const s = c.s6;
   const max = 30;
   return (
-    <div className="flex h-full w-full flex-col p-[96px]">
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <SrcTag items={["METR, Jul 2025", step >= 1 && "Cui et al., Management Science", step >= 2 && "Faros AI, Apr 2026", step >= 2 && "DORA"]} />
       <Eyebrow>{s.label}</Eyebrow>
       <div className="mt-[32px] grid grid-cols-2 gap-[48px]">
         <div className="rounded-[20px] border border-line bg-surface p-[40px]">
