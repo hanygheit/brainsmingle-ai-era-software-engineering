@@ -295,3 +295,13 @@
   color: var(--text);
   box-shadow: 0 18px 40px -18px rgba(10, 11, 15, 0.45);
 }
+
+/* Deck chrome over a paper slide: ink on paper, act-coloured progress and label. */
+.theme-chrome-paper {
+  --surface: #ffffff;
+  --line: #e3e1da;
+  --text: #14161c;
+  --muted: #5b616e;
+  --accent: var(--act);
+}
+.theme-chrome-paper .act-label { color: color-mix(in oklab, var(--act) 70%, #14161c); }

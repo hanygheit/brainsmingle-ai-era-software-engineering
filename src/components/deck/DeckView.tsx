@@ -1,6 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ACTS } from "@/config";
 import { DeckProvider, useDeck } from "@/deck/store";
 import { useKeyboard } from "@/deck/useKeyboard";
 import { ACT_CARD_MS, ACT_COLORS, ACT_STARTS, isPaper } from "@/deck/theme";
@@ -129,6 +128,3 @@ function DeckInner() {
     </main>
   );
 }
-
-// keep ACTS referenced for type narrowing of act names
-void ACTS;

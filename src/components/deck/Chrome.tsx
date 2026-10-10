@@ -47,7 +47,7 @@ export function ProgressBar() {
 export function ActLabel() {
   const { screen } = useDeck();
   return (
-    <p className="pointer-events-none absolute bottom-[12px] left-[16px] z-30 font-mono text-[11px] tracking-[0.14em] text-muted uppercase">
+    <p className="act-label pointer-events-none absolute bottom-[12px] left-[16px] z-30 font-mono text-[11px] tracking-[0.14em] text-muted uppercase">
       {screen.act}
     </p>
   );
