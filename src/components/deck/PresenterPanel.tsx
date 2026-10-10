@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ACT_STARTS } from "@/deck/theme";
 import { useServerFn } from "@tanstack/react-start";
 import { ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
@@ -34,8 +35,11 @@ function useTimers(index: number) {
   const prevIndex = useRef(index);
   const idx = useRef(index);
   idx.current = index;
+  const hold = useRef(0);
   useEffect(() => {
     if (prevIndex.current !== index) {
+      // forward into an act start: the 1.2 s act card plays first; the slide countdown starts after it
+      hold.current = index === prevIndex.current + 1 && screens[index] && ACT_STARTS[screens[index]!.id] ? 1 : 0;
       if (prevIndex.current === 0 && index > 0) setRunning(true);
       prevIndex.current = index;
       setOnScreen(0);
@@ -47,7 +51,8 @@ function useTimers(index: number) {
       const i = idx.current;
       if (i >= 1 && i <= 21) setTotal((t) => t + 1);
       if (i >= 22) setClose((t) => t + 1);
-      if (i >= 1) setOnScreen((t) => t + 1);
+      if (hold.current > 0) hold.current -= 1;
+      else if (i >= 1) setOnScreen((t) => t + 1);
     }, 1000);
     return () => clearInterval(id);
   }, [running]);
