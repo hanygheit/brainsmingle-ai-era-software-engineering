@@ -15,8 +15,8 @@ function BreathingArcs({ radius = 520, opacity = 0.6 }: { radius?: number; opaci
     <motion.div
       className="pointer-events-none absolute inset-0 flex items-center justify-center"
       style={{ opacity }}
-      animate={reduce ? undefined : { scale: [1, 1.04, 1] }}
-      transition={reduce ? undefined : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      animate={reduce ? { scale: 1 } : { scale: [1, 1.04, 1] }}
+      transition={reduce ? { duration: 0 } : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
     >
       <ArcMotif count={6} radius={radius} />
     </motion.div>

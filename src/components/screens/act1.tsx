@@ -141,7 +141,7 @@ export function S4({ step }: ScreenProps) {
   const idx = Math.min(step, 2);
   const pts = s.points;
   const W = 760, Hh = 300;
-  const xy = (i: number) => [40 + (i * (W - 80)) / 2, Hh - 30 - (pts[i].value / 100) * (Hh - 60)] as const;
+  const xy = (i: number) => [40 + (i * (W - 80)) / 2, Hh - 30 - ((pts[i]?.value ?? 0) / 100) * (Hh - 60)] as const;
   let d = "";
   for (let i = 0; i <= idx; i++) {
     const [x, y] = xy(i);
@@ -152,7 +152,7 @@ export function S4({ step }: ScreenProps) {
     <div className="flex h-full w-full flex-col p-[96px]">
       <div className="flex items-end gap-[80px]">
         <div>
-          <StatNumber value={pts[idx].value} suffix="%" color="var(--own)" label={`${s.statLabel} · ${pts[idx].label}`} />
+          <StatNumber value={pts[idx]?.value ?? 0} suffix="%" color="var(--own)" label={`${s.statLabel} · ${pts[idx]?.label ?? ""}`} />
         </div>
         <svg width={W} height={Hh} aria-hidden>
           <path d={d} fill="none" stroke="var(--own)" strokeWidth={4} />
