@@ -59,9 +59,14 @@ const BUILT: Record<string, Partial<Screen>> = {
   S1: { title: "The code is ready", durationSec: 60, steps: 3, notes: "Cold open. Let the terminal run. Pause on **Are we?**", sourceIds: [] },
   S2: { title: "Ready for what?", durationSec: 120, steps: 2, notes: "Ask: which is your biggest challenge? 1, 2 or 3 in chat or via the QR. Then title + journey.", sourceIds: [] },
   S3: { title: "Everyone can build software now", durationSec: 150, steps: 8, notes: "Two lanes → delegation ladder → then/now prompts. Click AI-native delivery for the GitHub example.", sourceIds: ["fortune-lovable-arr", "osika-quote", "so-2026-agents", "github-agents-apr-2026"] },
-  S4: { title: "AI is already inside the workflow", durationSec: 90, steps: 3, notes: "25 → 50 → 75. Stress *approved by engineers*.", sourceIds: ["google-pichai-next26", "so-oct-2026-daily", "jetbrains-aug-2026"] },
+  S4: { title: "AI is already inside the workflow", durationSec: 90, steps: 3, notes: "25 → 50 → 75. Stress *approved by engineers*.", sourceIds: ["google-q3-2024", "google-pichai-next26", "so-oct-2026-daily", "jetbrains-aug-2026"] },
   S5: { act: "Act 1 · The work has changed", title: "When writing code is no longer the constraint", durationSec: 90, steps: 3, notes: "One organisation's setting. Never say 100%.", sourceIds: ["anthropic-ci-sep-2026", "axios-cowork-jan-2026"] },
-  S6: { act: "Act 1 · The work has changed", title: "More code is not more engineering value", durationSec: 120, steps: 3, notes: "Separate studies, separate scales — never compare on one axis.", sourceIds: ["metr-jul-2025", "cui-mgmt-sci", "faros-apr-2026", "dora-ai"] },
+  S6: { act: "Act 1 · The work has changed", title: "More code is not more engineering value", durationSec: 120, steps: 3, notes: "Separate studies, separate scales — never compare on one axis.", sourceIds: ["metr-jul-2025", "cui-mgmt-sci", "metr-update-feb-2026", "faros-apr-2026", "dora-ai", "dora-2025-report"] },
+  S7: { act: "Act 1 · The work has changed", title: "Two graduates. Same perfect project.", durationSec: 120, steps: 4, notes: "Run the s7-interview poll (keys 1/2/3 fallback). Show the winning question's answers, then line 8.", sourceIds: ["veracode-jul-2025", "github-review-apr-2026"] },
+  S8: { act: "Act 2 · Students and educators", title: "AI-native is not fundamentals-free", durationSec: 120, steps: 5, notes: "KEEP → SHIFT → ADD → PROVE, then Dohmke.", sourceIds: ["dohmke-aug-2025"] },
+  S9: { act: "Act 2 · Students and educators", title: "Concepts outlive tools", durationSec: 60, steps: 2, notes: "Let the tool names cycle; the concepts stay.", sourceIds: [] },
+  S10: { act: "Act 2 · Students and educators", title: "Learn with AI — and without it", durationSec: 120, steps: 3, notes: "67% vs 50%. Small pattern groups — directional.", sourceIds: ["anthropic-skills-jan-2026", "dora-mar-2026", "gregg-stanford"] },
+  S11: { act: "Act 2 · Students and educators", title: "If AI can build it, what are we assessing?", durationSec: 150, steps: 5, notes: "Step 1 flips to the rubric; T toggles. Click rows for detail.", sourceIds: ["anthropic-takehome-jan-2026"] },
 };
 for (const s of screens) Object.assign(s, BUILT[s.id] ?? {});
 
