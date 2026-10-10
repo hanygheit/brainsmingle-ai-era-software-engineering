@@ -1,97 +1,66 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { PDF_FILENAME } from "@/config";
 
-const Input = z.object({
-  variant: z.enum(["slides", "notes"]).default("slides"),
-  origin: z.string().url(),
-  pin: z.string().max(64).optional(),
-});
+const BUCKET = "exports";
 
-const lastRenderByIp = new Map<string, number>();
+function countPdfPages(bytes: Uint8Array) {
+  const text = new TextDecoder("latin1").decode(bytes);
+  return (text.match(/\/Type\s*\/Page(?!s)/g) ?? []).length;
+}
 
-/** Renders /print to a 1920x1080 PDF via hosted headless Chrome, cached in storage. */
+/** Serves the uploaded deck PDF (PDF_FILENAME) from backend storage. No rendering happens here. */
 export const exportPdf = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => Input.parse(data))
-  .handler(async ({ data }) => {
+  .inputValidator((d: unknown) => z.object({}).passthrough().parse(d ?? {}))
+  .handler(async () => {
     try {
-      const { signPrintToken, checkPin } = await import("./print-token.server");
-      const { renderPdf, countPdfPages } = await import("./pdf-renderer.server");
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-      const { getRequestHeader } = await import("@tanstack/react-start/server");
-
-      if (data.variant === "notes" && !checkPin(data.pin)) {
-        return { ok: false as const, error: "The presenter PIN is required for speaker notes." };
-      }
-
-      const path = `deck-${__DECK_VERSION__}-${data.variant}.pdf`;
-      const bucket = supabaseAdmin.storage.from("exports");
-
-      const { data: existing } = await bucket.list("", { search: path, limit: 1 });
-      const hit = existing?.find((f) => f.name === path);
-      if (hit) {
-        const { data: signed, error } = await bucket.createSignedUrl(path, 600);
-        if (error) throw error;
-        const { TOTAL_SLIDES } = await import("@/content/slides");
-        const pages = TOTAL_SLIDES * (data.variant === "notes" ? 2 : 1);
-        return { ok: true as const, url: signed.signedUrl, pages, cached: true };
-      }
-
-      if (!process.env["APP_PDF_RENDERER_URL"] && !process.env["BROWSERLESS_TOKEN"]) {
-        return {
-          ok: false as const,
-          error: "The PDF for the latest slides has not been generated yet.",
-        };
-      }
-
-      const base = (process.env["PUBLIC_APP_URL"] ?? data.origin).replace(/\/$/, "");
-      const host = new URL(base).hostname;
-      if (host === "localhost" || host === "127.0.0.1") {
-        return {
-          ok: false as const,
-          error: "PDF export only works on the online preview or published site.",
-        };
-      }
-
-      const ip =
-        getRequestHeader("cf-connecting-ip") ??
-        getRequestHeader("x-forwarded-for")?.split(",")[0]?.trim() ??
-        "unknown";
-      const now = Date.now();
-      if (now - (lastRenderByIp.get(ip) ?? 0) < 30_000) {
-        return { ok: false as const, error: "A render just ran. Try again in 30 seconds." };
-      }
-      lastRenderByIp.set(ip, now);
-
-      const token = await signPrintToken(data.variant);
-      const url = `${base}/print?variant=${data.variant}&token=${encodeURIComponent(token)}`;
-      let pdf: Uint8Array;
-      try {
-        pdf = await renderPdf(url, {
-          width: 1920,
-          height: 1080,
-          readySelector: 'body[data-print-ready="true"]',
-          timeoutMs: 30_000,
-        });
-      } catch (e) {
-        lastRenderByIp.delete(ip);
-        throw e;
-      }
-      const pages = countPdfPages(pdf);
-
-      const { error: upErr } = await bucket.upload(path, pdf, {
-        contentType: "application/pdf",
-        upsert: true,
-        metadata: { pages: String(pages) },
-      });
-      if (upErr) throw upErr;
-      const { data: signed, error } = await bucket.createSignedUrl(path, 600);
+      const bucket = supabaseAdmin.storage.from(BUCKET);
+      const { data: list } = await bucket.list("", { search: PDF_FILENAME, limit: 5 });
+      const hit = list?.find((f) => f.name === PDF_FILENAME);
+      if (!hit) return { ok: false as const, missing: true as const, error: "PDF available after the talk" };
+      const { data: signed, error } = await bucket.createSignedUrl(PDF_FILENAME, 600, { download: PDF_FILENAME });
       if (error) throw error;
-      return { ok: true as const, url: signed.signedUrl, pages, cached: false };
+      return { ok: true as const, url: signed.signedUrl };
     } catch (e) {
       console.error("exportPdf failed", e);
-      return {
-        ok: false as const,
-        error: e instanceof Error ? e.message : "Could not render the PDF.",
-      };
+      return { ok: false as const, missing: false as const, error: "Could not load the PDF. Try again." };
     }
+  });
+
+/** Upload date and page count of the stored PDF, for the presenter window. */
+export const pdfInfo = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data: list } = await supabaseAdmin.storage.from(BUCKET).list("", { search: PDF_FILENAME, limit: 5 });
+  const hit = list?.find((f) => f.name === PDF_FILENAME);
+  if (!hit) return { stored: false as const };
+  const meta = (hit.metadata ?? {}) as Record<string, unknown>;
+  const pages = Number((hit as { user_metadata?: Record<string, unknown> }).user_metadata?.["pages"] ?? meta["pages"] ?? 0);
+  return { stored: true as const, uploadedAt: hit.updated_at ?? hit.created_at ?? null, pages, size: Number(meta["size"] ?? 0) };
+});
+
+/** PIN-protected upload that replaces the stored PDF. */
+export const uploadPdf = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z.object({ pin: z.string().max(64), base64: z.string().min(10).max(40_000_000) }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    const { checkPin } = await import("./print-token.server");
+    if (!process.env["PRESENTER_PIN"]) return { ok: false as const, error: "Add the PRESENTER_PIN secret first." };
+    if (!checkPin(data.pin)) return { ok: false as const, error: "Wrong presenter PIN." };
+    const bin = atob(data.base64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    if (new TextDecoder("latin1").decode(bytes.slice(0, 5)) !== "%PDF-") {
+      return { ok: false as const, error: "That file is not a PDF." };
+    }
+    const pages = countPdfPages(bytes);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.storage.from(BUCKET).upload(PDF_FILENAME, bytes, {
+      contentType: "application/pdf",
+      upsert: true,
+      metadata: { pages: String(pages) },
+    });
+    if (error) return { ok: false as const, error: error.message };
+    return { ok: true as const, pages, uploadedAt: new Date().toISOString() };
   });

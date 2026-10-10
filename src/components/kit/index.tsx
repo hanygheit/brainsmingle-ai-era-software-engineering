@@ -453,20 +453,19 @@ export function useDownloadPdf() {
     if (busy) return;
     setBusy(true);
     try {
-      const res = await run({ data: { variant: "slides", origin: window.location.origin } });
-      if (!res.ok) throw new Error(res.error);
-      const file = await fetch(res.url);
-      if (!file.ok) throw new Error("Could not fetch the PDF.");
-      const href = URL.createObjectURL(await file.blob());
+      const res = await run({ data: {} });
+      if (!res.ok) {
+        if (res.missing) toast(res.error);
+        else toast.error(res.error, { action: { label: "Retry", onClick: () => void download() } });
+        return;
+      }
       const a = document.createElement("a");
-      a.href = href;
+      a.href = res.url;
       a.download = PDF_FILENAME;
+      a.rel = "noopener";
       a.click();
-      setTimeout(() => URL.revokeObjectURL(href), 2000);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not download the PDF.", {
-        action: { label: "Retry", onClick: () => void download() },
-      });
+    } catch {
+      toast.error("Could not download the PDF.", { action: { label: "Retry", onClick: () => void download() } });
     } finally {
       setBusy(false);
     }
