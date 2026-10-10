@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useRef, useState } from "react";
 import { ArcMotif, EASE, Eyebrow, QuoteCard } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
@@ -227,6 +228,7 @@ export function S16({ step }: ScreenProps) {
 
 /* ---------- S17 ---------- */
 export function S17({ choice }: ScreenProps) {
+  const print = usePrintMode();
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const [sel, setSel] = useState(idx);
   useEffect(() => setSel(idx), [idx]);
@@ -250,6 +252,21 @@ export function S17({ choice }: ScreenProps) {
             <motion.div initial={false} animate={{ scale: 0.35 + sel * 0.13 }} transition={{ duration: 0.6, ease: EASE }}><ArcMotif count={6} radius={500} /></motion.div>
           </div>
           <p className="relative font-mono text-[20px] text-muted">radius · <span className="text-own">{cm.radius[sel]}</span></p>
+          {print ? (
+            <table className="relative mt-[20px] w-full border-separate border-spacing-[6px] text-[20px]">
+              <thead><tr><th />{cm.stages.map((st, i) => <th key={st} className={`font-mono text-[16px] font-normal ${i === sel ? "text-text" : "text-muted"}`}>{st}</th>)}</tr></thead>
+              <tbody>
+                {cm.groups.map(([label, vals]) => (
+                  <tr key={label as string}>
+                    <td className="pr-[12px] text-text">{label as string}</td>
+                    {(vals as number[]).map((v, i) => (
+                      <td key={i} className="h-[44px] rounded-[8px] text-center font-mono font-bold" style={{ background: `color-mix(in oklab, var(--own-fill) ${v * 18}%, var(--surface))`, color: "#14161C", outline: i === sel ? "2px solid var(--own)" : undefined }}>{v}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
           <div className="relative mt-[20px] space-y-[16px]">
             {cm.groups.map(([label, vals]) => {
               const v = (vals as number[])[sel]!;
@@ -264,6 +281,7 @@ export function S17({ choice }: ScreenProps) {
               );
             })}
           </div>
+          )}
           <div className="relative mt-[16px]"><Tag>{cm.tag}</Tag></div>
         </div>
         <div className="w-[640px] rounded-[20px] border border-line bg-surface p-[36px]">
