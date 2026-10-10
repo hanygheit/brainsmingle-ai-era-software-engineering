@@ -60,7 +60,7 @@ export function S18({ step }: ScreenProps) {
         ))}
       </div>
       {zoom || print ? (
-        <div className={print ? "order-last mt-[16px] grid grid-cols-2 gap-[20px]" : "mt-[28px] grid grid-cols-2 gap-[32px]"}>
+        <div className={print ? "mt-[16px] grid grid-cols-2 gap-[20px]" : "mt-[28px] grid grid-cols-2 gap-[32px]"}>
           <div className="col-span-2"><Eyebrow>{tl.zoomLabel}</Eyebrow></div>
           <div className="rounded-[20px] border border-line bg-surface p-[32px]">
             <p className="t-tag text-muted">BEFORE</p>
