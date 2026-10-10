@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OverviewRouteImport } from './routes/overview'
 import { Route as PresenterRouteImport } from './routes/presenter'
 import { Route as PrintRouteImport } from './routes/print'
 import { Route as VoteRouteImport } from './routes/vote'
@@ -18,11 +17,6 @@ import { Route as VoteRouteImport } from './routes/vote'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OverviewRoute = OverviewRouteImport.update({
-  id: '/overview',
-  path: '/overview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PresenterRoute = PresenterRouteImport.update({
@@ -43,14 +37,12 @@ const VoteRoute = VoteRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/overview': typeof OverviewRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/vote': typeof VoteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/overview': typeof OverviewRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/vote': typeof VoteRoute
@@ -58,22 +50,20 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/overview': typeof OverviewRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/vote': typeof VoteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/overview' | '/presenter' | '/print' | '/vote'
+  fullPaths: '/' | '/presenter' | '/print' | '/vote'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/overview' | '/presenter' | '/print' | '/vote'
-  id: '__root__' | '/' | '/overview' | '/presenter' | '/print' | '/vote'
+  to: '/' | '/presenter' | '/print' | '/vote'
+  id: '__root__' | '/' | '/presenter' | '/print' | '/vote'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  OverviewRoute: typeof OverviewRoute
   PresenterRoute: typeof PresenterRoute
   PrintRoute: typeof PrintRoute
   VoteRoute: typeof VoteRoute
@@ -86,13 +76,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/overview': {
-      id: '/overview'
-      path: '/overview'
-      fullPath: '/overview'
-      preLoaderRoute: typeof OverviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/presenter': {
@@ -121,7 +104,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  OverviewRoute: OverviewRoute,
   PresenterRoute: PresenterRoute,
   PrintRoute: PrintRoute,
   VoteRoute: VoteRoute,
