@@ -86,12 +86,14 @@ export function DeckProvider({
   /** Audience windows mirror their position into /present/N. */
   syncUrl?: boolean;
 }) {
-  const [state, setState] = useState<DeckState>(() => ({
-    index: clampIndex(initial?.index ?? 0),
-    enter: 1,
-    replay: 0,
-    choice: null,
-  }));
+  const [state, setState] = useState<DeckState>(() => {
+    const index = clampIndex(initial?.index ?? 0);
+    // If this window is re-created for the slide it was already on (router re-render
+    // after our own URL update, or a reload), keep how it was entered and its choice.
+    const stored = typeof window !== "undefined" ? readSession() : null;
+    if (stored && stored.index === index) return stored;
+    return { index, enter: 1, replay: 0, choice: null };
+  });
   const [overlay, setOverlay] = useState<OverlayKey | null>(null);
   const [ready, setReady] = useState(false);
   const channelRef = useRef<BroadcastChannel | null>(null);
