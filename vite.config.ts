@@ -12,13 +12,9 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 let deckVersion = "dev";
 try {
   const deckFiles = [
-    "./src/content/slides.ts",
-    "./src/content/types.ts",
-    "./src/components/deck/layouts/approved.tsx",
-    "./src/components/deck/layouts/intro.tsx",
-    "./src/components/deck/layouts/context.tsx",
-    "./src/components/deck/layouts/outro.tsx",
-    "./src/assets/github-repo-qr.png.asset.json",
+    "./src/content/screens.ts",
+    "./src/content/sources.ts",
+    "./src/components/deck/ScreenRenderer.tsx",
   ];
   const hash = createHash("sha256");
   deckFiles.forEach((file) => hash.update(readFileSync(new URL(file, import.meta.url))));

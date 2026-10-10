@@ -79,11 +79,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Before You Put an AI Agent on Call — DevOpsDays Cairo 2026" },
-      { name: "description", content: "20 rules for safe production autonomy — DevOpsDays Cairo 2026 · Hany Saad" },
+      { title: "AI-Era Software Engineering — Hany Saad" },
+      { name: "description", content: "Interactive keynote by Hany Saad — BrainsMingle AI Summit 2026." },
       { name: "author", content: "Hany Saad" },
-      { property: "og:title", content: "Before You Put an AI Agent on Call" },
-      { property: "og:description", content: "20 rules for safe production autonomy — DevOpsDays Cairo 2026 · Hany Saad" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -104,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
