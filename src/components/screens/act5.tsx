@@ -38,19 +38,8 @@ function useKey(keys: string[], fn: (k: string) => void) {
 
 /* ---------- S18 ---------- */
 export function S18({ step }: ScreenProps) {
-  const [flip, setFlip] = useState(false);
-  const [zoom, setZoom] = useState<boolean | null>(null);
-  useEffect(() => {
-    setFlip(false);
-    setZoom(null);
-  }, [step]);
-  useKey(["ArrowDown", "ArrowUp", "z", "Z"], (k) => {
-    if (k === "ArrowDown") setFlip(true);
-    else if (k === "ArrowUp") setFlip(false);
-    else setZoom((z) => !(z ?? step >= 5));
-  });
-  const current = Math.min(step, 4); // levers revealed
-  const zoomed = zoom ?? step === 5;
+  const [zoom, setZoom] = useState(false);
+  useKey(["z", "Z"], () => setZoom((z) => !z));
   const after = tl.zoomAfter;
   const mark = (w: string, col: string) => <span style={{ color: col }} className="font-semibold">{w}</span>;
   const [p1, rest1] = after.split("explain");
@@ -58,53 +47,47 @@ export function S18({ step }: ScreenProps) {
   const [p3, rest3] = (rest2 ?? "").split("flags");
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[step >= 6 && "DX", step >= 6 && "Anthropic, Dec 2025", step >= 6 && "Kent Beck"]} />
-      <p className={`${H} text-[60px]`}>{tl.headline}</p>
-      {step === 0 ? (
-        <div className="mt-[48px] grid grid-cols-2 gap-[48px]">
-          {[tl.toolFirst, tl.capFirst].map((c, i) => (
-            <div key={c.label} className="rounded-[20px] border bg-surface p-[40px]" style={{ borderColor: i ? "var(--own)" : "var(--line)" }}>
-              <Eyebrow color={i ? "var(--own)" : "var(--muted)"}>{c.label}</Eyebrow>
-              <ul className="mt-[20px] space-y-[14px] text-[30px]" style={{ color: i ? "var(--text)" : "var(--muted)" }}>
-                {c.items.map((it) => <li key={it}>{it}</li>)}
-              </ul>
-            </div>
-          ))}
-        </div>
-      ) : zoomed ? (
-        <div className="mt-[40px] grid grid-cols-2 gap-[40px]">
-          <div className="col-span-2"><Eyebrow>{tl.zoomLabel}</Eyebrow></div>
-          <div className="rounded-[20px] border border-line bg-surface p-[36px]">
-            <p className="t-tag text-muted">BEFORE</p>
-            <p className="mt-[12px] text-[30px] leading-[1.4] text-muted">{tl.zoomBefore}</p>
+      <SrcTag items={[step >= 5 && "DX", step >= 5 && "Anthropic, Dec 2025", step >= 5 && "Kent Beck"]} />
+      <p className={`${H} text-[56px]`}>{tl.headline}</p>
+      <div className="mt-[24px] flex flex-col gap-[10px]">
+        {[tl.toolFirst, tl.capFirst].map((c, i) => (
+          <div key={c.label} className="flex items-baseline gap-[20px] rounded-[14px] border bg-surface px-[24px] py-[12px]" style={{ borderColor: i ? "var(--own)" : "var(--line)" }}>
+            <span className="w-[220px] shrink-0 font-display text-[24px] font-bold" style={{ color: i ? "var(--own)" : "var(--muted)" }}>{c.label}</span>
+            <span className="text-[22px]" style={{ color: i ? "var(--text)" : "var(--muted)" }}>{c.items.join(" · ")}</span>
           </div>
-          <div className="rounded-[20px] border border-own bg-surface p-[36px]">
+        ))}
+      </div>
+      {zoom ? (
+        <div className="mt-[28px] grid grid-cols-2 gap-[32px]">
+          <div className="col-span-2"><Eyebrow>{tl.zoomLabel}</Eyebrow></div>
+          <div className="rounded-[20px] border border-line bg-surface p-[32px]">
+            <p className="t-tag text-muted">BEFORE</p>
+            <p className="mt-[12px] text-[28px] leading-[1.4] text-muted">{tl.zoomBefore}</p>
+          </div>
+          <div className="rounded-[20px] border border-own bg-surface p-[32px]">
             <p className="t-tag text-own">AFTER</p>
-            <p className="mt-[12px] text-[30px] leading-[1.4] text-text">
+            <p className="mt-[12px] text-[28px] leading-[1.4] text-text">
               {p1}{mark("explain", "var(--direct)")}{p2}{mark("test", "var(--validate)")}{p3}{mark("flags", "var(--own)")}{rest3}
             </p>
           </div>
         </div>
       ) : (
-        <div className="mt-[40px] flex flex-col gap-[14px]">
-          <div className="grid grid-cols-[260px_1fr_1fr] gap-[24px] px-[24px] t-tag text-muted"><span /><span>BEFORE</span><span>AFTER</span></div>
-          {tl.levers.map(([name, before, aft], i) => {
-            const on = i < current;
-            const isCur = i === current - 1;
-            const showAfter = !isCur || flip || step > 4;
-            return (
-              <Reveal key={name} on={on} y={10}>
-                <div className="grid grid-cols-[260px_1fr_1fr] items-start gap-[24px] rounded-[14px] border border-line bg-surface px-[24px] py-[18px]">
-                  <span className="font-display text-[28px] font-bold text-text">{name}</span>
-                  <span className="text-[24px] text-muted">{before}</span>
-                  <motion.span className="text-[24px] text-text" initial={false} animate={{ opacity: showAfter ? 1 : 0, x: showAfter ? 0 : 20 }} transition={{ duration: 0.4, ease: EASE }}>{aft}</motion.span>
-                </div>
-              </Reveal>
-            );
-          })}
+        <div className="mt-[24px] flex flex-col gap-[10px]">
+          <div className="grid grid-cols-[240px_1fr_1.6fr] gap-[24px] px-[24px] t-tag text-muted"><span /><span>BEFORE</span><span>AFTER</span></div>
+          {tl.levers.map(([name, before, aft], i) => (
+            <Reveal key={name} on={step >= i + 1} y={10}>
+              <div className="grid grid-cols-[240px_1fr_1.6fr] items-start gap-[24px] rounded-[14px] border border-line bg-surface px-[24px] py-[14px]">
+                <span className="font-display text-[26px] font-bold text-text">{name}</span>
+                <span className="text-[21px] text-muted">{before}</span>
+                <Reveal on={step >= i + 1} delay={0.3} y={0}>
+                  <span className="text-[21px] text-text">{aft}</span>
+                </Reveal>
+              </div>
+            </Reveal>
+          ))}
         </div>
       )}
-      <Reveal on={step >= 6} className="mt-auto flex flex-wrap gap-[14px]">
+      <Reveal on={step >= 5} className="mt-auto flex flex-wrap gap-[12px]">
         {tl.chips.map((c) => <Chip key={c}>{c}</Chip>)}
       </Reveal>
     </div>
@@ -165,20 +148,20 @@ export function S20({ step, choice }: ScreenProps) {
           <div key={k} className="relative flex flex-col rounded-[20px] border-t-[8px] bg-surface p-[32px]" style={{ borderColor: COL[col!] }}>
             <p className="font-display text-[40px] font-bold" style={{ color: COL[col!] }}>{k}</p>
             <p className="mt-[12px] min-h-[110px] text-[22px] text-muted">{q}</p>
-            <Reveal on={step >= 1} className="mt-[16px] border-t border-line pt-[16px]">
+            <div className="mt-[16px] border-t border-line pt-[16px]">
               <AnimatePresence mode="wait">
                 <motion.p key={idx} className="text-[26px] leading-[1.3] text-text" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
                   {row[i]}
                 </motion.p>
               </AnimatePresence>
-            </Reveal>
+            </div>
             {k === "OWN" ? (
               <div className="mt-[24px] self-start rotate-[-4deg] rounded-full border-[3px] border-own px-[20px] py-[10px] font-mono text-[18px] font-bold tracking-[0.12em] text-own">{dd.seal}</div>
             ) : null}
           </div>
         ))}
       </div>
-      <Reveal on={step >= 2} className="mt-auto">
+      <Reveal on={step >= 1} className="mt-auto">
         <div className="grid grid-cols-4 gap-[24px]">
           {dd.levers.map(([k, w]) => (
             <div key={k} className="text-center"><p className="font-display text-[30px] font-bold text-own">{k}</p><p className="text-[20px] text-muted">{w}</p></div>
@@ -224,47 +207,54 @@ export function S21(_: ScreenProps) {
 }
 
 /* ---------- S22 ---------- */
-export function S22({ step, screen, choice }: ScreenProps) {
+export function S22({ step, screen }: ScreenProps) {
   const s = rv.s22;
-  if (step === 0) {
-    return (
-      <div className="relative h-full w-full">
-        <S1 screen={screen} step={3} choice={choice} />
-        <div className="absolute bottom-[56px] left-[780px] font-mono text-[16px] tracking-[0.2em] text-delegate">↑ {s.tag}</div>
-      </div>
-    );
-  }
   return (
-    <div className="relative flex h-full w-full flex-col p-[96px]">
-      {step === 1 ? (
-        <>
-          <div className="grid grid-cols-2 gap-[56px]">
-            <div className="flex flex-col gap-[14px]">
-              {op.s1.chips.map((c) => (
-                <div key={c} className="flex items-center justify-between rounded-[14px] border border-line bg-surface px-[24px] py-[18px]">
-                  <span className="text-[26px] text-muted">✓ {c}</span>
-                  <span className="font-mono text-[16px] tracking-[0.15em] text-delegate">{s.tag}</span>
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col gap-[14px]">
-              {s.evidence.map(([t, col], i) => (
-                <Reveal key={t} on delay={i * 0.15}>
-                  <div className="rounded-[14px] border-l-[6px] bg-surface px-[24px] py-[18px] text-[26px] text-text" style={{ borderColor: COL[col!] }}>{t}</div>
-                </Reveal>
-              ))}
-            </div>
+    <div className="relative h-full w-full overflow-hidden p-[96px]">
+      <div className="flex gap-[48px]">
+        <div className="relative h-[349px] w-[620px] shrink-0 overflow-hidden rounded-[16px] border border-line">
+          <div style={{ width: 1920, height: 1080, transform: `scale(${620 / 1920})`, transformOrigin: "top left" }}>
+            <S1 screen={screen} step={3} choice={null} />
           </div>
-          <Reveal on delay={0.9} className="mt-auto">
-            <p className={`${H} text-[64px]`}>{s.line}</p>
-          </Reveal>
-        </>
-      ) : (
-        <>
-          <p className={`${H} text-[56px]`}>{s.prompt}</p>
-          <AudienceCards labels={s.actions} />
-        </>
-      )}
+        </div>
+        <div className="grid flex-1 grid-cols-2 gap-[20px]">
+          <div className="flex flex-col gap-[10px]">
+            {op.s1.chips.map((c) => (
+              <div key={c} className="flex items-center justify-between gap-[12px] rounded-[12px] border border-line bg-surface px-[18px] py-[14px]">
+                <span className="text-[20px] text-muted">✓ {c}</span>
+                <span className="font-mono text-[14px] tracking-[0.15em] text-delegate">{s.tag}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col gap-[10px]">
+            {s.evidence.map(([t, col], i) => (
+              <Reveal key={t} on={step >= 1} delay={i * 0.15}>
+                <div className="rounded-[12px] border-l-[6px] bg-surface px-[18px] py-[14px] text-[20px] leading-[1.3] text-text" style={{ borderColor: COL[col!] }}>{t}</div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
+      <Reveal on={step >= 2} className="mt-[40px]">
+        <p className={`${H} text-[56px]`}>{s.line}</p>
+      </Reveal>
+      <Reveal on={step >= 3} className="mt-[36px] grid grid-cols-3 gap-[32px]">
+        {s.actions.map((a, i) => {
+          const [who, rest] = a.split(" — ");
+          const [what, how] = (rest ?? "").split(" · ");
+          return (
+            <div key={a} className="rounded-[20px] border border-line bg-surface p-[28px]">
+              <p className="font-display text-[40px] font-bold text-muted">{i + 1}</p>
+              <p className="text-[20px] text-muted">{who}</p>
+              <p className="mt-[6px] text-[28px] font-semibold text-text">{what}</p>
+              <p className="mt-[6px] text-[20px] text-muted">{how}</p>
+            </div>
+          );
+        })}
+      </Reveal>
+      <Reveal on={step >= 4} className="mt-[28px]">
+        <p className="font-display text-[36px] font-bold text-own">{s.prompt}</p>
+      </Reveal>
     </div>
   );
 }

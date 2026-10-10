@@ -15,7 +15,8 @@ export type OverlayKey = "overview" | "sources" | "black" | "presenter";
 
 export interface DeckState {
   index: number;
-  step: number;
+  /** How the current slide was entered: 1 = forward/jump (plays its sequence), -1 = back (shows final state). */
+  enter: 1 | -1;
   /** Bumped by R / Replay so the current screen remounts from its initial state. */
   replay: number;
   /** Screen-local choice from keys 1–6 (null = none). */
@@ -27,7 +28,7 @@ interface DeckContextValue extends DeckState {
   total: number;
   next: () => void;
   prev: () => void;
-  goto: (index: number, step?: number) => void;
+  goto: (index: number) => void;
   resetScreen: () => void;
   setChoice: (c: number | null) => void;
   overlay: OverlayKey | null;
@@ -39,34 +40,27 @@ const DeckContext = createContext<DeckContextValue | null>(null);
 const SS_KEY = "ai-era-deck-state";
 
 const clampIndex = (i: number) => Math.max(0, Math.min(TOTAL_SCREENS - 1, Math.trunc(i) || 0));
-const clampStep = (index: number, step: number) =>
-  Math.max(0, Math.min(screens[index]!.steps, Math.trunc(step) || 0));
 
 export function normalizeState(value: unknown): DeckState | null {
   if (!value || typeof value !== "object") return null;
   const v = value as Partial<DeckState>;
-  if (typeof v.index !== "number" || typeof v.step !== "number") return null;
+  if (typeof v.index !== "number") return null;
   const index = clampIndex(v.index);
   return {
     index,
-    step: clampStep(index, v.step),
+    enter: v.enter === -1 ? -1 : 1,
     replay: typeof v.replay === "number" ? v.replay : 0,
     choice: typeof v.choice === "number" && v.choice >= 1 && v.choice <= 6 ? v.choice : null,
   };
 }
 
-/** Pure step/screen arithmetic, exported for tests. */
+/** Pure slide arithmetic, exported for tests. One press = one slide. */
 export function stepForward(s: DeckState): DeckState {
-  if (s.step < screens[s.index]!.steps) return { ...s, step: s.step + 1 };
-  if (s.index < TOTAL_SCREENS - 1) return { ...s, index: s.index + 1, step: 0, choice: null };
+  if (s.index < TOTAL_SCREENS - 1) return { ...s, index: s.index + 1, enter: 1, choice: null };
   return s;
 }
 export function stepBack(s: DeckState): DeckState {
-  if (s.step > 0) return { ...s, step: s.step - 1 };
-  if (s.index > 0) {
-    const index = s.index - 1;
-    return { ...s, index, step: screens[index]!.steps, choice: null };
-  }
+  if (s.index > 0) return { ...s, index: s.index - 1, enter: -1, choice: null };
   return s;
 }
 
@@ -87,14 +81,14 @@ export function DeckProvider({
 }: {
   children: ReactNode;
   isPresenter?: boolean;
-  /** Explicit start position (from /present/N?step=k or "/"). Presenter omits it. */
-  initial?: { index: number; step: number };
-  /** Audience windows mirror their position into /present/N?step=k. */
+  /** Explicit start slide (from /present/N or "/"). Presenter omits it. */
+  initial?: { index: number };
+  /** Audience windows mirror their position into /present/N. */
   syncUrl?: boolean;
 }) {
   const [state, setState] = useState<DeckState>(() => ({
     index: clampIndex(initial?.index ?? 0),
-    step: initial ? clampStep(clampIndex(initial.index), initial.step) : 0,
+    enter: 1,
     replay: 0,
     choice: null,
   }));
@@ -135,6 +129,15 @@ export function DeckProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // External URL changes (browser back/forward, typed URL) move the deck; our own
+  // replaceState updates already match the state, so they are no-ops.
+  const initialIndex = initial?.index;
+  useEffect(() => {
+    if (initialIndex === undefined) return;
+    const i = clampIndex(initialIndex);
+    setState((s) => (s.index === i ? s : { ...s, index: i, enter: 1, choice: null }));
+  }, [initialIndex]);
+
   const stateRef = useRef(state);
   stateRef.current = state;
 
@@ -149,7 +152,7 @@ export function DeckProvider({
     if (lastRemote.current !== serialized) channelRef.current?.postMessage({ type: "state", state });
     lastRemote.current = null;
     if (syncUrl) {
-      const url = `/present/${state.index}${state.step ? `?step=${state.step}` : ""}`;
+      const url = `/present/${state.index}`;
       if (window.location.pathname + window.location.search !== url) {
         window.history.replaceState(window.history.state, "", url);
       }
@@ -160,12 +163,12 @@ export function DeckProvider({
 
   const next = useCallback(() => setState(stepForward), []);
   const prev = useCallback(() => setState(stepBack), []);
-  const goto = useCallback((index: number, step = 0) => {
+  const goto = useCallback((index: number) => {
     const i = clampIndex(index);
-    setState((s) => ({ ...s, index: i, step: clampStep(i, step), choice: null }));
+    setState((s) => (s.index === i ? s : { ...s, index: i, enter: 1, choice: null }));
   }, []);
   const resetScreen = useCallback(
-    () => setState((s) => ({ ...s, step: 0, choice: null, replay: s.replay + 1 })),
+    () => setState((s) => ({ ...s, enter: 1, choice: null, replay: s.replay + 1 })),
     [],
   );
   const setChoice = useCallback((c: number | null) => setState((s) => ({ ...s, choice: c })), []);

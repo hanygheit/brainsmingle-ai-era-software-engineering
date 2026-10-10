@@ -111,8 +111,8 @@ export function ControlBar() {
       <Btn label="Previous" onClick={deck.prev}>
         <ChevronLeft className="h-4 w-4" />
       </Btn>
-      <span className="min-w-[88px] text-center font-mono text-[13px] text-muted tabular-nums">
-        {deck.screen.id} · {deck.step}/{deck.screen.steps}
+      <span className="max-w-[420px] min-w-[88px] truncate px-1 text-center font-mono text-[13px] text-muted tabular-nums">
+        {deck.index} / {deck.total} · {deck.screen.title}
       </span>
       <Btn label="Next" onClick={deck.next}>
         <ChevronRight className="h-4 w-4" />
@@ -221,7 +221,7 @@ export function OverviewGrid() {
                   className={`overflow-hidden rounded-md border text-left ${i === deck.index ? "border-[var(--accent)]" : "border-line"}`}
                 >
                   <MiniStage width={240}>
-                    <ScreenRenderer screen={s} step={s.steps} choice={null} />
+                    <ScreenRenderer screen={s} choice={null} />
                   </MiniStage>
                   <p className="px-2 py-1 font-mono text-[12px] text-muted">{s.id}</p>
                 </button>

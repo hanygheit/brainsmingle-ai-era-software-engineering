@@ -1,9 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
 import { Deck } from "@/components/deck/DeckView";
 
 export const Route = createFileRoute("/present/$n")({
-  validateSearch: (s) => z.object({ step: z.coerce.number().int().min(0).catch(0) }).parse(s),
   head: ({ params }) => ({
     meta: [
       { title: `Screen ${params.n} — AI-Era Software Engineering · Hany Saad` },
@@ -19,7 +17,8 @@ export const Route = createFileRoute("/present/$n")({
 
 function PresentRoute() {
   const { n } = Route.useParams();
-  const { step } = Route.useSearch();
   const index = Number.parseInt(n, 10);
-  return <Deck key={`${n}-${step}`} index={Number.isFinite(index) ? index : 0} step={step} />;
+  // Old ?step= links are ignored. The deck stays mounted: the router sees our own
+  // replaceState URL updates, and remounting here would reset the slide's state.
+  return <Deck index={Number.isFinite(index) ? index : 0} />;
 }

@@ -111,7 +111,8 @@ export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } 
     sync();
     const onChoice = (e: Event) => {
       const d = (e as CustomEvent<ChoiceDetail>).detail;
-      if (d.screenId === POLL_SCREEN[poll] && d.n <= 3) addManual(poll, d.n);
+      // Keys 1/2/3 add manual votes on S2 only; on S7 they reveal the answers instead.
+      if (poll === "s2-challenge" && d.screenId === POLL_SCREEN[poll] && d.n <= 3) addManual(poll, d.n);
     };
     window.addEventListener(MANUAL_EVENT, sync);
     window.addEventListener(CHOICE_EVENT, onChoice);

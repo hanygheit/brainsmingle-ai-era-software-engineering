@@ -91,7 +91,7 @@ function PrintRoute() {
       {screens.flatMap((s) => {
         const pages = [
           <div key={`s-${s.id}`} className="print-page">
-            <ScreenRenderer screen={s} step={s.steps} choice={null} />
+            <ScreenRenderer screen={s} choice={null} />
           </div>,
         ];
         if (withNotes) {
@@ -99,7 +99,7 @@ function PrintRoute() {
             <div key={`n-${s.id}`} className="print-page grid grid-cols-[760px_1fr] gap-[72px] p-[96px]">
               <div className="overflow-hidden rounded-lg border border-line self-start">
                 <MiniStage width={760}>
-                  <ScreenRenderer screen={s} step={s.steps} choice={null} />
+                  <ScreenRenderer screen={s} choice={null} />
                 </MiniStage>
               </div>
               <div>
