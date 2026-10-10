@@ -66,7 +66,7 @@ const BUILT: Record<string, Partial<Screen>> = {
   S8: { act: "Act 2 · Students and educators", title: "AI-native is not fundamentals-free", durationSec: 120, steps: 5, notes: "KEEP → SHIFT → ADD → PROVE, then Dohmke.", sourceIds: ["dohmke-aug-2025"] },
   S9: { act: "Act 2 · Students and educators", title: "Concepts outlive tools", durationSec: 60, steps: 2, notes: "Let the tool names cycle; the concepts stay.", sourceIds: [] },
   S10: { act: "Act 2 · Students and educators", title: "Learn with AI — and without it", durationSec: 120, steps: 3, notes: "67% vs 50%. Small pattern groups — directional.", sourceIds: ["anthropic-skills-jan-2026", "dora-mar-2026", "gregg-stanford"] },
-  S11: { act: "Act 2 · Students and educators", title: "If AI can build it, what are we assessing?", durationSec: 150, steps: 5, notes: "Step 1 flips to the rubric; T toggles. Click rows for detail.", sourceIds: ["anthropic-takehome-jan-2026"] },
+  S11: { act: "Act 2 · Students and educators", title: "If AI can build it, what are we assessing?", durationSec: 150, steps: 5, notes: "Step 1 flips to the rubric. Press T to toggle graded view. Click rows for detail.", sourceIds: ["anthropic-takehome-jan-2026"] },
 };
 for (const s of screens) Object.assign(s, BUILT[s.id] ?? {});
 

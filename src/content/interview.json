@@ -8,7 +8,10 @@
     ]
   },
   "s7": {
-    "candidates": ["Graduate A", "Graduate B"],
+    "candidates": [
+      "Graduate A",
+      "Graduate B"
+    ],
     "project": "shop-api · final-year project · ✓ 23 tests · Grade A",
     "tag": "Fictional illustrative scenario",
     "prompt": "You're interviewing both. Pick ONE question.",
@@ -18,11 +21,11 @@
         "b": "The agent handled authentication — I can ask it to check."
       },
       {
-        "a": "A token issued for a different API. Program.cs line 8: ValidateAudience = false. Fix: ValidateAudience = true + ValidAudience = \"shop-api\", plus a negative test where a foreign-audience token returns 401.",
+        "a": "A token issued for a different application. Line 8 in Program.cs sets ValidateAudience = false, so the audience is never checked. I'd set ValidateAudience = true and ValidAudience = \"shop-api\", then add a negative test: a token issued for billing-api must return 401.",
         "b": "The agent handled authentication — I can ask it to check."
       },
       {
-        "a": "Line 8 is the gap: ValidateAudience = false. I change it to ValidateAudience = true, add ValidAudience = \"shop-api\", and add a negative test — a foreign-audience token returns 401.",
+        "a": "Two lines in Program.cs: ValidateAudience = true and ValidAudience = \"shop-api\". Then a test that sends a token issued for billing-api and expects 401. Run the suite, all green — and I can explain why each line matters.",
         "b": "The agent handled authentication — I can ask it to check."
       }
     ],

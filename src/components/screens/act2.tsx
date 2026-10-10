@@ -276,7 +276,6 @@ export function S11({ step }: ScreenProps) {
           “{asm.quote}”<span className="mt-[8px] block text-[20px] text-muted">— {asm.quoteBy}</span>
         </blockquote>
       </Reveal>
-      <p className="absolute bottom-[44px] left-[96px] font-mono text-[14px] text-muted">T toggles graded view</p>
     </div>
   );
 }
