@@ -76,3 +76,14 @@ export function SpeakerBlock({ compact = false }: { compact?: boolean }) {
 export function Tag({ children }: { children: ReactNode }) {
   return <p className="font-mono text-[20px] text-muted">{children}</p>;
 }
+
+/** On-slide source line: small, bottom right, 14 px muted. */
+export function SrcTag({ items }: { items: (string | false | null | undefined)[] }) {
+  const list = items.filter(Boolean) as string[];
+  if (!list.length) return null;
+  return (
+    <p className="pointer-events-none absolute right-[96px] bottom-[44px] max-w-[1400px] text-right font-mono text-[14px] leading-[1.4] text-muted">
+      Sources: {list.join(" · ")}
+    </p>
+  );
+}
