@@ -26,7 +26,7 @@ export function S3({ step }: ScreenProps) {
   const ladder = step >= 5;
   if (step >= 7) {
     return (
-      <div className="flex h-full w-full flex-col justify-center gap-[40px] p-[96px]">
+      <div className="relative flex h-full w-full flex-col justify-center gap-[40px] p-[96px]">
         <Eyebrow>{s.ladderHeadline}</Eyebrow>
         <div className="rounded-[20px] border border-line bg-surface p-[40px]">
           <p className="t-tag text-muted">Then</p>
@@ -40,7 +40,7 @@ export function S3({ step }: ScreenProps) {
             </p>
           </div>
         </Reveal>
-        <SrcTag items={["Fortune, Nov 2025", "Stack Overflow 2026", "GitHub, Apr 2026"]} />
+        
       </div>
     );
   }
