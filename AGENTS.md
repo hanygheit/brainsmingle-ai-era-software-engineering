@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture rules
-- Screens are pure functions of (screen, step, choice) registered in `src/components/deck/ScreenRenderer.tsx`; why: Back must restore the exact prior state and print/overview render any step.
+- Screens are pure functions of (screen, phase, choice); ScreenRenderer auto-plays phases on a per-screen timeline when entered forward and renders the final phase when entered back, in print, overview and presenter; why: one press = one slide, and the final state is what the PDF captures.
 - All talk-wide values (speaker, URLs, acts, theme, poll ids) live in `src/config.ts`; content lives in `src/content/`; why: one place to edit.
-- Deck position syncs via BroadcastChannel + sessionStorage and mirrors to `/present/N?step=k` with replaceState; why: reload resumes, no history spam.
+- Deck position syncs via BroadcastChannel + sessionStorage and mirrors to `/present/N` with replaceState; the deck route stays mounted across its own URL updates; why: reload resumes, no history spam.
 - Poll votes upsert directly into `poll_votes` (RLS limits poll ids/options); resets go through a PIN-checked server function; why: no attendee sign-in.

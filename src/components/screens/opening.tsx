@@ -159,7 +159,7 @@ export function S2({ step, choice }: ScreenProps) {
       <Reveal on={step >= 1} className="absolute top-[290px] right-[96px] left-[96px]">
         <Eyebrow>{c.s2.question}</Eyebrow>
         <p className="mt-[8px] font-display text-[34px] font-bold whitespace-nowrap text-text">
-          {c.s2.prompt} <span className="ml-[16px] font-mono text-[18px] font-normal text-muted">or vote: {short}</span>
+          {c.s2.prompt} <span className="ml-[16px] font-mono text-[18px] font-normal text-muted">or scan to vote →</span>
         </p>
       </Reveal>
       <Reveal on={step >= 1} className="absolute inset-0" y={24}>
