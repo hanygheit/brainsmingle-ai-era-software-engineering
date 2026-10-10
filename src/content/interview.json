@@ -1,1 +1,40 @@
-{"poll":{"question":"[S7 poll question — to be written]","options":["Option 1","Option 2","Option 3"]}}
+{
+  "poll": {
+    "question": "You're interviewing both. Pick ONE question.",
+    "options": [
+      "Walk me through what happens when a token arrives.",
+      "What would make this API accept a token it shouldn't?",
+      "Change it now: accept only tokens issued for shop-api."
+    ]
+  },
+  "s7": {
+    "candidates": ["Graduate A", "Graduate B"],
+    "project": "shop-api · final-year project · ✓ 23 tests · Grade A",
+    "tag": "Fictional illustrative scenario",
+    "prompt": "You're interviewing both. Pick ONE question.",
+    "answers": [
+      {
+        "a": "The request hits the JWT bearer handler. It checks issuer, lifetime and signing key — but Program.cs line 8 sets ValidateAudience = false, so a token issued for another API would pass. I'd set ValidateAudience = true and ValidAudience = \"shop-api\", and add a negative test: a foreign-audience token returns 401.",
+        "b": "The agent handled authentication — I can ask it to check."
+      },
+      {
+        "a": "A token issued for a different API. Program.cs line 8: ValidateAudience = false. Fix: ValidateAudience = true + ValidAudience = \"shop-api\", plus a negative test where a foreign-audience token returns 401.",
+        "b": "The agent handled authentication — I can ask it to check."
+      },
+      {
+        "a": "Line 8 is the gap: ValidateAudience = false. I change it to ValidateAudience = true, add ValidAudience = \"shop-api\", and add a negative test — a foreign-audience token returns 401.",
+        "b": "The agent handled authentication — I can ask it to check."
+      }
+    ],
+    "code": "builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)\n    .AddJwtBearer(options =>\n    {\n        options.Authority = builder.Configuration[\"Auth:Authority\"];\n        options.TokenValidationParameters = new TokenValidationParameters\n        {\n            ValidateIssuer = true,\n            ValidateAudience = false,\n            ValidateLifetime = true,\n            ValidateIssuerSigningKey = true\n        };\n    });",
+    "lines": [
+      "The artifact is identical. The engineer is not.",
+      "Tests verify what someone thought to test.",
+      "Never delegate what you can't verify."
+    ],
+    "tags": [
+      "45% of AI-generated code samples failed security tests — Veracode, Jul 2025 (benchmark tasks)",
+      "‘Always review the pull request…’ — GitHub, Apr 2026"
+    ]
+  }
+}

@@ -1,1 +1,18 @@
-{}
+{
+  "title": "Assignment 3: Add secure authentication.",
+  "graded": { "label": "What we graded", "items": ["Compiles ✓", "Tests pass ✓", "Endpoints work ✓", "Code style ✓"], "grade": "A+" },
+  "should": {
+    "label": "What we should grade",
+    "rows": [
+      { "from": "Did the code work?", "to": "Can the student explain why it works?", "detail": "Oral walkthrough of the request path: where the token is read, what is validated, and why." },
+      { "from": "Are tests passing?", "to": "Can they say what the tests miss?", "detail": "Ask for the missing negative test — e.g. a token issued for another audience." },
+      { "from": "Is it implemented?", "to": "Can they change it when the requirement changes?", "detail": "Live modification under time limit, with AI allowed or off by checkpoint." },
+      { "from": "Was it submitted?", "to": "Can they defend the decisions?", "detail": "Design rationale and process log: what they asked the agent, what they rejected, and why." }
+    ]
+  },
+  "sticky": "New requirement: accept only tokens issued for shop-api. You have 15 minutes.",
+  "case": "Anthropic redesigned its own take-home after Claude Opus 4.5 matched top candidates within 2 hours.",
+  "quote": "The original worked because it resembled real work. The replacement works because it simulates novel work.",
+  "quoteBy": "Tristan Hume, Anthropic, 21 Jan 2026",
+  "headline": "Are we developing people who can produce an answer — or engineers who can tell whether the answer is right?"
+}
