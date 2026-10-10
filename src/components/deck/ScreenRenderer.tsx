@@ -56,7 +56,19 @@ export function ScreenRenderer({
 function Auto({ screen, choice, play }: { screen: Screen; choice: number | null; play: boolean }) {
   const step = useAutoPhase(screen, play);
   const C = REGISTRY[screen.id] ?? PlaceholderScreen;
-  return <C screen={screen} step={step} choice={choice} />;
+  if (!isPaper(screen.id)) return <C screen={screen} step={step} choice={choice} />;
+  const act = ACT_COLORS[screen.act] ?? "var(--ink)";
+  return (
+    <div className="theme-paper relative h-full w-full" style={{ ["--act" as string]: act }}>
+      <div className="pointer-events-none absolute -top-[260px] -right-[260px] opacity-[0.06]" aria-hidden>
+        <ArcMotif size={820} color="var(--ink)" />
+      </div>
+      <div className="pointer-events-none absolute top-0 right-0 left-0 z-20 h-[4px]" style={{ background: act }} aria-hidden />
+      <div className="relative h-full w-full">
+        <C screen={screen} step={step} choice={choice} />
+      </div>
+    </div>
+  );
 }
 
 function PlaceholderScreen({ screen }: ScreenProps) {
