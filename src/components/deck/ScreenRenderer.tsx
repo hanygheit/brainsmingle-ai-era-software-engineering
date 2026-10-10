@@ -1,7 +1,8 @@
 import { useEffect, useState, type ComponentType } from "react";
 import { useReducedMotion } from "framer-motion";
 import type { Screen } from "@/content/screens";
-import { Eyebrow, Headline } from "@/components/kit";
+import { ArcMotif, Eyebrow, Headline } from "@/components/kit";
+import { ACT_COLORS, isPaper } from "@/deck/theme";
 import { S0, S1, S2 } from "@/components/screens/opening";
 import { S3, S4, S5, S6 } from "@/components/screens/act1";
 import { S7, S8, S9, S10, S11 } from "@/components/screens/act2";
@@ -61,7 +62,7 @@ function Auto({ screen, choice, play }: { screen: Screen; choice: number | null;
   return (
     <div className="theme-paper relative h-full w-full" style={{ ["--act" as string]: act }}>
       <div className="pointer-events-none absolute -top-[260px] -right-[260px] opacity-[0.06]" aria-hidden>
-        <ArcMotif size={820} color="var(--ink)" />
+        <ArcMotif radius={410} color="var(--ink)" />
       </div>
       <div className="pointer-events-none absolute top-0 right-0 left-0 z-20 h-[4px]" style={{ background: act }} aria-hidden />
       <div className="relative h-full w-full">
