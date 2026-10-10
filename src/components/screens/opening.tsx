@@ -146,7 +146,6 @@ export function S1({ step }: ScreenProps) {
 export function S2({ step, choice }: ScreenProps) {
   const { counts } = usePollCounts("s2-challenge");
   const url = voteUrl("s2-challenge");
-  const short = url.replace(/^https?:\/\//, "");
   return (
     <div className="relative h-full w-full overflow-hidden">
       <div className="pointer-events-none absolute inset-x-0 top-[-260px] flex justify-center opacity-70">
