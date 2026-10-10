@@ -255,7 +255,7 @@ export function CodeDiff({
   title?: string;
 }) {
   return (
-    <div className="w-[1100px] overflow-hidden rounded-[16px] border border-line bg-surface">
+    <div className="theme-stage w-[1100px] overflow-hidden rounded-[16px] border border-line bg-surface">
       {title ? <div className="border-b border-line px-[24px] py-[14px] t-tag text-muted">{title}</div> : null}
       <pre className="py-[20px] font-mono text-[22px] leading-[1.55]">
         {code.split("\n").map((l, i) => {
@@ -425,7 +425,7 @@ export function QRTile({
       className="inline-flex flex-col items-center gap-[14px]"
       aria-label={label ? `${label} — ${url}` : url}
     >
-      <span className="block rounded-[18px] bg-qr-paper p-[10px]">
+      <span className="qr-tile block rounded-[18px] bg-qr-paper p-[10px]">
         {image ? (
           <img src={image} alt={`QR code for ${url}`} width={size} height={size} className="block" />
         ) : (
