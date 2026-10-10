@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { usePrintMode } from "@/deck/print-mode";
 import { supabase } from "@/integrations/supabase/client";
 import { POLL_IDS, type PollId } from "@/config";
 import interview from "@/content/interview.json";
@@ -101,6 +102,7 @@ async function fetchCounts(poll: PollId): Promise<Counts> {
  * plus the manual 1/2/3 fallback (keys on the poll's screen, or presenter buttons).
  */
 export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } = {}) {
+  const print = usePrintMode();
   const [remote, setRemote] = useState<Counts>(zero);
   const [manual, setManual] = useState<Counts>(zero);
   const [online, setOnline] = useState(false);
@@ -123,6 +125,7 @@ export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } 
   }, [poll]);
 
   useEffect(() => {
+    if (print) return;
     let alive = true;
     let timer: ReturnType<typeof setInterval> | null = null;
     const load = async () => {

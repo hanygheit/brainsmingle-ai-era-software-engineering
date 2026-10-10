@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useState } from "react";
 import { AudienceCards, DownloadPdfButton, EASE, Eyebrow, QRTile } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
@@ -38,6 +39,7 @@ function useKey(keys: string[], fn: (k: string) => void) {
 
 /* ---------- S18 ---------- */
 export function S18({ step }: ScreenProps) {
+  const print = usePrintMode();
   const [zoom, setZoom] = useState(false);
   useKey(["z", "Z"], () => setZoom((z) => !z));
   const after = tl.zoomAfter;
@@ -57,8 +59,8 @@ export function S18({ step }: ScreenProps) {
           </div>
         ))}
       </div>
-      {zoom ? (
-        <div className="mt-[28px] grid grid-cols-2 gap-[32px]">
+      {zoom || print ? (
+        <div className={print ? "order-last mt-[16px] grid grid-cols-2 gap-[20px]" : "mt-[28px] grid grid-cols-2 gap-[32px]"}>
           <div className="col-span-2"><Eyebrow>{tl.zoomLabel}</Eyebrow></div>
           <div className="rounded-[20px] border border-line bg-surface p-[32px]">
             <p className="t-tag text-muted">BEFORE</p>
@@ -71,7 +73,8 @@ export function S18({ step }: ScreenProps) {
             </p>
           </div>
         </div>
-      ) : (
+      ) : null}
+      {!zoom || print ? (
         <div className="mt-[24px] flex flex-col gap-[10px]">
           <div className="grid grid-cols-[240px_1fr_1.6fr] gap-[24px] px-[24px] t-tag text-muted"><span /><span>BEFORE</span><span>AFTER</span></div>
           {tl.levers.map(([name, before, aft], i) => (
@@ -86,7 +89,7 @@ export function S18({ step }: ScreenProps) {
             </Reveal>
           ))}
         </div>
-      )}
+      ) : null}
       <Reveal on={step >= 5} className="mt-auto flex flex-wrap gap-[12px]">
         {tl.chips.map((c) => <Chip key={c}>{c}</Chip>)}
       </Reveal>
@@ -187,12 +190,13 @@ function FrameworkWords() {
 }
 export function S21(_: ScreenProps) {
   const { counts, total } = usePollCounts("s2-challenge", { live: false });
+  const print = usePrintMode();
   const lead = total ? counts.indexOf(Math.max(...counts)) + 1 : null;
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <p className={`${H} max-w-[1400px] text-[64px]`}>{rv.s21.headline}</p>
       <div className="absolute inset-0" style={{ transform: "translateY(-250px)" }}>
-        <AudienceCards labels={op.s2.cards} tally={counts} active={lead} />
+        <AudienceCards labels={op.s2.cards} tally={print ? undefined : counts} active={print ? null : lead} />
       </div>
       <div className="absolute right-[96px] bottom-[60px] left-[96px] flex items-end justify-between">
         <FrameworkWords />
