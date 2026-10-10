@@ -1,13 +1,38 @@
 {
   "title": "Assignment 3: Add secure authentication.",
-  "graded": { "label": "What we graded", "items": ["Compiles ✓", "Tests pass ✓", "Endpoints work ✓", "Code style ✓"], "grade": "A+" },
+  "graded": {
+    "label": "What we graded",
+    "items": [
+      "Compiles ✓",
+      "Tests pass ✓",
+      "Endpoints work ✓",
+      "Code style ✓"
+    ],
+    "grade": "A+"
+  },
   "should": {
     "label": "What we should grade",
     "rows": [
-      { "from": "Did the code work?", "to": "Can the student explain why it works?", "detail": "Oral walkthrough of the request path: where the token is read, what is validated, and why." },
-      { "from": "Are tests passing?", "to": "Can they say what the tests miss?", "detail": "Ask for the missing negative test — e.g. a token issued for another audience." },
-      { "from": "Is it implemented?", "to": "Can they change it when the requirement changes?", "detail": "Live modification under time limit, with AI allowed or off by checkpoint." },
-      { "from": "Was it submitted?", "to": "Can they defend the decisions?", "detail": "Design rationale and process log: what they asked the agent, what they rejected, and why." }
+      {
+        "from": "Did the code work?",
+        "to": "Can the student explain why it works?",
+        "detail": "Oral walkthrough, 5 minutes: trace one request through the code, end to end."
+      },
+      {
+        "from": "Are tests passing?",
+        "to": "Can they say what the tests miss?",
+        "detail": "Name one case the tests don't cover — then write that test."
+      },
+      {
+        "from": "Is it implemented?",
+        "to": "Can they change it when the requirement changes?",
+        "detail": "Live modification: a new requirement, 15 minutes, AI allowed, explained afterwards."
+      },
+      {
+        "from": "Was it submitted?",
+        "to": "Can they defend the decisions?",
+        "detail": "A short design rationale: two alternatives considered, and why this one."
+      }
     ]
   },
   "sticky": "New requirement: accept only tokens issued for shop-api. You have 15 minutes.",

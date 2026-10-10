@@ -1,6 +1,6 @@
 import { animate, motion, useReducedMotion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -99,11 +99,21 @@ export function StatNumber({
   label?: string;
 }) {
   const reduce = useReducedMotion();
-  const [shown, setShown] = useState(reduce ? value : 0);
+  // First render always shows the final value (deep link, reload, print, reduced motion);
+  // only later value changes count up, with a 1 s fallback that forces the final value.
+  const [shown, setShown] = useState(value);
+  const prev = useRef(value);
   useEffect(() => {
-    if (reduce) return setShown(value);
-    const c = animate(0, value, { duration: 0.7, ease: EASE, onUpdate: setShown });
-    return () => c.stop();
+    const from = prev.current;
+    prev.current = value;
+    if (reduce || from === value) return setShown(value);
+    const c = animate(from, value, { duration: 0.7, ease: EASE, onUpdate: setShown, onComplete: () => setShown(value) });
+    const t = setTimeout(() => setShown(value), 1000);
+    return () => {
+      c.stop();
+      clearTimeout(t);
+      setShown(value);
+    };
   }, [value, reduce]);
   return (
     <div>

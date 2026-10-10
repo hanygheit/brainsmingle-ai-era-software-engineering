@@ -1,0 +1,176 @@
+{
+  "s12": {
+    "headline": "The entry door is narrowing.",
+    "stat": "4.5% of software-development postings are entry-level · 69.3% are senior",
+    "statSrc": "Indeed Hiring Lab, Q1 2026",
+    "stanford": "Employment of 22–25-year-olds in AI-exposed jobs: 19% below trend",
+    "stanfordSrc": "Stanford Digital Economy Lab, Aug 2026",
+    "quote": "How's that going to work when ten years in the future you have no one that has learned anything",
+    "speaker": "Matt Garman",
+    "role": "CEO, AWS",
+    "source": "The Register",
+    "date": "Aug 2025"
+  },
+  "s13": {
+    "headline": "The new entry-level bar.",
+    "rows": [
+      [
+        "KNOW",
+        "direct",
+        "DS&A · HTTP & APIs · SQL · auth & OWASP basics · Git"
+      ],
+      [
+        "BUILD BY HAND",
+        "neutral",
+        "a small service with AI off · read a stack trace"
+      ],
+      [
+        "BUILD WITH AI",
+        "delegate",
+        "ship a feature in a real repo with an agent"
+      ],
+      [
+        "DEBUG",
+        "validate",
+        "find the cause, not just the fix"
+      ],
+      [
+        "VALIDATE",
+        "validate",
+        "find the bug in an AI diff · write the negative test"
+      ],
+      [
+        "EXPLAIN",
+        "own",
+        "every line of their PR"
+      ],
+      [
+        "NOT YET",
+        "grey",
+        "system architecture — literacy only"
+      ]
+    ],
+    "tag": "64% of senior developers: top graduate mistake is ‘over-reliance on AI without understanding’ — BairesDev Q2 2026 (vendor survey)",
+    "last": "Build it with AI. Explain it without AI."
+  },
+  "s14": {
+    "reach": "REACH",
+    "reachSub": "what AI lets a junior touch",
+    "judgment": "JUDGMENT",
+    "judgmentSub": "what they can safely own",
+    "zone": "the mentoring zone",
+    "examples": [
+      "navigate a 1M-line codebase",
+      "compare implementation approaches",
+      "work across front end & back end",
+      "generate test suites",
+      "join architecture discussions"
+    ],
+    "headline": "AI gives juniors senior reach — not senior judgment.",
+    "sub": "AI can expand your reach faster than your judgment develops."
+  },
+  "s15": {
+    "headline": "The job changed. The skills model must follow.",
+    "segments": [
+      [
+        "Understand",
+        "direct",
+        15,
+        20
+      ],
+      [
+        "Design",
+        "direct",
+        15,
+        20
+      ],
+      [
+        "Implement",
+        "delegate",
+        45,
+        15
+      ],
+      [
+        "Verify",
+        "validate",
+        15,
+        25
+      ],
+      [
+        "Own",
+        "own",
+        10,
+        20
+      ]
+    ],
+    "tag": "Conceptual — not measured data",
+    "q1": "“…AI is writing 90 percent of the code.”",
+    "q2": "“But the programmer still needs to specify… what is the overall app you're trying to make, what's the overall design decision?”",
+    "by": "Dario Amodei, CEO, Anthropic · Council on Foreign Relations · 10 Mar 2025",
+    "last": "AI lowers the cost of learning a new technology — and raises the cost of staying narrow."
+  },
+  "s16": {
+    "from": "vibe coding",
+    "fromQ": "Karpathy, Feb 2025: “…forget that the code even exists.”",
+    "to": "agentic engineering",
+    "toQ": "Karpathy, Feb 2026: “…orchestrating agents who do and acting as oversight”",
+    "levels": [
+      [
+        "L1 Assisted",
+        "ask for explanations, never code"
+      ],
+      [
+        "L2 Paired",
+        "agent in the editor; review every change"
+      ],
+      [
+        "L3 Delegating",
+        "issue → approved plan → PR, with your own verification"
+      ],
+      [
+        "L4 Orchestrating",
+        "parallel agents + context files you maintain"
+      ],
+      [
+        "L5 Systematising",
+        "team standards, hooks, guardrails, evaluation"
+      ]
+    ],
+    "flow": [
+      [
+        "Frame",
+        "direct"
+      ],
+      [
+        "Context",
+        "direct"
+      ],
+      [
+        "Plan",
+        "direct"
+      ],
+      [
+        "Delegate",
+        "delegate"
+      ],
+      [
+        "Verify",
+        "validate"
+      ],
+      [
+        "Own",
+        "own"
+      ]
+    ],
+    "file": "AGENTS.md — shop-api",
+    "code": [
+      "# Auth: JWT bearer. ALWAYS validate issuer, audience, lifetime, signing key",
+      "# Every auth change needs negative tests",
+      "# Plan first; wait for approval before editing more than 3 files",
+      "# Never commit secrets"
+    ],
+    "link": "Practise with a real starter repo: github.com/hanygheit/ai-agent-on-call",
+    "url": "https://github.com/hanygheit/ai-agent-on-call",
+    "last": "Agentic coding is learned, not prompted."
+  }
+}
