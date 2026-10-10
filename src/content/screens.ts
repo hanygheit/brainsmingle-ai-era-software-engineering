@@ -70,7 +70,7 @@ const BUILT: Record<string, Partial<Screen>> = {
   S12: { act: "Act 3 · Fresh graduates", title: "The entry door is narrowing", durationSec: 90, steps: 2, notes: "4.5 of 100 squares. Then Stanford, then Garman.", sourceIds: ["indeed-jul-2026", "stanford-canaries", "garman-register"] },
   S13: { act: "Act 3 · Fresh graduates", title: "The new entry-level bar", durationSec: 135, steps: 7, notes: "One row per click. Close: build it with AI, explain it without AI.", sourceIds: ["bairesdev-q2-2026"] },
   S14: { act: "Act 3 · Fresh graduates", title: "Senior reach ≠ senior judgment", durationSec: 105, steps: 2, notes: "Click to go 2022 → 2026: reach grows ~3×, judgment barely moves.", sourceIds: [] },
-  S15: { act: "Act 4 · Engineers already inside", title: "The job changed. The skills model must follow.", durationSec: 120, steps: 3, notes: "Press T to toggle 2022 ↔ 2026. Conceptual, not measured.", sourceIds: ["amodei-cfr"] },
+  S15: { act: "Act 4 · Engineers already inside", title: "The job changed. The skills model must follow.", durationSec: 120, steps: 3, notes: "First click morphs 2022 → 2026; T toggles back and forth. Conceptual, not measured.", sourceIds: ["amodei-cfr"] },
   S16: { act: "Act 4 · Engineers already inside", title: "Agentic coding is learned, not prompted", durationSec: 135, steps: 7, notes: "Ladder L1–L5, then highlight the audience line in AGENTS.md.", sourceIds: ["karpathy-vibe", "karpathy-agentic"] },
   S17: { act: "Act 4 · Engineers already inside", title: "One career, different learning paths", durationSec: 195, steps: 0, notes: "Keys 1–6 pick the stage. Default Junior.", sourceIds: [] },
 };

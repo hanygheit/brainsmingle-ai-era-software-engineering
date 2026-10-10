@@ -139,7 +139,8 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
 }
 export function S15({ step }: ScreenProps) {
   const s = c.s15;
-  const y2026 = useToggleT(step);
+  const flipped = useToggleT(step);
+  const y2026 = (step >= 1) !== flipped;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <SrcTag items={[step >= 1 && "Dario Amodei, Council on Foreign Relations, 10 Mar 2025"]} />
@@ -151,7 +152,7 @@ export function S15({ step }: ScreenProps) {
       <div className="mt-[14px] flex h-[120px] w-full overflow-hidden rounded-[16px]">
         {s.segments.map(([name, col, a, b]) => (
           <motion.div key={name as string} className="flex items-center justify-center overflow-hidden text-[24px] font-semibold text-background" initial={false} animate={{ width: `${y2026 ? b : a}%` }} transition={{ duration: 0.6, ease: EASE }} style={{ background: COL[col as string] }}>
-            {name as string}
+            {name as string} {(y2026 ? b : a) as number}%
           </motion.div>
         ))}
       </div>
