@@ -1,1 +1,86 @@
-{}
+{
+  "s21": {
+    "headline": "Where should we raise the engineering bar first?",
+    "qr": [
+      "LinkedIn",
+      "BrainsMingle",
+      "This presentation + PDF"
+    ]
+  },
+  "s22": {
+    "tag": "DELEGATE",
+    "evidence": [
+      [
+        "A problem the engineer understands",
+        "direct"
+      ],
+      [
+        "Decisions they can explain",
+        "direct"
+      ],
+      [
+        "Behaviour they have verified — including the token that should fail",
+        "validate"
+      ],
+      [
+        "A change they can maintain",
+        "own"
+      ]
+    ],
+    "line": "AI can write the code. Engineers still own the outcome.",
+    "actions": [
+      "Students and educators — Change one learning task · add explanation, debugging or a changed requirement",
+      "Graduates and developers — Choose one capability to demonstrate · produce evidence beyond a working demo",
+      "Engineering leaders — Update one development plan · specify practice, feedback and proof of progress"
+    ],
+    "prompt": "Write down one change you'll make in the next seven days."
+  },
+  "s23": {
+    "l1": "AI is changing how we build software.",
+    "l2a": "We must change how we ",
+    "l2b": "develop software engineers",
+    "l2c": ".",
+    "eyebrow": "ONE CHANGE · NEXT 7 DAYS",
+    "cards": [
+      [
+        "Students and educators",
+        "Change one learning task"
+      ],
+      [
+        "Graduates and developers",
+        "Choose one capability to demonstrate"
+      ],
+      [
+        "Engineering leaders",
+        "Update one development plan"
+      ]
+    ],
+    "band": [
+      [
+        "DELEGATE",
+        "bounded execution",
+        "delegate"
+      ],
+      [
+        "DIRECT",
+        "intent, context, constraints",
+        "direct"
+      ],
+      [
+        "VALIDATE",
+        "correctness, quality, risk",
+        "validate"
+      ],
+      [
+        "OWN",
+        "decisions, delivery, outcome",
+        "own"
+      ]
+    ],
+    "qr": [
+      "Connect on LinkedIn",
+      "Follow on BrainsMingle",
+      "Get this presentation + PDF"
+    ]
+  }
+}

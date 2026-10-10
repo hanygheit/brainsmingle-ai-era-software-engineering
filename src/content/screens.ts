@@ -73,6 +73,12 @@ const BUILT: Record<string, Partial<Screen>> = {
   S15: { act: "Act 4 · Engineers already inside", title: "The job changed. The skills model must follow.", durationSec: 120, steps: 3, notes: "First click morphs 2022 → 2026; T toggles back and forth. Conceptual, not measured.", sourceIds: ["amodei-cfr"] },
   S16: { act: "Act 4 · Engineers already inside", title: "Agentic coding is learned, not prompted", durationSec: 135, steps: 7, notes: "Ladder L1–L5, then highlight the audience line in AGENTS.md.", sourceIds: ["karpathy-vibe", "karpathy-agentic"] },
   S17: { act: "Act 4 · Engineers already inside", title: "One career, different learning paths", durationSec: 195, steps: 0, notes: "Keys 1–6 pick the stage. Default Junior.", sourceIds: [] },
+  S18: { act: "Act 5 · Companies", title: "An AI subscription is not a development strategy", durationSec: 180, steps: 6, notes: "Steps 1–4 reveal a lever; ↓ flips it to AFTER, ↑ back. Step 5 or Z zooms into Junior · Code quality.", sourceIds: ["dx-onboarding", "anthropic-work-dec-2025", "beck-juniors"] },
+  S19: { act: "Act 5 · Companies", title: "Measure outcomes, not lines of AI code", durationSec: 120, steps: 2, notes: "Stack builds bottom-up. Activity is not outcome.", sourceIds: ["faros-apr-2026", "dora-ai"] },
+  S20: { act: "Synthesis", title: "The new engineering contract", durationSec: 150, steps: 2, notes: "Keys 1–6 pick a stage (default Junior). Final step: the pipeline and four levers.", sourceIds: [] },
+  S21: { act: "Q&A", title: "Where should we raise the engineering bar first?", durationSec: 60, steps: 0, notes: "Hold during Q&A. Frozen S2 tally.", sourceIds: [] },
+  S22: { act: "Closing", title: "The code is ready. Are we? — the answer", durationSec: 90, steps: 2, notes: "Evidence chips, then one change in seven days.", sourceIds: [] },
+  S23: { act: "Closing", title: "The final line", durationSec: 30, steps: 0, notes: "Hold. No thank-you, no questions slide.", sourceIds: [] },
 };
 for (const s of screens) Object.assign(s, BUILT[s.id] ?? {});
 
