@@ -67,6 +67,12 @@ const BUILT: Record<string, Partial<Screen>> = {
   S9: { act: "Act 2 · Students and educators", title: "Concepts outlive tools", durationSec: 60, steps: 2, notes: "Let the tool names cycle; the concepts stay.", sourceIds: [] },
   S10: { act: "Act 2 · Students and educators", title: "Learn with AI — and without it", durationSec: 120, steps: 3, notes: "67% vs 50%. Small pattern groups — directional.", sourceIds: ["anthropic-skills-jan-2026", "dora-mar-2026", "gregg-stanford"] },
   S11: { act: "Act 2 · Students and educators", title: "If AI can build it, what are we assessing?", durationSec: 150, steps: 5, notes: "Step 1 flips to the rubric. Press T to toggle graded view. Click rows for detail.", sourceIds: ["anthropic-takehome-jan-2026"] },
+  S12: { act: "Act 3 · Fresh graduates", title: "The entry door is narrowing", durationSec: 90, steps: 2, notes: "4.5 of 100 squares. Then Stanford, then Garman.", sourceIds: ["indeed-jul-2026", "stanford-canaries", "garman-register"] },
+  S13: { act: "Act 3 · Fresh graduates", title: "The new entry-level bar", durationSec: 135, steps: 7, notes: "One row per click. Close: build it with AI, explain it without AI.", sourceIds: ["bairesdev-q2-2026"] },
+  S14: { act: "Act 3 · Fresh graduates", title: "Senior reach ≠ senior judgment", durationSec: 105, steps: 2, notes: "Click to go 2022 → 2026: reach grows ~3×, judgment barely moves.", sourceIds: [] },
+  S15: { act: "Act 4 · Engineers already inside", title: "The job changed. The skills model must follow.", durationSec: 120, steps: 3, notes: "Press T to toggle 2022 ↔ 2026. Conceptual, not measured.", sourceIds: ["amodei-cfr"] },
+  S16: { act: "Act 4 · Engineers already inside", title: "Agentic coding is learned, not prompted", durationSec: 135, steps: 7, notes: "Ladder L1–L5, then highlight the audience line in AGENTS.md.", sourceIds: ["karpathy-vibe", "karpathy-agentic"] },
+  S17: { act: "Act 4 · Engineers already inside", title: "One career, different learning paths", durationSec: 195, steps: 0, notes: "Keys 1–6 pick the stage. Default Junior.", sourceIds: [] },
 };
 for (const s of screens) Object.assign(s, BUILT[s.id] ?? {});
 

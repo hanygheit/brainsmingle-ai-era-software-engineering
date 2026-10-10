@@ -1,1 +1,175 @@
-{}
+{
+  "stages": [
+    "Student",
+    "Fresh grad",
+    "Junior",
+    "Mid",
+    "Senior",
+    "Lead"
+  ],
+  "groups": [
+    [
+      "Foundations",
+      [
+        5,
+        5,
+        4,
+        3,
+        2,
+        2
+      ]
+    ],
+    [
+      "Manual implementation",
+      [
+        5,
+        4,
+        3,
+        2,
+        1,
+        1
+      ]
+    ],
+    [
+      "Debugging & testing",
+      [
+        4,
+        5,
+        5,
+        4,
+        3,
+        3
+      ]
+    ],
+    [
+      "Agentic coding & context",
+      [
+        2,
+        3,
+        4,
+        5,
+        5,
+        4
+      ]
+    ],
+    [
+      "AI validation",
+      [
+        3,
+        4,
+        5,
+        5,
+        5,
+        4
+      ]
+    ],
+    [
+      "Systems & architecture",
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        5
+      ]
+    ],
+    [
+      "Product & communication",
+      [
+        2,
+        3,
+        3,
+        4,
+        4,
+        5
+      ]
+    ],
+    [
+      "Judgment & ownership",
+      [
+        2,
+        2,
+        3,
+        4,
+        5,
+        5
+      ]
+    ]
+  ],
+  "radius": [
+    "snippet",
+    "function",
+    "feature slice",
+    "feature / service",
+    "subsystem",
+    "team workflow"
+  ],
+  "tabs": [
+    "Student",
+    "Fresh grad",
+    "Junior",
+    "Mid",
+    "Senior",
+    "Lead/Architect"
+  ],
+  "tag": "Proposed learning emphasis, not skill scores",
+  "panels": [
+    {
+      "next": [
+        "Build a small API by hand and explain it",
+        "Extend it with an agent and log what it got wrong",
+        "Teach back one concept a week"
+      ],
+      "never": "the first version of anything you're learning",
+      "ready": "you can build and debug a small service with AI off"
+    },
+    {
+      "next": [
+        "Master one coding agent end to end",
+        "Ship one project with a process log",
+        "Practise debugging unfamiliar code"
+      ],
+      "never": "understanding why the code works",
+      "ready": "you take an issue to a merged PR and walk a reviewer through it"
+    },
+    {
+      "next": [
+        "Issue→plan→agent→verify→PR daily",
+        "Weekly AI-off kata",
+        "Own regression tests"
+      ],
+      "never": "acceptance criteria and final review",
+      "ready": "you catch agent errors before reviewers do"
+    },
+    {
+      "next": [
+        "Decompose an epic into agent-sized tasks",
+        "Maintain repo context files",
+        "Write two ADRs"
+      ],
+      "never": "decomposition and interface contracts",
+      "ready": "you deliver ambiguous work safely through agents and people"
+    },
+    {
+      "next": [
+        "Own guardrails & context engineering",
+        "Threat-model AI changes",
+        "Mentor juniors on agent sessions"
+      ],
+      "never": "architecture and security trade-offs",
+      "ready": "teams around you produce better AI-assisted work"
+    },
+    {
+      "next": [
+        "Publish team AI standards",
+        "Update the competency matrix",
+        "Measure stability as well as throughput"
+      ],
+      "never": "accountability and people decisions",
+      "ready": "the team ships faster, stability holds, juniors grow judgment"
+    }
+  ],
+  "link": "Full blueprint →",
+  "footer": "Seniority is measured by what you can safely delegate — and still own."
+}
