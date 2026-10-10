@@ -77,7 +77,7 @@ export function S0(_: ScreenProps) {
 export function S1({ step }: ScreenProps) {
   const reduce = useReducedMotion();
   const lines = c.s1.terminal as { text: string; status?: TermStatus }[];
-  const visible = useTicker(lines.length, 800, step === 1, step >= 2);
+  const visible = useTicker(lines.length, 350, step === 1, step >= 2);
   const dim = step >= 3;
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -146,54 +146,37 @@ export function S1({ step }: ScreenProps) {
 export function S2({ step, choice }: ScreenProps) {
   const { counts } = usePollCounts("s2-challenge");
   const url = voteUrl("s2-challenge");
-  const short = url.replace(/^https?:\/\//, "");
-  if (step === 0) {
-    return (
-      <div className="relative h-full w-full overflow-hidden p-[96px]">
-        <Eyebrow>{c.s2.question}</Eyebrow>
-        <p className="mt-[20px] max-w-[1180px] font-display text-[56px] leading-[1.08] font-bold text-text">{c.s2.prompt}</p>
-        <div className="absolute top-[96px] right-[96px] flex flex-col items-end gap-[10px]">
-          <QRTile url={url} size={200} />
-          <p className="font-mono text-[18px] text-muted">{short}</p>
-        </div>
-        <AudienceCards labels={c.s2.cards} tally={counts} active={choice} />
-      </div>
-    );
-  }
   return (
     <div className="relative h-full w-full overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center pb-[160px]">
+      <div className="pointer-events-none absolute inset-x-0 top-[-260px] flex justify-center opacity-70">
         <ArcMotif count={6} radius={460} />
       </div>
-      <div className="absolute inset-x-0 top-[250px] flex flex-col items-center text-center">
-        <Reveal on>
-          <h1 className="font-display text-[96px] leading-[1] font-bold tracking-[-0.035em] text-text">{c.s2.title}</h1>
-        </Reveal>
-        <Reveal on delay={0.3}>
-          <p className="mt-[24px] text-[36px] text-muted">{c.s2.subtitle}</p>
-        </Reveal>
-        <Reveal on={step >= 2} className="mt-[56px]">
-          <p className="font-mono text-[30px] text-own">{c.s2.journey}</p>
-        </Reveal>
+      <div className="absolute inset-x-0 top-[96px] flex flex-col items-center text-center">
+        <h1 className="font-display text-[88px] leading-[1] font-bold tracking-[-0.035em] text-text">{c.s2.title}</h1>
+        <p className="mt-[20px] text-[34px] text-muted">{c.s2.subtitle}</p>
       </div>
-      {/* slim strip of cards */}
-      <div className="absolute bottom-[96px] left-[96px] flex gap-[16px]">
-        {c.s2.cards.map((card, i) => (
-          <div key={card} className="w-[330px] rounded-[14px] border border-line bg-surface px-[20px] py-[14px]">
-            <p className="text-[18px] text-muted">
-              <span className="font-display font-bold text-text">{i + 1}</span> · {card.split(" — ")[0]}{" "}
-              <span className="font-mono tabular-nums">{counts[i]}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-      <div className="absolute bottom-[300px] left-[96px]">
+      <Reveal on={step >= 1} className="absolute top-[290px] right-[96px] left-[96px]">
+        <Eyebrow>{c.s2.question}</Eyebrow>
+        <p className="mt-[8px] font-display text-[34px] font-bold whitespace-nowrap text-text">
+          {c.s2.prompt} <span className="ml-[16px] font-mono text-[18px] font-normal text-muted">or scan to vote →</span>
+        </p>
+      </Reveal>
+      <Reveal on={step >= 1} className="absolute inset-0" y={24}>
+        <div className="absolute inset-0" style={{ transform: "translateY(-250px)" }}>
+          <AudienceCards labels={c.s2.cards} tally={counts} active={choice} />
+        </div>
+      </Reveal>
+      <Reveal on={step >= 3} className="absolute inset-x-0 top-[696px] text-center">
+        <p className="font-mono text-[28px] text-own">{c.s2.journey}</p>
+      </Reveal>
+      <Reveal on={step >= 2} className="absolute bottom-[80px] left-[96px]">
         <SpeakerBlock compact />
-      </div>
-      <div className="absolute right-[96px] bottom-[96px] flex gap-[24px]">
+      </Reveal>
+      <Reveal on={step >= 2} className="absolute right-[96px] bottom-[60px] flex items-end gap-[24px]">
+        <QRTile url={url} label="Vote 1 · 2 · 3" size={200} />
         <QRTile url={LINKEDIN_URL} label={c.s0.linkedin} image={qrLinkedin.url} size={180} />
         <QRTile url={BRAINSMINGLE_URL} label={c.s0.brainsmingle} image={qrBrains.url} size={180} />
-      </div>
+      </Reveal>
     </div>
   );
 }

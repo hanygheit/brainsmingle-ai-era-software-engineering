@@ -17,5 +17,5 @@ export const Route = createFileRoute("/")({
       { name: "twitter:description", content: DESC },
     ],
   }),
-  component: () => <Deck index={0} step={0} />,
+  component: () => <Deck index={0} />,
 });

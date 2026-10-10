@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArcMotif, EASE, Eyebrow, StatNumber } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import c from "@/content/act1.json";
@@ -10,9 +10,11 @@ const H = "font-display font-bold tracking-[-0.03em] text-text";
 /* ---------- S3 · Everyone can build software now ---------- */
 function TypeIn({ text, active }: { text: string; active: boolean }) {
   const reduce = useReducedMotion();
-  const [n, setN] = useState(active && !reduce ? 0 : text.length);
+  // Already active on mount = opened in its final state (back / print): show full text.
+  const activeAtMount = useRef(active);
+  const [n, setN] = useState(text.length);
   useEffect(() => {
-    if (!active || reduce) return setN(text.length);
+    if (!active || reduce || activeAtMount.current) return setN(text.length);
     setN(0);
     const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + 2)), 20);
     return () => clearInterval(id);
@@ -23,72 +25,69 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
 export function S3({ step }: ScreenProps) {
   const [pop, setPop] = useState(false);
   const s = c.s3;
-  const ladder = step >= 5;
-  if (step >= 7) {
-    return (
-      <div className="relative flex h-full w-full flex-col justify-center gap-[40px] p-[96px]">
-        <Eyebrow>{s.ladderHeadline}</Eyebrow>
-        <div className="rounded-[20px] border border-line bg-surface p-[40px]">
-          <p className="t-tag text-muted">Then</p>
-          <p className="mt-[12px] font-mono text-[34px] text-muted">{s.then}</p>
-        </div>
-        <Reveal on={step >= 8}>
-          <div className="rounded-[20px] border bg-surface p-[40px]" style={{ borderColor: "var(--own)" }}>
-            <p className="t-tag text-own">Now</p>
-            <p className="mt-[12px] font-mono text-[34px] leading-[1.4] text-text">
-              <TypeIn text={s.now} active={step === 8} />
-            </p>
-          </div>
-        </Reveal>
-        
-      </div>
-    );
-  }
-  if (ladder) {
+  if (step >= 5) {
     const shown = step >= 6 ? 6 : 3;
     const pct = 18 + ((92 - 18) * (shown - 1)) / 5;
     return (
       <div className="relative h-full w-full overflow-hidden p-[96px]">
-        <div className="flex gap-[24px] border-b border-line pb-[20px] font-mono text-[20px] text-muted">
-          <span>{s.left}: {s.appBuilders.items.join(" · ")}</span>
+        <SrcTag items={["Fortune, Nov 2025", "Stack Overflow 2026", "GitHub, Apr 2026"]} />
+        <div className="flex gap-[24px] border-b border-line pb-[18px] font-mono text-[18px] text-muted">
+          <span className="truncate">{s.left}: {[...s.appBuilders.items, ...s.workflow.items].join(" · ")}</span>
           <span>|</span>
-          <span>{s.right}: {[...s.assist.items, ...s.agents.items].slice(0, 5).join(" · ")}…</span>
+          <span className="truncate">{s.right}: {[...s.assist.items, ...s.agents.items].join(" · ")}</span>
         </div>
-        <p className={`${H} mt-[40px] text-[72px]`}>{s.ladderHeadline}</p>
-        <div className="pointer-events-none absolute -right-[200px] -bottom-[300px]">
-          <motion.div initial={false} animate={{ scale: pct / 100 }} transition={{ duration: 0.7, ease: EASE }} style={{ transformOrigin: "center" }}>
-            <ArcMotif count={6} radius={600} />
+        <p className={`${H} mt-[32px] text-[64px]`}>{s.ladderHeadline}</p>
+        <div className="pointer-events-none absolute -bottom-[420px] -left-[300px] opacity-70">
+          <motion.div initial={false} animate={{ scale: pct / 100 }} transition={{ duration: 0.7, ease: EASE }}>
+            <ArcMotif count={6} radius={640} />
           </motion.div>
         </div>
-        <div className="relative mt-[40px] flex flex-col gap-[14px]">
-          {s.rungs.map(([name, hand], i) => {
-            const last = i === 5;
-            return (
-              <Reveal key={name} on={i < shown} delay={(i % 3) * 0.12} y={10}>
-                <button
-                  type="button"
-                  disabled={!last}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPop((p) => !p);
-                  }}
-                  className="flex items-baseline gap-[24px] text-left"
-                  style={{ marginLeft: i * 56 }}
-                >
-                  <span className="font-mono text-[22px] text-muted">{i + 1}</span>
-                  <span className={`${H} text-[40px] ${last ? "underline decoration-own decoration-2 underline-offset-8" : ""}`}>{name}</span>
-                  <span className="text-[28px] text-muted">— {hand}</span>
-                </button>
-              </Reveal>
-            );
-          })}
-        </div>
-        {pop && step >= 6 ? (
-          <div className="absolute right-[96px] bottom-[96px] max-w-[720px] rounded-[16px] border border-own bg-surface p-[28px] text-[24px] text-text">
-            {s.popover}
+        <div className="mt-[36px] grid grid-cols-[1fr_780px] gap-[64px]">
+          <div className="relative flex flex-col gap-[12px]">
+            {s.rungs.map(([name, hand], i) => {
+              const last = i === 5;
+              return (
+                <Reveal key={name} on={i < shown} delay={(i % 3) * 0.12} y={10}>
+                  <button
+                    type="button"
+                    disabled={!last}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPop((p) => !p);
+                    }}
+                    className="flex items-baseline gap-[20px] text-left"
+                    style={{ marginLeft: i * 40 }}
+                  >
+                    <span className="font-mono text-[20px] text-muted">{i + 1}</span>
+                    <span className={`${H} text-[34px] ${last ? "underline decoration-own decoration-2 underline-offset-8" : ""}`}>{name}</span>
+                    <span className="text-[24px] text-muted">— {hand}</span>
+                  </button>
+                </Reveal>
+              );
+            })}
+            {pop ? (
+              <div className="absolute top-full left-[200px] mt-[16px] max-w-[640px] rounded-[16px] border border-own bg-surface p-[24px] text-[22px] text-text">
+                {s.popover}
+              </div>
+            ) : null}
           </div>
-        ) : null}
-        <SrcTag items={["Fortune, Nov 2025", "Stack Overflow 2026", step >= 6 && "GitHub, Apr 2026"]} />
+          <div className="flex flex-col gap-[24px]">
+            <Reveal on={step >= 7}>
+              <div className="rounded-[20px] border border-line bg-surface p-[32px]">
+                <p className="t-tag text-muted">Then</p>
+                <p className="mt-[10px] font-mono text-[26px] text-muted">{s.then}</p>
+              </div>
+            </Reveal>
+            <Reveal on={step >= 8}>
+              <div className="rounded-[20px] border border-own bg-surface p-[32px]">
+                <p className="t-tag text-own">Now</p>
+                <p className="mt-[10px] min-h-[180px] font-mono text-[26px] leading-[1.4] text-text">
+                  <TypeIn text={s.now} active={step === 8} />
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
       </div>
     );
   }
@@ -153,7 +152,7 @@ export function S4({ step }: ScreenProps) {
   }
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={["Google Q3 2024 earnings, Oct 2024", "Google Cloud Next '26, Apr 2026", step >= 2 && "Stack Overflow, Oct 2026", step >= 2 && "JetBrains, Aug 2026"]} />
+      <SrcTag items={["Google Q3 2024 earnings, Oct 2024", "Google Cloud Next '26, Apr 2026", step >= 4 && "Stack Overflow, Oct 2026", step >= 4 && "JetBrains, Aug 2026"]} />
       <div className="flex items-end gap-[80px]">
         <div>
           <StatNumber value={pts[idx]?.value ?? 0} suffix="%" color="var(--own)" label={`${s.statLabel} · ${pts[idx]?.label ?? ""}`} />
@@ -172,7 +171,7 @@ export function S4({ step }: ScreenProps) {
         </svg>
       </div>
       <div className="mt-[56px]">
-        <Reveal on={step >= 1}>
+        <Reveal on={step >= 3}>
           <figure className="max-w-[1500px] rounded-[20px] border border-line bg-surface p-[40px]">
             <blockquote className="text-[40px] leading-[1.25] text-text">
               “{s.quoteBefore}<span className="underline decoration-own decoration-4 underline-offset-8">{s.quoteMark}</span>{s.quoteAfter}”
@@ -183,11 +182,11 @@ export function S4({ step }: ScreenProps) {
             </figcaption>
           </figure>
         </Reveal>
-        <Reveal on={step >= 2} className="mt-[28px] flex gap-[16px]">
+        <Reveal on={step >= 4} className="mt-[28px] flex gap-[16px]">
           {s.tags.map((t) => <Chip key={t}>{t}</Chip>)}
         </Reveal>
       </div>
-      <Reveal on={step >= 3} className="mt-auto">
+      <Reveal on={step >= 5} className="mt-auto">
         <p className={`${H} text-[64px]`}>{s.last}</p>
       </Reveal>
     </div>

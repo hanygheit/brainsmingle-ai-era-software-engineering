@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
 import { Deck } from "@/components/deck/DeckView";
+import { screens, TOTAL_SCREENS } from "@/content/screens";
 
 export const Route = createFileRoute("/present/$n")({
-  validateSearch: (s) => z.object({ step: z.coerce.number().int().min(0).catch(0) }).parse(s),
   head: ({ params }) => ({
     meta: [
-      { title: `Screen ${params.n} — AI-Era Software Engineering · Hany Saad` },
+      { title: slideTitle(params.n) },
       { name: "description", content: "Live keynote by Hany Saad, BrainsMingle AI Summit 2026." },
       { property: "og:title", content: "AI-Era Software Engineering — Hany Saad" },
       { property: "og:description", content: "Live keynote by Hany Saad, BrainsMingle AI Summit 2026." },
@@ -19,7 +18,15 @@ export const Route = createFileRoute("/present/$n")({
 
 function PresentRoute() {
   const { n } = Route.useParams();
-  const { step } = Route.useSearch();
   const index = Number.parseInt(n, 10);
-  return <Deck key={`${n}-${step}`} index={Number.isFinite(index) ? index : 0} step={step} />;
+  // Old ?step= links are ignored. The deck stays mounted: the router sees our own
+  // replaceState URL updates, and remounting here would reset the slide's state.
+  return <Deck index={Number.isFinite(index) ? index : 0} />;
+}
+
+/** Same format the deck writes on every navigation, so the two never disagree. */
+function slideTitle(n: string) {
+  const i = Math.max(0, Math.min(TOTAL_SCREENS - 1, Number.parseInt(n, 10) || 0));
+  const s = screens[i]!;
+  return `${s.id} · ${i + 1}/${TOTAL_SCREENS} — ${s.title}`;
 }

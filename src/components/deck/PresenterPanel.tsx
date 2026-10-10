@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { POLL_IDS, TARGET_TOTAL_SEC, type PollId } from "@/config";
-import { screens } from "@/content/screens";
+import { closeTotalSec, screens, talkTotalSec } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
 import { useDeck } from "@/deck/store";
 import { addManual, clearManual, POLL_CONTENT, usePollCounts } from "@/lib/poll";
@@ -25,13 +25,18 @@ export function paceColor(remaining: number) {
   return "var(--text)";
 }
 
+/** Talk timer (S1–S21 only), separate close timer (S22–S23), per-screen timer. Starts when you leave S0. */
 function useTimers(index: number) {
   const [running, setRunning] = useState(false);
   const [total, setTotal] = useState(0);
+  const [close, setClose] = useState(0);
   const [onScreen, setOnScreen] = useState(0);
   const prevIndex = useRef(index);
+  const idx = useRef(index);
+  idx.current = index;
   useEffect(() => {
     if (prevIndex.current !== index) {
+      if (prevIndex.current === 0 && index > 0) setRunning(true);
       prevIndex.current = index;
       setOnScreen(0);
     }
@@ -39,22 +44,43 @@ function useTimers(index: number) {
   useEffect(() => {
     if (!running) return;
     const id = setInterval(() => {
-      setTotal((t) => t + 1);
-      setOnScreen((t) => t + 1);
+      const i = idx.current;
+      if (i >= 1 && i <= 21) setTotal((t) => t + 1);
+      if (i >= 22) setClose((t) => t + 1);
+      if (i >= 1) setOnScreen((t) => t + 1);
     }, 1000);
     return () => clearInterval(id);
   }, [running]);
   return {
     running,
     total,
+    close,
     onScreen,
     toggle: () => setRunning((r) => !r),
     reset: () => {
       setRunning(false);
       setTotal(0);
+      setClose(0);
       setOnScreen(0);
     },
   };
+}
+
+/** Notes with **bold** key lines rendered larger. */
+function Notes({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+        part.startsWith("**") ? (
+          <strong key={i} className="font-display text-[28px] font-bold text-text">
+            {part.slice(2, -2)}
+          </strong>
+        ) : (
+          <span key={i} className="text-muted">{part}</span>
+        ),
+      )}
+    </>
+  );
 }
 
 function PollConsole({ poll }: { poll: PollId }) {
@@ -108,7 +134,10 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
   const deck = useDeck();
   const t = useTimers(deck.index);
   const nextScreen = screens[deck.index + 1];
-  const remaining = deck.screen.durationSec - t.onScreen;
+  const holds = deck.screen.id === "S21";
+  const rawRemaining = deck.screen.durationSec - t.onScreen;
+  const remaining = holds ? Math.max(0, rawRemaining) : rawRemaining;
+  const untimed = deck.index === 0;
   const srcs = sourcesFor(deck.screen.id);
 
   return (
@@ -117,18 +146,19 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
         <div className="flex items-center gap-3">
           <p className="font-mono text-[13px] tracking-[0.12em] text-muted uppercase">{deck.screen.act}</p>
           <p className="ml-auto font-mono text-[14px] tabular-nums">
-            {deck.screen.id} · step {deck.step}/{deck.screen.steps}
+            {deck.index} / {deck.total} · {deck.screen.title}
           </p>
         </div>
         {!compact ? (
           <div className="overflow-hidden rounded-lg border border-line">
             <MiniStage width={640}>
-              <ScreenRenderer screen={deck.screen} step={deck.step} choice={deck.choice} />
+              <ScreenRenderer screen={deck.screen} choice={deck.choice} />
             </MiniStage>
           </div>
         ) : null}
         <div className="min-h-0 flex-1 overflow-y-auto rounded-lg border border-line p-4 text-[22px] leading-[1.5] whitespace-pre-wrap">
-          {deck.screen.notes}
+          {deck.screen.id === "S7" ? <p className="mb-3 font-mono text-[18px] text-validate">Press 1/2/3 to reveal answers</p> : null}
+          <Notes text={deck.screen.notes} />
         </div>
       </div>
 
@@ -136,8 +166,8 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-lg border border-line p-3">
             <p className="font-mono text-[11px] text-muted">SCREEN</p>
-            <p className="font-display text-[40px] font-bold tabular-nums" style={{ color: paceColor(remaining) }}>
-              {fmt(remaining)}
+            <p className="font-display text-[40px] font-bold tabular-nums" style={{ color: holds ? "var(--text)" : paceColor(remaining) }}>
+              {untimed ? "—" : fmt(remaining)}
             </p>
           </div>
           <div className="rounded-lg border border-line p-3">
@@ -147,6 +177,13 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
               style={{ color: t.total > TARGET_TOTAL_SEC ? "var(--fail)" : "var(--text)" }}
             >
               {fmt(t.total)}
+            </p>
+            <p className="font-mono text-[11px] text-muted">S1–S21 plan: {fmt(talkTotalSec())}</p>
+          </div>
+          <div className="col-span-2 rounded-lg border border-line p-3">
+            <p className="font-mono text-[11px] text-muted">CLOSE / {fmt(closeTotalSec())} (S22–S23)</p>
+            <p className="font-display text-[28px] font-bold tabular-nums" style={{ color: t.close > closeTotalSec() ? "var(--fail)" : "var(--text)" }}>
+              {fmt(t.close)}
             </p>
           </div>
         </div>
@@ -171,7 +208,7 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
           {nextScreen ? (
             <div className="overflow-hidden rounded-lg border border-line">
               <MiniStage width={compact ? 300 : 420}>
-                <ScreenRenderer screen={nextScreen} step={0} choice={null} />
+                <ScreenRenderer screen={nextScreen} choice={null} />
               </MiniStage>
               <p className="px-2 py-1 font-mono text-[12px] text-muted">
                 {nextScreen.id} · {nextScreen.act}

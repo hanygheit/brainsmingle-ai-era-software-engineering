@@ -1,4 +1,5 @@
-import type { ComponentType } from "react";
+import { useEffect, useState, type ComponentType } from "react";
+import { useReducedMotion } from "framer-motion";
 import type { Screen } from "@/content/screens";
 import { Eyebrow, Headline } from "@/components/kit";
 import { S0, S1, S2 } from "@/components/screens/opening";
@@ -9,28 +10,60 @@ import { S18, S19, S20, S21, S22, S23 } from "@/components/screens/act5";
 
 export interface ScreenProps {
   screen: Screen;
-  /** Current reveal step, 0..screen.steps. Render purely from this so Back restores state exactly. */
+  /** Current build phase, 0..screen.steps. Driven by the auto sequence, never by clicks. */
   step: number;
   /** Screen-local choice from keys 1–6. */
   choice: number | null;
 }
 
-/** Screen components register here by id ("S0".."S23"); later prompts fill this in. */
-const REGISTRY: Partial<Record<string, ComponentType<ScreenProps>>> = { S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23 };
+const REGISTRY: Partial<Record<string, ComponentType<ScreenProps>>> = {
+  S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23,
+};
 
-export function ScreenRenderer(props: ScreenProps & { replay?: number }) {
-  const C = REGISTRY[props.screen.id] ?? PlaceholderScreen;
-  return <C key={`${props.screen.id}-${props.replay ?? 0}`} {...props} />;
+/** Milliseconds at which phase k (1-based) starts. */
+export function phaseTimes(screen: Screen): number[] {
+  return Array.from({ length: screen.steps }, (_, i) => screen.timeline?.[i] ?? (i + 1) * 450);
 }
 
-function PlaceholderScreen({ screen, step }: ScreenProps) {
+/** Plays phases 0→steps on mount when `play`; otherwise (back, print, thumbnails) shows the final state. */
+function useAutoPhase(screen: Screen, play: boolean) {
+  const reduce = useReducedMotion();
+  const [phase, setPhase] = useState(play && !reduce ? 0 : screen.steps);
+  useEffect(() => {
+    if (!play || reduce) return setPhase(screen.steps);
+    setPhase(0);
+    const timers = phaseTimes(screen).map((t, i) => setTimeout(() => setPhase(i + 1), t));
+    return () => timers.forEach(clearTimeout);
+  }, [screen, play, reduce]);
+  return phase;
+}
+
+export function ScreenRenderer({
+  screen,
+  choice,
+  replay,
+  play = false,
+}: {
+  screen: Screen;
+  choice: number | null;
+  replay?: number;
+  /** true = play the build sequence; false = render the complete final state. */
+  play?: boolean;
+}) {
+  return <Auto key={`${screen.id}-${replay ?? 0}`} screen={screen} choice={choice} play={play} />;
+}
+
+function Auto({ screen, choice, play }: { screen: Screen; choice: number | null; play: boolean }) {
+  const step = useAutoPhase(screen, play);
+  const C = REGISTRY[screen.id] ?? PlaceholderScreen;
+  return <C screen={screen} step={step} choice={choice} />;
+}
+
+function PlaceholderScreen({ screen }: ScreenProps) {
   return (
     <div className="flex h-full w-full flex-col justify-center p-[96px]">
       <Eyebrow>{screen.act}</Eyebrow>
       <Headline className="mt-[24px]">{screen.id}</Headline>
-      <p className="mt-[24px] t-body text-muted">
-        Screen content arrives in the next prompt · step {step}/{screen.steps}
-      </p>
     </div>
   );
 }

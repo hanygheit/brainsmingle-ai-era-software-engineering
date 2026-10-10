@@ -6,9 +6,9 @@ import { PresenterPanel } from "./PresenterPanel";
 import { ScreenRenderer } from "./ScreenRenderer";
 import { Stage } from "./Stage";
 
-export function Deck({ index = 0, step = 0 }: { index?: number; step?: number }) {
+export function Deck({ index = 0 }: { index?: number }) {
   return (
-    <DeckProvider initial={{ index, step }} syncUrl>
+    <DeckProvider initial={{ index }} syncUrl>
       <DeckInner />
     </DeckProvider>
   );
@@ -35,7 +35,7 @@ function DeckInner() {
             exit={{ opacity: 0 }}
             transition={{ duration: reduce ? 0.15 : 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <ScreenRenderer screen={deck.screen} step={deck.step} choice={deck.choice} replay={deck.replay} />
+            <ScreenRenderer screen={deck.screen} play={deck.enter === 1} choice={deck.choice} replay={deck.replay} />
           </motion.div>
         </AnimatePresence>
       </Stage>
@@ -52,7 +52,7 @@ function DeckInner() {
       ) : null}
       <Blackout />
       <p className="sr-only" aria-live="polite">
-        {deck.screen.id}, step {deck.step} of {deck.screen.steps}
+        Slide {deck.index} of {deck.total}: {deck.screen.title}
       </p>
     </main>
   );

@@ -69,7 +69,7 @@ export function S13({ step }: ScreenProps) {
   const s = c.s13;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[step >= 7 && "BairesDev Q2 2026"]} />
+      <SrcTag items={[step >= 8 && "BairesDev Q2 2026"]} />
       <p className={`${H} text-[64px]`}>{s.headline}</p>
       <div className="mt-[36px] flex flex-col gap-[12px]">
         {s.rows.map(([k, col, txt], i) => (
@@ -81,7 +81,7 @@ export function S13({ step }: ScreenProps) {
           </Reveal>
         ))}
       </div>
-      <Reveal on={step >= 7} className="mt-auto">
+      <Reveal on={step >= 8} className="mt-auto">
         <Tag>{s.tag}</Tag>
         <p className={`${H} mt-[16px] text-[56px]`}>{s.last}</p>
       </Reveal>
@@ -99,10 +99,10 @@ export function S14({ step }: ScreenProps) {
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <div className="absolute top-[96px] right-[96px] font-mono text-[28px] text-muted">{grown ? "2026" : "2022"}</div>
       <div className="absolute top-[440px] left-[640px]">
-        <motion.div className="absolute rounded-full border-[3px] border-direct" initial={false} animate={{ width: outer * 2, height: outer * 2, x: -outer, y: -outer }} transition={{ duration: 0.9, ease: EASE }} style={{ background: "color-mix(in oklab, var(--direct) 6%, transparent)" }} />
-        <motion.div className="absolute rounded-full border-[3px] border-own" initial={false} animate={{ width: inner * 2, height: inner * 2, x: -inner, y: -inner }} transition={{ duration: 0.9, ease: EASE }} style={{ background: "color-mix(in oklab, var(--own) 18%, var(--bg))" }} />
+        <motion.div className="absolute rounded-full border-[3px] border-direct" initial={false} animate={{ width: outer * 2, height: outer * 2, x: -outer, y: -outer }} transition={{ duration: 1.5, ease: EASE }} style={{ background: "color-mix(in oklab, var(--direct) 6%, transparent)" }} />
+        <motion.div className="absolute rounded-full border-[3px] border-own" initial={false} animate={{ width: inner * 2, height: inner * 2, x: -inner, y: -inner }} transition={{ duration: 1.5, ease: EASE }} style={{ background: "color-mix(in oklab, var(--own) 18%, var(--bg))" }} />
         <p className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-own">{s.judgment}<span className="block text-[16px] font-normal text-muted">{s.judgmentSub}</span></p>
-        <motion.p className="absolute -translate-x-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-direct" initial={false} animate={{ y: -outer - 70 }} transition={{ duration: 0.9, ease: EASE }}>
+        <motion.p className="absolute -translate-x-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-direct" initial={false} animate={{ y: -outer - 70 }} transition={{ duration: 1.5, ease: EASE }}>
           {s.reach}<span className="block text-[16px] font-normal text-muted">{s.reachSub}</span>
         </motion.p>
         <Reveal on={grown} delay={0.6} className="absolute -translate-x-1/2" >
@@ -128,9 +128,11 @@ export function S14({ step }: ScreenProps) {
 /* ---------- S15 ---------- */
 function TypeIn({ text, active }: { text: string; active: boolean }) {
   const reduce = useReducedMotion();
-  const [n, setN] = useState(active && !reduce ? 0 : text.length);
+  // Already active on mount = opened in its final state (back / print): show full text.
+  const activeAtMount = useRef(active);
+  const [n, setN] = useState(text.length);
   useEffect(() => {
-    if (!active || reduce) return setN(text.length);
+    if (!active || reduce || activeAtMount.current) return setN(text.length);
     setN(0);
     const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + 2)), 22);
     return () => clearInterval(id);
