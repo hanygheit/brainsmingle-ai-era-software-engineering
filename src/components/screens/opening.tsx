@@ -103,7 +103,7 @@ export function S1({ step }: ScreenProps) {
                 <div className="mt-[10px] h-[64px] rounded-[12px] border border-line" />
               </div>
             ))}
-            <div className="mt-[40px] flex h-[68px] items-center justify-center rounded-[12px] bg-direct font-semibold text-[24px] text-background">
+            <div className="mt-[40px] flex h-[68px] items-center justify-center rounded-[12px] bg-direct-fill font-semibold text-[24px] text-background">
               {c.s1.app.button}
             </div>
             <p className="mt-[28px] text-center text-[18px] text-muted">{c.s1.app.footer}</p>

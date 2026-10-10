@@ -37,7 +37,7 @@ export function S7({ step, choice }: ScreenProps) {
                 const pct = total ? Math.round((counts[i]! / total) * 100) : 0;
                 return (
                   <div key={o} className="relative overflow-hidden rounded-[14px] border border-line bg-surface px-[28px] py-[20px]">
-                    <motion.div className="absolute inset-y-0 left-0 bg-own/15" animate={{ width: `${pct}%` }} transition={{ duration: 0.5, ease: EASE }} />
+                    <motion.div className="absolute inset-y-0 left-0 bg-own-fill/15" animate={{ width: `${pct}%` }} transition={{ duration: 0.5, ease: EASE }} />
                     <p className="relative flex justify-between gap-[24px] text-[30px] text-text">
                       <span><span className="font-display font-bold text-muted">{i + 1}</span> · {o}</span>
                       <span className="font-mono text-[22px] text-muted tabular-nums">{counts[i]} · {pct}%</span>
@@ -177,7 +177,7 @@ export function S10({ step }: ScreenProps) {
               <div key={b.label}>
                 <div className="mb-[8px] flex justify-between text-[28px]"><span className="text-text">{b.label}</span><span className="font-mono tabular-nums" style={{ color: i ? "var(--own)" : "var(--text)" }}>{b.value}%</span></div>
                 <div className="h-[22px] rounded-full bg-line">
-                  <motion.div className="h-full rounded-full" style={{ background: i ? "var(--own)" : "var(--direct)" }} initial={{ width: 0 }} animate={{ width: `${b.value}%` }} transition={{ duration: 0.7, ease: EASE }} />
+                  <motion.div className="h-full rounded-full" style={{ background: i ? "var(--own-fill)" : "var(--direct-fill)" }} initial={{ width: 0 }} animate={{ width: `${b.value}%` }} transition={{ duration: 0.7, ease: EASE }} />
                 </div>
               </div>
             ))}
@@ -243,7 +243,7 @@ export function S11({ step }: ScreenProps) {
           </div>
         </Reveal>
         <motion.div
-          className="absolute -top-[96px] right-[0px] w-[420px] rotate-[2deg] rounded-[8px] bg-validate p-[22px] text-[24px] font-semibold text-background shadow-2xl"
+          className="absolute -top-[96px] right-[0px] w-[420px] rotate-[2deg] rounded-[8px] bg-validate-fill p-[22px] text-[24px] font-semibold text-background shadow-2xl"
           initial={false}
           animate={step >= 2 ? { opacity: 1, x: 0 } : { opacity: 0, x: 200 }}
           transition={{ duration: 0.5, ease: EASE }}

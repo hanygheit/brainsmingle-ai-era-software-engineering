@@ -226,7 +226,7 @@ function Blueprint() {
                   <td className="w-1/2 py-3">
                     <div className="flex items-center gap-3">
                       <div className="h-3 flex-1 rounded-full bg-surface">
-                        <div className="h-3 rounded-full bg-validate" style={{ width: `${(w / 20) * 100}%` }} />
+                        <div className="h-3 rounded-full bg-validate-fill" style={{ width: `${(w / 20) * 100}%` }} />
                       </div>
                       <span className="w-10 text-right font-mono">{w}%</span>
                     </div>
