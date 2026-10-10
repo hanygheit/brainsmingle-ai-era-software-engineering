@@ -93,7 +93,7 @@ export function S3({ step }: ScreenProps) {
     );
   }
   return (
-    <div className="flex h-full w-full flex-col p-[96px]">
+    <div className="relative flex h-full w-full flex-col p-[96px]">
       <p className={`${H} text-[72px]`}>{s.headline}</p>
       <div className="mt-[48px] grid flex-1 grid-cols-[1fr_1px_1fr] gap-[56px]">
         <div className="flex flex-col gap-[24px]">
