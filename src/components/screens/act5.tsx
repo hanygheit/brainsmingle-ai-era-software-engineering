@@ -208,7 +208,7 @@ export function S21(_: ScreenProps) {
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <p className={`${H} max-w-[1400px] text-[64px]`}>{rv.s21.headline}</p>
-      <div className="absolute inset-x-0 top-[-120px] bottom-0">
+      <div className="absolute inset-x-0 top-0 bottom-[250px]">
         <AudienceCards labels={op.s2.cards} tally={counts} active={lead} />
       </div>
       <div className="absolute right-[96px] bottom-[60px] left-[96px] flex items-end justify-between">
