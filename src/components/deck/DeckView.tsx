@@ -59,7 +59,10 @@ function DeckInner() {
   const actTitle = deck.screen.act.split(" · ")[1] ?? deck.screen.act;
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-black">
+    <main
+      className="relative h-dvh w-screen overflow-hidden"
+      style={{ ["--letterbox" as string]: paper && !showing ? "#F7F6F2" : "var(--stage-bg)", background: "var(--letterbox)" }}
+    >
       <Stage
         onClickHalf={(dir) => (showing && dir === 1 ? skip() : dir === 1 ? deck.next() : deck.prev())}
         onSwipe={(dir) => (showing && dir === 1 ? skip() : dir === 1 ? deck.next() : deck.prev())}

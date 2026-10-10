@@ -289,7 +289,7 @@ export function AudienceCards({
   active = null,
 }: {
   labels: [string, string, string] | string[];
-  tally?: number[];
+  tally?: number[] | undefined;
   action?: string;
   active?: number | null;
 }) {
@@ -312,7 +312,7 @@ export function AudienceCards({
                 <div className="mt-[20px]">
                   <div className="h-[6px] w-full rounded-full bg-line">
                     <motion.div
-                      className="h-full rounded-full bg-[var(--accent)]"
+                      className="h-full rounded-full bg-[var(--accent-fill,var(--accent))]"
                       animate={{ width: `${pct}%` }}
                       transition={{ duration: 0.5, ease: EASE }}
                     />
@@ -434,7 +434,7 @@ export function QRTile({
             size={size}
             level="M"
             marginSize={4}
-            fgColor="#0A0B0F"
+            fgColor="#0F1B33"
             bgColor="#FFFFFF"
             title={`QR code for ${url}`}
           />
@@ -453,20 +453,19 @@ export function useDownloadPdf() {
     if (busy) return;
     setBusy(true);
     try {
-      const res = await run({ data: { variant: "slides", origin: window.location.origin } });
-      if (!res.ok) throw new Error(res.error);
-      const file = await fetch(res.url);
-      if (!file.ok) throw new Error("Could not fetch the PDF.");
-      const href = URL.createObjectURL(await file.blob());
+      const res = await run({ data: {} });
+      if (!res.ok) {
+        if (res.missing) toast(res.error);
+        else toast.error(res.error, { action: { label: "Retry", onClick: () => void download() } });
+        return;
+      }
       const a = document.createElement("a");
-      a.href = href;
+      a.href = res.url;
       a.download = PDF_FILENAME;
+      a.rel = "noopener";
       a.click();
-      setTimeout(() => URL.revokeObjectURL(href), 2000);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not download the PDF.", {
-        action: { label: "Retry", onClick: () => void download() },
-      });
+    } catch {
+      toast.error("Could not download the PDF.", { action: { label: "Retry", onClick: () => void download() } });
     } finally {
       setBusy(false);
     }

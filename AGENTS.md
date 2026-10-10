@@ -15,3 +15,4 @@
 - Deck position syncs via BroadcastChannel + sessionStorage and mirrors to `/present/N` with replaceState; the deck route stays mounted across its own URL updates; why: reload resumes, no history spam.
 - Poll votes upsert directly into `poll_votes` (RLS limits poll ids/options); resets go through a PIN-checked server function; why: no attendee sign-in.
 - Light/dark slide themes are scoped CSS-variable overrides (.theme-paper / .theme-stage) chosen per screen in src/deck/theme.ts; why: screens stay theme-agnostic and embedded dark panels just opt back in.
+- The PDF is rendered offline from /print (scripts/export-pdf.mjs) and uploaded via the presenter window; exportPdf only serves the stored file; why: no third-party renderer and instant downloads.

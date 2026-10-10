@@ -43,11 +43,11 @@ export const voteUrl = (poll: PollId) => `${PRESENTATION_URL}/vote?poll=${poll}`
 
 /** Theme tokens (mirrored as CSS variables in styles.css). */
 export const THEME = {
-  bg: "#0A0B0F",
-  surface: "#12141A",
-  line: "#23262F",
-  text: "#F2F0EA",
-  muted: "#8A8F98",
+  bg: "#0F1B33",
+  surface: "#172744",
+  line: "#2B3D63",
+  text: "#F4F2EC",
+  muted: "#AEB8CC",
   delegate: "#8E97AB",
   direct: "#4C8DFF",
   validate: "#F2B33D",

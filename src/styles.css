@@ -142,18 +142,27 @@
  * Keynote design system — AI-Era Software Engineering (dark only)
  * ------------------------------------------------------------- */
 :root {
-  --bg: #0a0b0f;
-  --surface: #12141a;
-  --line: #23262f;
-  --text: #f2f0ea;
-  --muted: #8a8f98;
-  --delegate: #8e97ab;
-  --direct: #4c8dff;
-  --validate: #f2b33d;
-  --own: #3ddc97;
+  /* Stage (dark) theme: deep midnight navy */
+  --bg: #0f1b33;
+  --stage-bg: #0f1b33;
+  --stage-glow: #1a2c52;
+  --surface: #172744;
+  --line: #2b3d63;
+  --text: #f4f2ec;
+  --muted: #aeb8cc;
+  /* text-safe framework colours on navy */
+  --delegate: #b4bccd;
+  --direct: #8ab6ff;
+  --validate: #f6c35c;
+  --own: #5ee6aa;
+  /* fills always use the original framework colours */
+  --delegate-fill: #8e97ab;
+  --direct-fill: #4c8dff;
+  --validate-fill: #f2b33d;
+  --own-fill: #3ddc97;
   --accent: var(--own);
   --fail: #ff6b5e;
-  --qr-ink: #0a0b0f;
+  --qr-ink: #0f1b33;
   --qr-paper: #ffffff;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -171,6 +180,10 @@
   --color-direct: var(--direct);
   --color-validate: var(--validate);
   --color-own: var(--own);
+  --color-delegate-fill: var(--delegate-fill);
+  --color-direct-fill: var(--direct-fill);
+  --color-validate-fill: var(--validate-fill);
+  --color-own-fill: var(--own-fill);
   --color-accent-k: var(--accent);
   --color-fail: var(--fail);
   --color-qr-ink: var(--qr-ink);
@@ -203,11 +216,12 @@
 @utility deck-viewport {
   position: relative;
   overflow: hidden;
-  background: #000;
+  background: var(--letterbox, var(--stage-bg));
+  transition: background-color 0.35s var(--ease);
 }
 
 @utility vignette {
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  background: radial-gradient(ellipse 70% 65% at 32% 30%, var(--stage-glow) 0%, transparent 70%);
 }
 
 @utility no-scrollbar {
@@ -274,6 +288,7 @@
   --own: #0b7a55;
   --fail: #c0362c;
   --accent: var(--act, var(--own));
+  --accent-fill: var(--act, var(--own-fill));
   background: var(--bg);
   color: var(--text);
 }
@@ -281,19 +296,25 @@
 .theme-paper .qr-tile { border: 1px solid var(--rule); }
 
 .theme-stage {
-  --bg: #0a0b0f;
-  --surface: #12141a;
-  --line: #23262f;
-  --text: #f2f0ea;
-  --muted: #8a8f98;
-  --delegate: #8e97ab;
-  --direct: #4c8dff;
-  --validate: #f2b33d;
-  --own: #3ddc97;
-  --fail: #ff6b5e;
+  --bg: #0f1b33;
+  --surface: #172744;
+  --line: #2b3d63;
+  --text: #f4f2ec;
+  --muted: #aeb8cc;
+  --delegate: #b4bccd;
+  --direct: #8ab6ff;
+  --validate: #f6c35c;
+  --own: #5ee6aa;
+  --fail: #ff8a80;
   --accent: var(--own);
   color: var(--text);
-  box-shadow: 0 18px 40px -18px rgba(10, 11, 15, 0.45);
+}
+/* Code/terminal panels placed on paper read as screenshots: deep slate. */
+.theme-paper .theme-stage {
+  --bg: #1b2540;
+  --surface: #1b2540;
+  --line: #2b3d63;
+  box-shadow: 0 18px 40px -18px rgba(15, 27, 51, 0.45);
 }
 
 /* Deck chrome over a paper slide: ink on paper, act-coloured progress and label. */

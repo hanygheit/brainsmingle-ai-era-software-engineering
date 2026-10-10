@@ -1,21 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { z } from "zod";
-import { MiniStage } from "@/components/deck/Stage";
 import { ScreenRenderer } from "@/components/deck/ScreenRenderer";
+import { BlueprintFooter, BlueprintSections, BLUEPRINT_TITLE } from "@/components/blueprint/content";
 import { screens } from "@/content/screens";
-import { verifyPrintAccess } from "@/lib/presenter.functions";
+import { PrintMode } from "@/deck/print-mode";
+import { isPaper } from "@/deck/theme";
+import { SPEAKER } from "@/config";
 
-const Search = z.object({
-  variant: z.enum(["slides", "notes"]).catch("slides"),
-  token: z.string().catch(""),
-});
+declare global {
+  interface Window {
+    __PRINT_READY?: boolean;
+  }
+}
+
+/** Fixed per-screen choices for the PDF state (S7: question 2 revealed). */
+const PRINT_CHOICE: Record<string, number> = { S7: 2 };
 
 export const Route = createFileRoute("/print")({
-  validateSearch: (s) => Search.parse(s),
-  loaderDeps: ({ search }) => search,
-  loader: async ({ deps }) =>
-    deps.token ? verifyPrintAccess({ data: { variant: deps.variant, token: deps.token } }) : { ok: false },
   head: () => ({
     meta: [
       { title: "Print — AI-Era Software Engineering" },
@@ -27,91 +28,78 @@ export const Route = createFileRoute("/print")({
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  errorComponent: () => <Denied />,
-  notFoundComponent: () => <Denied />,
   component: PrintRoute,
 });
 
-function Denied() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-bg px-6 text-center">
-      <div>
-        <p className="font-mono text-[14px] tracking-[0.2em] text-muted">PRINT VIEW</p>
-        <h1 className="mt-3 font-sans text-[28px] font-bold text-text">This link has expired.</h1>
-        <p className="mt-2 font-sans text-[17px] text-muted">
-          Use “Download PDF” in the deck to get the slides.
-        </p>
-      </div>
-    </main>
-  );
-}
-
 function PrintRoute() {
-  const access = Route.useLoaderData();
-  const { variant } = Route.useSearch();
-  const withNotes = variant === "notes";
-
   useEffect(() => {
-    if (!access.ok) return;
     let cancelled = false;
-    const imgs = Array.from(document.images);
-    Promise.all([
-      document.fonts.ready,
-      ...imgs.map((img) =>
-        img.complete
-          ? Promise.resolve()
-          : new Promise<void>((r) => {
-              img.addEventListener("load", () => r(), { once: true });
-              img.addEventListener("error", () => r(), { once: true });
-            }),
-      ),
-      new Promise((r) => setTimeout(r, 300)),
-    ]).then(() => {
-      if (!cancelled) document.body.dataset["printReady"] = "true";
-    });
+    const wait = async () => {
+      await document.fonts.ready;
+      // let React commit every page, then wait for every image (QR tiles, monogram)
+      await new Promise((r) => setTimeout(r, 300));
+      await Promise.all(
+        Array.from(document.images).map((img) =>
+          img.complete
+            ? Promise.resolve()
+            : new Promise<void>((r) => {
+                img.addEventListener("load", () => r(), { once: true });
+                img.addEventListener("error", () => r(), { once: true });
+              }),
+        ),
+      );
+      await new Promise((r) => setTimeout(r, 400));
+      if (!cancelled) {
+        window.__PRINT_READY = true;
+        document.body.dataset["printReady"] = "true";
+      }
+    };
+    void wait();
     return () => {
       cancelled = true;
     };
-  }, [access.ok]);
-
-  if (!access.ok) return <Denied />;
+  }, []);
 
   return (
-    <div className="print-root bg-bg">
-      <style>{`
-        @page { size: 1920px 1080px; margin: 0 }
-        html, body { margin: 0; padding: 0; background: #0A0B0F }
-        .print-root *, .print-root *::before, .print-root *::after {
-          animation: none !important; transition: none !important; }
-        .print-page { width: 1920px; height: 1080px; overflow: hidden; position: relative;
-          break-after: page; page-break-after: always; print-color-adjust: exact;
-          -webkit-print-color-adjust: exact; background: #0A0B0F; color: #F2F0EA }
-        .print-page:last-child { break-after: auto; page-break-after: auto }
-      `}</style>
-      {screens.flatMap((s) => {
-        const pages = [
-          <div key={`s-${s.id}`} className="print-page">
-            <ScreenRenderer screen={s} choice={null} />
-          </div>,
-        ];
-        if (withNotes) {
-          pages.push(
-            <div key={`n-${s.id}`} className="print-page grid grid-cols-[760px_1fr] gap-[72px] p-[96px]">
-              <div className="overflow-hidden rounded-lg border border-line self-start">
-                <MiniStage width={760}>
-                  <ScreenRenderer screen={s} choice={null} />
-                </MiniStage>
-              </div>
-              <div>
-                <p className="t-tag text-muted">{s.id} · {s.act}</p>
-                <h2 className="mt-4 t-headline">{s.title}</h2>
-                <p className="mt-6 t-body whitespace-pre-wrap">{s.notes}</p>
-              </div>
-            </div>,
-          );
-        }
-        return pages;
-      })}
-    </div>
+    <PrintMode.Provider value>
+      <div className="print-root">
+        <style>{`
+          @page { size: 1920px 1080px; margin: 0 }
+          html, body { margin: 0; padding: 0; background: #F7F6F2 }
+          .print-root *, .print-root *::before, .print-root *::after {
+            animation: none !important; transition: none !important; }
+          .print-root * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+          .print-page { width: 1920px; height: 1080px; overflow: hidden; position: relative;
+            break-after: page; page-break-after: always; }
+          .print-page.stage { background: #0F1B33; }
+          .print-page.stage .glow { position:absolute; inset:0;
+            background: radial-gradient(ellipse 70% 65% at 32% 30%, #1A2C52 0%, transparent 70%); }
+          .print-bp { width: 1280px; zoom: 1.5; }
+          .print-bp .bp-section { break-before: page; border-top: 0; }
+          .print-bp .bp-avoid { break-inside: avoid; }
+        `}</style>
+        {screens.map((s) => (
+          <div key={s.id} className={`print-page ${isPaper(s.id) ? "" : "stage"}`}>
+            {isPaper(s.id) ? null : <div className="glow" aria-hidden />}
+            <div className="absolute inset-0">
+              <ScreenRenderer screen={s} choice={PRINT_CHOICE[s.id] ?? null} />
+            </div>
+          </div>
+        ))}
+        <div className="print-page theme-paper bg-bg font-sans text-text flex flex-col justify-center px-[160px]">
+          <p className="t-tag text-muted">Resources</p>
+          <h1 className="mt-[24px] t-display-l">{BLUEPRINT_TITLE}</h1>
+          <p className="mt-[24px] t-body text-muted">{SPEAKER.name} · {SPEAKER.roles.join(" · ")}</p>
+        </div>
+        <div className="theme-paper bg-bg font-sans text-text">
+          <div className="print-bp px-[64px]">
+            <BlueprintSections />
+            <div className="bp-section">
+              <BlueprintFooter />
+            </div>
+          </div>
+        </div>
+      </div>
+    </PrintMode.Provider>
   );
 }

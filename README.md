@@ -27,3 +27,14 @@ npm run dev
 - TypeScript
 - React
 - Tailwind CSS
+
+## Generate the PDF
+
+The PDF is rendered by our own pipeline (no third-party service) from the unlisted `/print` page:
+
+```sh
+npx playwright install chromium   # once
+node scripts/export-pdf.mjs https://brainsmingle-ai-era-software-engineering.lovable.app AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026.pdf
+```
+
+Then open the presenter window → **Upload PDF** (needs the presenter PIN). Every Download PDF button serves that file.

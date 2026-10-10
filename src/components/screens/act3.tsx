@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useRef, useState } from "react";
 import { ArcMotif, EASE, Eyebrow, QuoteCard } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
@@ -8,6 +9,7 @@ import cm from "@/content/careerMatrix.json";
 import { Reveal, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
+const FILL: Record<string, string> = { direct: "var(--direct-fill)", delegate: "var(--delegate-fill)", validate: "var(--validate-fill)", own: "var(--own-fill)", neutral: "var(--text)" };
 const COL: Record<string, string> = {
   direct: "var(--direct)",
   delegate: "var(--delegate)",
@@ -42,7 +44,7 @@ export function S12({ step }: ScreenProps) {
         <div className="grid grid-cols-10 gap-[6px] self-start">
           {Array.from({ length: 100 }, (_, i) => (
             <div key={i} className="relative h-[28px] w-[28px] overflow-hidden rounded-[5px] bg-line">
-              {i < 5 ? <div className="absolute inset-y-0 left-0 bg-own" style={{ width: i === 4 ? "50%" : "100%" }} /> : null}
+              {i < 5 ? <div className="absolute inset-y-0 left-0 bg-own-fill" style={{ width: i === 4 ? "50%" : "100%" }} /> : null}
             </div>
           ))}
         </div>
@@ -153,7 +155,7 @@ export function S15({ step }: ScreenProps) {
       </div>
       <div className="mt-[14px] flex h-[120px] w-full overflow-hidden rounded-[16px]">
         {s.segments.map(([name, col, a, b]) => (
-          <motion.div key={name as string} className="flex items-center justify-center overflow-hidden text-[24px] font-semibold text-background" initial={false} animate={{ width: `${y2026 ? b : a}%` }} transition={{ duration: 0.6, ease: EASE }} style={{ background: COL[col as string] }}>
+          <motion.div key={name as string} className="flex items-center justify-center overflow-hidden text-[24px] font-semibold" initial={false} animate={{ width: `${y2026 ? b : a}%` }} transition={{ duration: 0.6, ease: EASE }} style={{ background: FILL[col as string], color: "#14161C" }}>
             {name as string} {(y2026 ? b : a) as number}%
           </motion.div>
         ))}
@@ -208,7 +210,7 @@ export function S16({ step }: ScreenProps) {
             <div className="border-b border-line px-[24px] py-[12px] t-tag text-muted">{s.file}</div>
             <div className="space-y-[6px] p-[24px] font-mono text-[20px] leading-[1.5]">
               {s.code.map((l, i) => (
-                <p key={l} className="rounded-[6px] px-[8px] transition-colors duration-300" style={{ background: i === 0 && step >= 6 ? "color-mix(in oklab, var(--validate) 22%, transparent)" : "transparent", color: "var(--text)" }}>
+                <p key={l} className="rounded-[6px] px-[8px] transition-colors duration-300" style={{ background: i === 0 && step >= 6 ? "color-mix(in oklab, var(--validate-fill) 22%, transparent)" : "transparent", color: "var(--text)" }}>
                   {i === 0 && step >= 6 ? <>{l.split("audience")[0]}<span className="text-validate font-bold">audience</span>{l.split("audience")[1]}</> : l}
                 </p>
               ))}
@@ -226,6 +228,7 @@ export function S16({ step }: ScreenProps) {
 
 /* ---------- S17 ---------- */
 export function S17({ choice }: ScreenProps) {
+  const print = usePrintMode();
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const [sel, setSel] = useState(idx);
   useEffect(() => setSel(idx), [idx]);
@@ -249,6 +252,21 @@ export function S17({ choice }: ScreenProps) {
             <motion.div initial={false} animate={{ scale: 0.35 + sel * 0.13 }} transition={{ duration: 0.6, ease: EASE }}><ArcMotif count={6} radius={500} /></motion.div>
           </div>
           <p className="relative font-mono text-[20px] text-muted">radius · <span className="text-own">{cm.radius[sel]}</span></p>
+          {print ? (
+            <table className="relative mt-[20px] w-full border-separate border-spacing-[6px] text-[20px]">
+              <thead><tr><th />{cm.stages.map((st, i) => <th key={st} className={`font-mono text-[16px] font-normal ${i === sel ? "text-text" : "text-muted"}`}>{st}</th>)}</tr></thead>
+              <tbody>
+                {cm.groups.map(([label, vals]) => (
+                  <tr key={label as string}>
+                    <td className="pr-[12px] text-text">{label as string}</td>
+                    {(vals as number[]).map((v, i) => (
+                      <td key={i} className="h-[44px] rounded-[8px] text-center font-mono font-bold" style={{ background: `color-mix(in oklab, var(--own-fill) ${v * 18}%, var(--surface))`, color: "#14161C", outline: i === sel ? "2px solid var(--own)" : undefined }}>{v}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
           <div className="relative mt-[20px] space-y-[16px]">
             {cm.groups.map(([label, vals]) => {
               const v = (vals as number[])[sel]!;
@@ -257,12 +275,13 @@ export function S17({ choice }: ScreenProps) {
                 <div key={label as string}>
                   <div className="mb-[6px] flex justify-between text-[22px]"><span className="text-text">{label as string}</span><span className="font-mono text-muted">{v}</span></div>
                   <div className="h-[14px] rounded-full bg-line">
-                    <motion.div key={dropped ? `d-${sel}` : "s"} className="h-full rounded-full" initial={false} animate={{ width: `${v * 20}%`, backgroundColor: dropped ? ["var(--validate)", "var(--validate)", "var(--own)"] : "var(--own)" }} transition={{ duration: 0.6, ease: EASE }} />
+                    <motion.div key={dropped ? `d-${sel}` : "s"} className="h-full rounded-full" initial={false} animate={{ width: `${v * 20}%`, backgroundColor: dropped ? ["var(--validate-fill)", "var(--validate)", "var(--own-fill)"] : "var(--own-fill)" }} transition={{ duration: 0.6, ease: EASE }} />
                   </div>
                 </div>
               );
             })}
           </div>
+          )}
           <div className="relative mt-[16px]"><Tag>{cm.tag}</Tag></div>
         </div>
         <div className="w-[640px] rounded-[20px] border border-line bg-surface p-[36px]">

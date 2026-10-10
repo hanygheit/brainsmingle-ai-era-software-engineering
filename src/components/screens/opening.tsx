@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useState } from "react";
 import { ArcMotif, AudienceCards, EASE, Eyebrow, QRTile, Terminal, type TermStatus } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
@@ -24,6 +25,7 @@ function BreathingArcs({ radius = 520, opacity = 0.6 }: { radius?: number; opaci
 }
 
 function Countdown() {
+  const print = usePrintMode();
   const target = new Date(EVENT.start).getTime();
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
@@ -31,6 +33,7 @@ function Countdown() {
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
+  if (print) return <p className="font-mono text-[26px] text-muted">Mon 12 Oct 2026 · 20:00 Cairo</p>;
   if (now === null) return <p className="h-[30px]" />;
   const left = Math.max(0, Math.floor((target - now) / 1000));
   if (left === 0) return <p className="font-mono text-[26px] text-own">{c.s0.startingNow}</p>;
@@ -103,7 +106,7 @@ export function S1({ step }: ScreenProps) {
                 <div className="mt-[10px] h-[64px] rounded-[12px] border border-line" />
               </div>
             ))}
-            <div className="mt-[40px] flex h-[68px] items-center justify-center rounded-[12px] bg-direct font-semibold text-[24px] text-background">
+            <div className="mt-[40px] flex h-[68px] items-center justify-center rounded-[12px] bg-direct-fill font-semibold text-[24px] text-background">
               {c.s1.app.button}
             </div>
             <p className="mt-[28px] text-center text-[18px] text-muted">{c.s1.app.footer}</p>
@@ -145,6 +148,7 @@ export function S1({ step }: ScreenProps) {
 /* ---------- S2 · Ready for what? ---------- */
 export function S2({ step, choice }: ScreenProps) {
   const { counts } = usePollCounts("s2-challenge");
+  const print = usePrintMode();
   const url = voteUrl("s2-challenge");
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -163,7 +167,7 @@ export function S2({ step, choice }: ScreenProps) {
       </Reveal>
       <Reveal on={step >= 1} className="absolute inset-0" y={24}>
         <div className="absolute inset-0" style={{ transform: "translateY(-250px)" }}>
-          <AudienceCards labels={c.s2.cards} tally={counts} active={choice} />
+          <AudienceCards labels={c.s2.cards} tally={print ? undefined : counts} active={choice} />
         </div>
       </Reveal>
       <Reveal on={step >= 3} className="absolute inset-x-0 top-[696px] text-center">

@@ -111,7 +111,7 @@ export function S3({ step }: ScreenProps) {
           <Reveal on={step >= 2} className="mt-auto flex flex-col gap-[14px]">
             <Chip color="var(--validate)">{s.evidence1}</Chip>
             <p className="text-[24px] text-text">{s.evidence2}</p>
-            <span className="self-start rounded-full bg-own/15 px-[18px] py-[8px] font-mono text-[18px] text-own">{s.badge}</span>
+            <span className="self-start rounded-full bg-own-fill/15 px-[18px] py-[8px] font-mono text-[18px] text-own">{s.badge}</span>
           </Reveal>
         </div>
         <div className="bg-line" />
@@ -158,12 +158,12 @@ export function S4({ step }: ScreenProps) {
           <StatNumber value={pts[idx]?.value ?? 0} suffix="%" color="var(--own)" label={`${s.statLabel} · ${pts[idx]?.label ?? ""}`} />
         </div>
         <svg width={W} height={Hh} aria-hidden>
-          <path d={d} fill="none" stroke="var(--own)" strokeWidth={4} />
+          <path d={d} fill="none" stroke="var(--own-fill)" strokeWidth={4} />
           {pts.map((p, i) => {
             const [x, y] = xy(i);
             return (
               <g key={p.label} opacity={i <= idx ? 1 : 0.2}>
-                <circle cx={x} cy={y} r={9} fill="var(--own)" />
+                <circle cx={x} cy={y} r={9} fill="var(--own-fill)" />
                 <text x={x} y={Hh - 2} textAnchor="middle" fill="var(--muted)" fontSize={20} fontFamily="JetBrains Mono">{p.label}</text>
               </g>
             );
@@ -267,7 +267,7 @@ export function S6({ step }: ScreenProps) {
                 <div key={b.label} className="relative flex h-full flex-1 flex-col items-center">
                   <motion.div
                     className="absolute left-1/2 w-[72px] -translate-x-1/2 rounded-[6px]"
-                    style={{ background: neg ? "var(--fail)" : "var(--direct)", [neg ? "top" : "bottom"]: "50%" }}
+                    style={{ background: neg ? "var(--fail)" : "var(--direct-fill)", [neg ? "top" : "bottom"]: "50%" }}
                     initial={false}
                     animate={{ height: step >= 1 || i < 2 ? h : 0 }}
                     transition={{ duration: 0.6, ease: EASE }}
