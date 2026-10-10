@@ -434,7 +434,7 @@ export function QRTile({
             size={size}
             level="M"
             marginSize={4}
-            fgColor="#0A0B0F"
+            fgColor="#0F1B33"
             bgColor="#FFFFFF"
             title={`QR code for ${url}`}
           />

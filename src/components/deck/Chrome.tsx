@@ -153,7 +153,7 @@ export function ControlBar() {
 export function Blackout() {
   const { overlay } = useDeck();
   if (overlay !== "black") return null;
-  return <div className="absolute inset-0 z-50 bg-black" aria-label="Blackout" />;
+  return <div className="absolute inset-0 z-50 bg-[var(--stage-bg)]" aria-label="Blackout" />;
 }
 
 export function SourceDrawer() {
