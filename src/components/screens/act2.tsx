@@ -61,8 +61,8 @@ export function S7({ step, choice }: ScreenProps) {
           <p className="font-mono text-[22px] text-muted">Q{winner + 1} · {iv.poll.options[winner]}</p>
           {step === 2 ? (
             <div className="mt-[32px] grid grid-cols-2 gap-[48px]">
-              <Reveal on className="rounded-[20px] border bg-surface p-[40px]" >
-                <div style={{ borderColor: "var(--own)" }}>
+              <Reveal on className="rounded-[20px] border border-own bg-surface p-[40px]">
+                <div>
                   <p className={`${H} text-[40px] text-own`}>Graduate A</p>
                   <p className="mt-[20px] text-[30px] leading-[1.4] text-text">{ans.a}</p>
                 </div>
@@ -146,7 +146,7 @@ export function S9({ step }: ScreenProps) {
       <Reveal on={step >= 1} className="mt-[20px] grid grid-cols-2 gap-[64px]">
         <div className="relative h-[120px] rounded-[20px] border border-line bg-surface">
           <AnimatePresence mode="wait">
-            <motion.p key={i} className="absolute inset-0 flex items-center px-[40px] font-mono text-[40px] text-muted" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <motion.p key={i} className="absolute inset-0 flex items-center px-[40px] font-mono text-[40px] text-text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
               {s.rows[i]![0]}
             </motion.p>
           </AnimatePresence>
