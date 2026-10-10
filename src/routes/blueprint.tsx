@@ -111,18 +111,20 @@ function Blueprint() {
     .filter((g) => g.list.length);
 
   return (
-    <main className="bp min-h-dvh bg-bg font-sans text-text">
+    <main className="bp theme-paper min-h-dvh bg-bg font-sans text-text">
       <style>{`
         @media print {
           .bp-nav, .bp-noprint { display: none !important; }
-          .bp { background: #0A0B0F !important; }
+          .bp, .bp-head { background: #F7F6F2 !important; }
+          .bp-head { --bg:#F7F6F2; --text:#14161C; --muted:#5B616E; --line:#E3E1DA; box-shadow:none !important; }
           .bp * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
           .bp-section { break-before: page; break-inside: auto; }
           .bp-avoid { break-inside: avoid; }
           .bp-sticky { position: static !important; }
         }
       `}</style>
-      <header className="mx-auto max-w-6xl px-5 pt-10 pb-6 sm:px-8">
+      <div className="bp-head theme-stage bg-bg" style={{ boxShadow: "none" }}>
+      <header className="mx-auto max-w-6xl px-5 pt-10 pb-10 sm:px-8">
         <Link to="/present/$n" params={{ n: "0" }} className="bp-noprint font-mono text-[14px] text-muted hover:text-text">
           ← Back to the deck
         </Link>
@@ -135,6 +137,7 @@ function Blueprint() {
           <DownloadPdfButton />
         </div>
       </header>
+      </div>
 
       <nav className="bp-nav bp-sticky sticky top-0 z-20 border-y border-line bg-bg/95 backdrop-blur">
         <ul className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 py-3 sm:px-8">
