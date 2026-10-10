@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "97c6c933-fe86-44f9-8feb-cfe77eec3179",
-  "project_id": "4299e446-8e0f-49c2-9d33-b0794c6f7e7a",
-  "url": "/__l5e/assets-v1/97c6c933-fe86-44f9-8feb-cfe77eec3179/arcs-on-light.png",
-  "r2_key": "a/v1/4299e446-8e0f-49c2-9d33-b0794c6f7e7a/97c6c933-fe86-44f9-8feb-cfe77eec3179/arcs-on-light.png",
-  "original_filename": "arcs-on-light.png",
-  "size": 82833,
   "content_type": "image/png",
-  "created_at": "2026-09-23T21:54:33Z"
+  "created_at": "2026-09-23T21:54:33Z",
+  "original_filename": "arcs-on-light.png",
+  "project_id": "b499764b-f201-44d3-a26e-5ebee9703113",
+  "r2_key": "a/v1/b499764b-f201-44d3-a26e-5ebee9703113/97c6c933-fe86-44f9-8feb-cfe77eec3179/arcs-on-light.png",
+  "size": 82833,
+  "url": "/__l5e/assets-v1/97c6c933-fe86-44f9-8feb-cfe77eec3179/arcs-on-light.png",
+  "version": 1
 }
