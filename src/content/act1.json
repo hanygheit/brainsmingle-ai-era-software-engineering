@@ -1,0 +1,83 @@
+{
+  "s3": {
+    "headline": "Everyone can build software now.",
+    "left": "Builders who don't code",
+    "right": "Developers",
+    "appBuilders": { "label": "App builders", "items": ["Lovable", "Bolt", "v0", "Replit Agent", "Google AI Studio"] },
+    "workflow": { "label": "Workflow automation", "items": ["n8n", "Make", "Zapier", "Power Automate / Copilot Studio"] },
+    "caption": "Describe it → get a working app or automation.",
+    "evidence1": "Lovable: $200M ARR — Fortune, Nov 2025",
+    "evidence2": "“Everyone becomes a developer in the future.” — Anton Osika, Lovable CEO",
+    "badge": "This presentation is a Lovable app.",
+    "assist": { "label": "AI-assisted coding — you drive", "items": ["GitHub Copilot", "Cursor", "JetBrains AI", "Gemini Code Assist"] },
+    "agents": { "label": "AI coding agents — you delegate", "items": ["Claude Code", "OpenAI Codex", "Copilot coding agent", "Gemini CLI", "Kiro"] },
+    "agentsTag": "Among coding-agent users: Claude Code 66%, GitHub Copilot 59% — Stack Overflow 2026",
+    "ladderHeadline": "The unit of delegation changed.",
+    "rungs": [
+      ["Autocomplete", "a line"],
+      ["Chat assistant", "a question"],
+      ["IDE copilot", "a function"],
+      ["Repository-aware agent", "an issue"],
+      ["Agentic workflow", "a feature loop"],
+      ["AI-native delivery", "a workflow"]
+    ],
+    "popover": "Assign a Dependabot security alert to several agents and compare their draft PRs — GitHub, Apr 2026",
+    "then": "Write a C# method to validate a JWT.",
+    "now": "Investigate the existing authentication implementation, propose a secure integration plan, identify affected components, add tests, and prepare a PR for review."
+  },
+  "s4": {
+    "points": [
+      { "value": 25, "label": "Oct 2024" },
+      { "value": 50, "label": "fall 2025" },
+      { "value": 75, "label": "Apr 2026" }
+    ],
+    "statLabel": "of new code at Google is AI-generated",
+    "quoteBefore": "Today, 75% of all new code at Google is now AI-generated and ",
+    "quoteMark": "approved by engineers",
+    "quoteAfter": ", up from 50% last fall.",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "source": "Cloud Next '26 · 22 Apr 2026",
+    "tags": [
+      "73% use coding assistants or agents daily — Stack Overflow, Oct 2026",
+      "90% of professional developers use coding agents weekly at work — JetBrains, Aug 2026"
+    ],
+    "last": "75% of the code. 100% of the accountability."
+  },
+  "s5": {
+    "stages": ["Code generation", "Pull requests", "Review", "CI", "Tests", "Release"],
+    "numbers": "Claude authors ~80% of code · CI jobs 25× in six months · tests 10× · test selection redesigned",
+    "numbersSource": "Anthropic engineering blog, 14 Sep 2026",
+    "tag": "One organisation's engineering setting",
+    "quote": "Writing code is no longer the constraint, and once PR review gets accelerated, CI starts feeling the pressure.",
+    "speaker": "Sachin Malhotra",
+    "role": "Anthropic",
+    "footer": "Claude Cowork: the team says Claude Code wrote essentially all of it — and that they ‘spent more time making product and architecture decisions than writing individual lines of code.’ (Axios, Jan 2026)",
+    "last": "A faster implementation workflow can expose a slower delivery system."
+  },
+  "s6": {
+    "label": "Different studies, different measures — not one axis.",
+    "metr": {
+      "title": "METR",
+      "meta": "Jul 2025 · experienced OSS developers · early-2025 tools",
+      "bars": [
+        { "label": "Expected", "value": 24 },
+        { "label": "Felt", "value": 20 },
+        { "label": "Measured", "value": -19 }
+      ],
+      "unit": "task time"
+    },
+    "cui": {
+      "title": "Cui et al., Management Science",
+      "meta": "Field RCTs · 4,867 developers",
+      "value": 26,
+      "valueLabel": "completed tasks",
+      "note": "Biggest gains for less-experienced developers"
+    },
+    "band": [
+      "Faros AI, Apr 2026: bugs per developer +54% · time in review +441% (industry telemetry)",
+      "DORA: AI is an amplifier — time saved is often re-allocated to verification overhead."
+    ],
+    "last": "Code got cheaper. Being wrong didn't."
+  }
+}

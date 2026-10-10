@@ -1,1 +1,49 @@
-{"poll":{"question":"[S2 poll question — to be written]","options":["Option 1","Option 2","Option 3"]}}
+{
+  "poll": {
+    "question": "Which is your biggest challenge?",
+    "options": ["Graduate readiness", "Developer growth", "Company readiness"]
+  },
+  "s0": {
+    "eyebrow": "BrainsMingle AI Summit 2026 · AI in Learning & Development · Mon 12 Oct 2026 · 20:00 Cairo",
+    "title": "AI-Era Software Engineering",
+    "subtitle": "From Graduate Readiness to Talent Development",
+    "linkedin": "Connect on LinkedIn",
+    "brainsmingle": "Follow on BrainsMingle",
+    "startingNow": "Starting now",
+    "startsIn": "Starts in"
+  },
+  "s1": {
+    "app": { "name": "shop-api", "heading": "Welcome back", "email": "Email", "password": "Password", "button": "Sign in", "footer": "A fictional store" },
+    "panelEyebrow": "Final-year project · built with an AI coding agent",
+    "task": "Add secure authentication to this application.",
+    "tag": "Illustrative · simulated",
+    "terminal": [
+      { "text": "› Reading repository…" },
+      { "text": "› Investigating auth dependencies…" },
+      { "text": "› Plan proposed (7 steps)" },
+      { "text": "› Editing 14 files…" },
+      { "text": "› Generating tests…" },
+      { "text": "› Running tests… 21 passed · 2 failed", "status": "warn" },
+      { "text": "› Fixing failures…" },
+      { "text": "› Running tests… 23 passed", "status": "ok" },
+      { "text": "› Updating docs…" },
+      { "text": "› Opening pull request…" },
+      { "text": "✓ Implementation ready for review", "status": "ok" }
+    ],
+    "chips": ["Implementation generated", "Tests generated", "Documentation generated", "Pull request opened"],
+    "line1": "The code is ready.",
+    "line2": "Are we?"
+  },
+  "s2": {
+    "question": "Ready for what?",
+    "cards": [
+      "Graduate readiness — What should we teach?",
+      "Developer growth — What should we learn next?",
+      "Company readiness — What should we change?"
+    ],
+    "prompt": "Which is your biggest challenge? Type 1, 2 or 3 in chat.",
+    "title": "AI-Era Software Engineering",
+    "subtitle": "From Graduate Readiness to Talent Development",
+    "journey": "State of AI → Students → Graduates → Engineers → Companies"
+  }
+}
