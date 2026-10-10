@@ -1,8 +1,6 @@
-- [x] PDF download without Browserless: pre-render PDFs and store them
-- [x] Match the closing slide GitHub QR block to the supplied sample
-- [x] Add a professional LinkedIn QR block below the GitHub QR on the closing slide
-- [x] Align the web deck's rules, examples, order, and speaker notes with the approved presentation
-- [x] Verify all approved slides, navigation, and current PDF availability (23 slides; 23-page slides PDF and 46-page notes PDF)
-- [x] Slide 8 (five gates overview): list each gate's four rule titles under its card; refresh both PDFs
-- [x] PDF download from the app's own backend storage, no external keys: regenerate both PDFs for the remix backend and verify the button
-- Wire uploaded QR pack (LinkedIn, BrainsMingle, presentation) into QR tiles
+# Roadmap
+- [x] Engine, design system, config, live polls, /engine-test
+- [x] Wire uploaded QR pack (LinkedIn, BrainsMingle, presentation) into QR tiles
+- [ ] Screens S0–S23 content (next prompts)
+- [ ] /blueprint content (Prompt 4)
+- [ ] PDF export rework (later prompt) — needs PRESENTER_PIN secret for poll reset
