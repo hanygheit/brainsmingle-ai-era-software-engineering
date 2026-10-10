@@ -40,22 +40,28 @@ export type Database = {
           choice: string
           created_at: string
           id: string
+          option: number | null
+          poll_id: string | null
           question_id: number
           session_code: string
           voter_id: string
         }
         Insert: {
-          choice: string
+          choice?: string
           created_at?: string
           id?: string
-          question_id: number
-          session_code: string
+          option?: number | null
+          poll_id?: string | null
+          question_id?: number
+          session_code?: string
           voter_id: string
         }
         Update: {
           choice?: string
           created_at?: string
           id?: string
+          option?: number | null
+          poll_id?: string | null
           question_id?: number
           session_code?: string
           voter_id?: string

@@ -1,109 +1,115 @@
 import { useEffect, useRef } from "react";
 import { useDeck } from "./store";
 
-/** Global presentation shortcuts, shared by the deck and presenter windows. */
-export function useKeyboard() {
+export const DOWNLOAD_EVENT = "deck-download";
+export const CHOICE_EVENT = "deck-choice";
+export type ChoiceDetail = { screenId: string; n: number };
+
+/** Presentation shortcuts shared by the audience and presenter windows. */
+export function useKeyboard({ presenterWindow = false }: { presenterWindow?: boolean } = {}) {
   const deck = useDeck();
-  const buffer = useRef("");
-  const bufferTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const deckRef = useRef(deck);
+  deckRef.current = deck;
+  const gotoBuffer = useRef<string | null>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (target && ["INPUT", "TEXTAREA"].includes(target.tagName)) return;
-
+      const t = e.target as HTMLElement | null;
+      if (t && (["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName) || t.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const d = deckRef.current;
       const k = e.key;
 
-      if (/^[0-9]$/.test(k)) {
-        buffer.current += k;
-        if (bufferTimer.current) clearTimeout(bufferTimer.current);
-        bufferTimer.current = setTimeout(() => {
-          buffer.current = "";
-        }, 1500);
-        return;
-      }
-
-      switch (k) {
-        case "Enter":
-          if (buffer.current) {
-            deck.goto(Number(buffer.current) - 1);
-            buffer.current = "";
-          } else {
-            deck.next();
-          }
+      // "G" → digits → Enter jumps to a screen
+      if (gotoBuffer.current !== null) {
+        if (/^[0-9]$/.test(k)) {
+          gotoBuffer.current += k;
           e.preventDefault();
           return;
+        }
+        if (k === "Enter") {
+          if (gotoBuffer.current) d.goto(Number(gotoBuffer.current));
+          gotoBuffer.current = null;
+          e.preventDefault();
+          return;
+        }
+        gotoBuffer.current = null;
+        if (k === "Escape") return;
+      }
+
+      if (d.overlay === "sources" && k !== "Escape" && k.toLowerCase() !== "s") return;
+
+      switch (k) {
         case "ArrowRight":
-        case " ":
         case "PageDown":
-          if (e.shiftKey) deck.skipBuilds();
-          else deck.next();
+          d.next();
+          e.preventDefault();
+          return;
+        case " ":
+          if (e.shiftKey) d.prev();
+          else d.next();
           e.preventDefault();
           return;
         case "ArrowLeft":
-        case "Backspace":
         case "PageUp":
-          deck.prev();
+          d.prev();
           e.preventDefault();
           return;
         case "Home":
-          deck.goto(0);
+          d.goto(0);
+          e.preventDefault();
           return;
         case "End":
-          deck.goto(deck.total - 1);
+          d.goto(d.total - 1);
+          e.preventDefault();
           return;
         case "Escape":
-          deck.setOverlay(null);
+          if (d.overlay) d.setOverlay(null);
+          else if (document.fullscreenElement) void document.exitFullscreen();
           return;
-        case "?":
-          deck.setOverlay(deck.overlay === "help" ? null : "help");
-          return;
-        case ".":
-          deck.setOverlay(deck.overlay === "black" ? null : "black");
-          return;
-        default:
-          break;
+      }
+
+      if (/^[1-6]$/.test(k)) {
+        const n = Number(k);
+        d.setChoice(d.choice === n ? null : n);
+        window.dispatchEvent(
+          new CustomEvent<ChoiceDetail>(CHOICE_EVENT, { detail: { screenId: d.screen.id, n } }),
+        );
+        return;
       }
 
       switch (k.toLowerCase()) {
         case "g":
+          gotoBuffer.current = "";
+          return;
         case "o":
-          deck.setOverlay(deck.overlay === "overview" ? null : "overview");
-          break;
+          d.setOverlay(d.overlay === "overview" ? null : "overview");
+          return;
+        case "s":
+          d.setOverlay(d.overlay === "sources" ? null : "sources");
+          return;
+        case "n":
+          if (!presenterWindow) window.open("/presenter", "ai-era-presenter", "width=1440,height=900");
+          return;
+        case "p":
+          if (!presenterWindow) d.setOverlay(d.overlay === "presenter" ? null : "presenter");
+          return;
+        case "b":
+          d.setOverlay(d.overlay === "black" ? null : "black");
+          return;
         case "f":
           if (document.fullscreenElement) void document.exitFullscreen();
-          else void document.documentElement.requestFullscreen();
-          break;
-        case "p":
-          window.open("/presenter", "presenter", "width=1400,height=900");
-          break;
-        case "b":
-          deck.setOverlay(deck.overlay === "black" ? null : "black");
-          break;
-        case "w":
-          deck.setOverlay(deck.overlay === "white" ? null : "white");
-          break;
-        case "l":
-          deck.toggle("laser");
-          break;
-        case "s":
-          deck.toggle("spotlight");
-          break;
-        case "z":
-          deck.toggle("zoom");
-          break;
-        case "t":
-          deck.toggle("timerOn");
-          break;
-        case "n":
-          deck.toggle("notesOpen");
-          break;
-        default:
-          break;
+          else void document.documentElement.requestFullscreen?.();
+          return;
+        case "r":
+          d.resetScreen();
+          return;
+        case "d":
+          window.dispatchEvent(new Event(DOWNLOAD_EVENT));
+          return;
       }
     };
-
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [deck]);
+  }, [presenterWindow]);
 }

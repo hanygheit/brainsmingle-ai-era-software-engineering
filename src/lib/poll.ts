@@ -1,71 +1,150 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { POLL_IDS, type PollId } from "@/config";
+import interview from "@/content/interview.json";
+import opening from "@/content/opening.json";
+import { CHOICE_EVENT, type ChoiceDetail } from "@/deck/useKeyboard";
 
-export const POLL_SESSION = "cairo26";
-export type Choice = "allow" | "depends" | "block";
-export type Tally = Record<number, Record<Choice, number>>;
+export type Counts = [number, number, number];
+const zero = (): Counts => [0, 0, 0];
 
-const empty = (): Tally => ({
-  1: { allow: 0, depends: 0, block: 0 },
-  2: { allow: 0, depends: 0, block: 0 },
-  3: { allow: 0, depends: 0, block: 0 },
-  4: { allow: 0, depends: 0, block: 0 },
-});
+export const POLL_SCREEN: Record<PollId, string> = { "s2-challenge": "S2", "s7-interview": "S7" };
+export const POLL_CONTENT: Record<PollId, { question: string; options: string[] }> = {
+  "s2-challenge": opening.poll,
+  "s7-interview": interview.poll,
+};
+export const isPollId = (v: unknown): v is PollId => POLL_IDS.includes(v as PollId);
 
+/* ---------- voter ---------- */
 export function voterId() {
-  const k = "poll-voter-id";
-  let id = localStorage.getItem(k);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(k, id);
+  const k = "ai-era-voter-id";
+  try {
+    let id = localStorage.getItem(k);
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(k, id);
+    }
+    return id;
+  } catch {
+    return crypto.randomUUID();
   }
-  return id;
 }
 
-export async function castVote(question: number, choice: Choice) {
-  const { error } = await supabase.rpc("cast_vote", {
-    _session: POLL_SESSION,
-    _question: question,
-    _choice: choice,
-    _voter: voterId(),
+export async function castVote(poll: PollId, option: 1 | 2 | 3) {
+  const { error } = await supabase
+    .from("poll_votes")
+    .upsert({ poll_id: poll, option, voter_id: voterId() }, { onConflict: "poll_id,voter_id" });
+  if (error) throw new Error("Your vote didn't go through. Try again.");
+}
+
+/* ---------- manual (offline) tally, shared between deck windows ---------- */
+const MANUAL_KEY = (p: PollId) => `ai-era-manual-${p}`;
+const MANUAL_EVENT = "ai-era-manual-tally";
+let manualChannel: BroadcastChannel | null = null;
+const channel = () => {
+  if (!manualChannel && typeof BroadcastChannel !== "undefined") {
+    manualChannel = new BroadcastChannel("ai-era-deck-poll");
+    manualChannel.onmessage = (e) => {
+      const { poll, counts } = e.data ?? {};
+      if (!isPollId(poll)) return;
+      try {
+        sessionStorage.setItem(MANUAL_KEY(poll), JSON.stringify(counts));
+      } catch {
+        /* ignore */
+      }
+      window.dispatchEvent(new Event(MANUAL_EVENT));
+    };
+  }
+  return manualChannel;
+};
+
+export function readManual(poll: PollId): Counts {
+  try {
+    const v = JSON.parse(sessionStorage.getItem(MANUAL_KEY(poll)) ?? "null");
+    return Array.isArray(v) && v.length === 3 ? (v.map(Number) as Counts) : zero();
+  } catch {
+    return zero();
+  }
+}
+
+function writeManual(poll: PollId, counts: Counts) {
+  try {
+    sessionStorage.setItem(MANUAL_KEY(poll), JSON.stringify(counts));
+  } catch {
+    /* ignore */
+  }
+  channel()?.postMessage({ poll, counts });
+  window.dispatchEvent(new Event(MANUAL_EVENT));
+}
+
+export function addManual(poll: PollId, option: number) {
+  if (option < 1 || option > 3) return;
+  const c = readManual(poll);
+  c[option - 1] = (c[option - 1] ?? 0) + 1;
+  writeManual(poll, c);
+}
+export const clearManual = (poll: PollId) => writeManual(poll, zero());
+
+/* ---------- live counts ---------- */
+async function fetchCounts(poll: PollId): Promise<Counts> {
+  const { data, error } = await supabase.from("poll_votes").select("option").eq("poll_id", poll);
+  if (error) throw error;
+  const c = zero();
+  (data ?? []).forEach((r) => {
+    if (r.option && r.option >= 1 && r.option <= 3) c[r.option - 1] = (c[r.option - 1] ?? 0) + 1;
   });
-  if (error) throw new Error(error.message.includes("closed") ? "The poll is closed." : "Vote failed.");
+  return c;
 }
 
-/** Live tally + open flag. Realtime on the session row; falls back to 3s polling. */
-export function usePoll(enabled = true) {
-  const [tally, setTally] = useState<Tally>(empty);
-  const [open, setOpen] = useState(true);
+/**
+ * Live tally for one poll: realtime subscription, 3 s polling fallback,
+ * plus the manual 1/2/3 fallback (keys on the poll's screen, or presenter buttons).
+ */
+export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } = {}) {
+  const [remote, setRemote] = useState<Counts>(zero);
+  const [manual, setManual] = useState<Counts>(zero);
+  const [online, setOnline] = useState(false);
 
   useEffect(() => {
-    if (!enabled) return;
+    channel();
+    const sync = () => setManual(readManual(poll));
+    sync();
+    const onChoice = (e: Event) => {
+      const d = (e as CustomEvent<ChoiceDetail>).detail;
+      if (d.screenId === POLL_SCREEN[poll] && d.n <= 3) addManual(poll, d.n);
+    };
+    window.addEventListener(MANUAL_EVENT, sync);
+    window.addEventListener(CHOICE_EVENT, onChoice);
+    return () => {
+      window.removeEventListener(MANUAL_EVENT, sync);
+      window.removeEventListener(CHOICE_EVENT, onChoice);
+    };
+  }, [poll]);
+
+  useEffect(() => {
     let alive = true;
     let timer: ReturnType<typeof setInterval> | null = null;
-
     const load = async () => {
-      const [{ data }, { data: s }] = await Promise.all([
-        supabase.rpc("poll_results", { _session: POLL_SESSION }),
-        supabase.from("poll_sessions").select("is_open").eq("session_code", POLL_SESSION).maybeSingle(),
-      ]);
-      if (!alive) return;
-      const t = empty();
-      (data ?? []).forEach((r) => {
-        const q = t[r.question_id];
-        if (q) q[r.choice as Choice] = Number(r.votes);
-      });
-      setTally(t);
-      if (s) setOpen(s.is_open);
+      try {
+        const c = await fetchCounts(poll);
+        if (alive) {
+          setRemote(c);
+          setOnline(true);
+        }
+      } catch {
+        if (alive) setOnline(false);
+      }
     };
+    void load();
+    if (!live) return () => void (alive = false);
     const startPolling = () => {
       if (!timer) timer = setInterval(() => void load(), 3000);
     };
-
-    void load();
     const ch = supabase
-      .channel(`poll-${POLL_SESSION}-${Math.random().toString(36).slice(2)}`)
+      .channel(`votes-${poll}-${Math.random().toString(36).slice(2)}`)
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "poll_sessions", filter: `session_code=eq.${POLL_SESSION}` },
+        { event: "*", schema: "public", table: "poll_votes", filter: `poll_id=eq.${poll}` },
         () => void load(),
       )
       .subscribe((status) => {
@@ -74,14 +153,14 @@ export function usePoll(enabled = true) {
     const fallback = setTimeout(() => {
       if (ch.state !== "joined") startPolling();
     }, 5000);
-
     return () => {
       alive = false;
       clearTimeout(fallback);
       if (timer) clearInterval(timer);
       void supabase.removeChannel(ch);
     };
-  }, [enabled]);
+  }, [poll, live]);
 
-  return { tally, open };
+  const counts = remote.map((v, i) => v + manual[i]!) as Counts;
+  return { counts, remote, manual, online, total: counts[0] + counts[1] + counts[2], refresh: () => fetchCounts(poll).then(setRemote) };
 }

@@ -1,382 +1,235 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { slides } from "@/content/slides";
-import { SECTIONS } from "@/content/types";
+import { useEffect, useState } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  LayoutGrid,
+  Loader2,
+  Maximize,
+  MonitorPlay,
+  RotateCcw,
+  Square,
+  SkipBack,
+  X,
+} from "lucide-react";
+import { ACTS } from "@/config";
+import { screens } from "@/content/screens";
+import { sourcesFor } from "@/content/sources";
 import { useDeck } from "@/deck/store";
-import { DownloadMenu } from "./DownloadPdf";
-import { Icon } from "./primitives";
+import { DOWNLOAD_EVENT } from "@/deck/useKeyboard";
+import { useDownloadPdf } from "@/components/kit";
 import { MiniStage } from "./Stage";
-import { SlideRenderer } from "./SlideRenderer";
+import { ScreenRenderer } from "./ScreenRenderer";
 
-/* ------------------------------------------------------------ auto-hide */
+const actsInDeck = ACTS.filter((a) => screens.some((s) => s.act === a));
 
-export function useAutoHide(delay = 2500) {
-  const [visible, setVisible] = useState(true);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => {
-    const show = () => {
-      setVisible(true);
-      if (timer.current) clearTimeout(timer.current);
-      timer.current = setTimeout(() => setVisible(false), delay);
-    };
-    show();
-    window.addEventListener("mousemove", show);
-    return () => {
-      window.removeEventListener("mousemove", show);
-      if (timer.current) clearTimeout(timer.current);
-    };
-  }, [delay]);
-  return visible;
-}
-
-/* --------------------------------------------------------- progress rail */
-
-export function ProgressRail() {
-  const { index, goto } = useDeck();
-  const current = slides[index]?.section;
+/** 3 px progress bar segmented by act. */
+export function ProgressBar() {
+  const { index } = useDeck();
   return (
-    <div className="absolute right-0 bottom-0 left-0 z-30 flex h-[4px]">
-      {slides.map((s, i) => (
-        <button
-          key={s.id}
-          type="button"
-          title={`${SECTIONS.find((x) => x.id === s.section)?.label ?? ""} — slide ${s.id}`}
-          aria-label={`Go to slide ${s.id}`}
-          onClick={() => goto(i)}
-          className={`h-full flex-1 transition-colors ${
-            s.section === current ? "bg-gold" : "bg-navy-line hover:bg-taupe"
-          } ${i === index ? "bg-white" : ""}`}
-        />
-      ))}
+    <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-30 flex h-[3px] gap-[3px]" aria-hidden>
+      {actsInDeck.map((act) => {
+        const members = screens.map((s, i) => ({ s, i })).filter(({ s }) => s.act === act);
+        const done = members.filter(({ i }) => i <= index).length;
+        return (
+          <div key={act} className="h-full bg-line" style={{ flex: members.length }}>
+            <div
+              className="h-full bg-[var(--accent)] transition-[width] duration-300"
+              style={{ width: `${(done / members.length) * 100}%` }}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-/* ------------------------------------------------------ section indicator */
-
-export function SectionIndicator() {
-  const { slide } = useDeck();
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    setShow(true);
-    const id = setTimeout(() => setShow(false), 1800);
-    return () => clearTimeout(id);
-  }, [slide.id]);
-  const label = SECTIONS.find((s) => s.id === slide.section)?.short ?? "";
+export function ActLabel() {
+  const { screen } = useDeck();
   return (
-    <motion.div
-      className="pointer-events-none absolute top-[22px] right-[26px] z-30 font-mono text-[14px] tracking-[0.2em] text-taupe"
-      animate={{ opacity: show ? 1 : 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      {label}
-    </motion.div>
+    <p className="pointer-events-none absolute bottom-[12px] left-[16px] z-30 font-mono text-[11px] tracking-[0.14em] text-muted uppercase">
+      {screen.act}
+    </p>
   );
 }
 
-/* ------------------------------------------------------------ control bar */
+function useIdle(ms = 2000) {
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout>;
+    const wake = () => {
+      setActive(true);
+      clearTimeout(t);
+      t = setTimeout(() => setActive(false), ms);
+    };
+    window.addEventListener("mousemove", wake);
+    window.addEventListener("touchstart", wake);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("mousemove", wake);
+      window.removeEventListener("touchstart", wake);
+    };
+  }, [ms]);
+  return active;
+}
+
+function Btn({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      className="flex h-[36px] min-w-[36px] items-center justify-center rounded-full px-2 text-text hover:bg-line"
+    >
+      {children}
+    </button>
+  );
+}
 
 export function ControlBar() {
   const deck = useDeck();
-  const visible = useAutoHide();
-  const [jump, setJump] = useState("");
-  const [copied, setCopied] = useState(false);
-
-  const btn =
-    "flex h-[38px] min-w-[38px] items-center justify-center px-2 text-term-text hover:text-gold";
-
-  return (
-    <motion.div
-      className="fixed bottom-[22px] left-1/2 z-40 -translate-x-1/2"
-      animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }}
-      transition={{ duration: 0.25 }}
-    >
-      <div className="flex items-center gap-1 border border-navy-line bg-navy-card/95 px-3 py-[6px] shadow-lg backdrop-blur">
-        <button className={btn} onClick={deck.prev} aria-label="Previous">
-          <Icon name="chevron-left" size={22} />
-        </button>
-        <button className={btn} onClick={deck.next} aria-label="Next">
-          <Icon name="chevron-right" size={22} />
-        </button>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const n = Number(jump);
-            if (n >= 1 && n <= deck.total) deck.goto(n - 1);
-            setJump("");
-          }}
-        >
-          <input
-            value={jump}
-            onChange={(e) => setJump(e.target.value.replace(/\D/g, ""))}
-            placeholder={`${deck.index + 1} / ${deck.total}`}
-            aria-label="Jump to slide"
-            className="w-[86px] bg-transparent text-center font-mono text-[15px] text-term-text placeholder:text-term-comment focus:outline-none"
-          />
-        </form>
-        <span className="mx-1 h-[22px] w-px bg-navy-line" />
-        <button
-          className={btn}
-          onClick={() => deck.setOverlay(deck.overlay === "thumbs" ? null : "thumbs")}
-          aria-label="Thumbnails"
-        >
-          <Icon name="gallery-horizontal-end" size={20} />
-        </button>
-        <button
-          className={btn}
-          onClick={() => deck.setOverlay(deck.overlay === "overview" ? null : "overview")}
-          aria-label="Overview grid"
-        >
-          <Icon name="layout-grid" size={20} />
-        </button>
-        <button
-          className={btn}
-          onClick={() => {
-            if (document.fullscreenElement) void document.exitFullscreen();
-            else void document.documentElement.requestFullscreen();
-          }}
-          aria-label="Fullscreen"
-        >
-          <Icon name="maximize" size={20} />
-        </button>
-        <button
-          className={`${btn} ${deck.laser ? "text-gold" : ""}`}
-          onClick={() => deck.toggle("laser")}
-          aria-label="Laser pointer"
-        >
-          <Icon name="mouse-pointer-2" size={20} />
-        </button>
-        <button
-          className={btn}
-          onClick={() => window.open("/presenter", "presenter", "width=1400,height=900")}
-          aria-label="Presenter view"
-        >
-          <Icon name="presentation" size={20} />
-        </button>
-        <button
-          className={btn}
-          onClick={() => {
-            void navigator.clipboard?.writeText(
-              `${window.location.origin}/#/${deck.index + 1}`,
-            );
-            setCopied(true);
-            setTimeout(() => setCopied(false), 1200);
-          }}
-          aria-label="Copy link to this slide"
-        >
-          <Icon name={copied ? "check" : "link"} size={20} />
-        </button>
-        <DownloadMenu />
-        <button className={btn} onClick={() => deck.setOverlay("help")} aria-label="Help">
-          <Icon name="circle-help" size={20} />
-        </button>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ------------------------------------------------------- thumbnail drawer */
-
-export function ThumbDrawer() {
-  const deck = useDeck();
-  if (deck.overlay !== "thumbs") return null;
-  return (
-    <div className="fixed right-0 bottom-[78px] left-0 z-40 flex gap-3 overflow-x-auto bg-navy/95 px-6 py-4">
-      {slides.map((s, i) => (
-        <div
-          key={s.id}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") deck.goto(i);
-          }}
-          onClick={() => deck.goto(i)}
-          className={`shrink-0 border-2 ${i === deck.index ? "border-gold" : "border-transparent"}`}
-          aria-label={`Slide ${s.id}`}
-        >
-          <MiniStage width={220}>
-            <SlideRenderer slide={s} step={s.steps} calm />
-          </MiniStage>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------- overlays */
-
-const SHORTCUTS: [string, string][] = [
-  ["→ / Space / PageDown / Enter", "Next step or slide"],
-  ["← / Backspace / PageUp", "Previous"],
-  ["Shift + →", "Skip remaining builds"],
-  ["Home / End", "First / last slide"],
-  ["number then Enter", "Jump to slide"],
-  ["G or O", "Overview grid"],
-  ["F", "Fullscreen"],
-  ["P", "Presenter window"],
-  ["B or .", "Black screen"],
-  ["W", "White screen"],
-  ["L", "Laser pointer"],
-  ["S", "Spotlight"],
-  ["Z", "Zoom 2×"],
-  ["T", "Timer"],
-  ["N", "Notes drawer"],
-  ["?", "This help"],
-  ["Esc", "Close overlay"],
-];
-
-export function HelpOverlay() {
-  const deck = useDeck();
-  if (deck.overlay !== "help") return null;
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-terminal/95 p-10"
-      role="dialog"
-      aria-label="Keyboard shortcuts"
-    >
-      <div className="max-h-full w-full max-w-[900px] overflow-auto">
-        <div className="flex items-center justify-between">
-          <h2 className="font-sans text-[34px] font-bold text-white">Keyboard shortcuts</h2>
-          <button
-            onClick={() => deck.setOverlay(null)}
-            className="text-term-text hover:text-gold"
-            aria-label="Close help"
-          >
-            <Icon name="x" size={28} />
-          </button>
-        </div>
-        <div className="mt-6 grid grid-cols-2 gap-x-10 gap-y-2">
-          {SHORTCUTS.map(([keys, desc]) => (
-            <div key={keys} className="flex justify-between gap-6 border-b border-navy-line py-2">
-              <span className="font-mono text-[15px] text-gold">{keys}</span>
-              <span className="text-right font-sans text-[16px] text-term-text">{desc}</span>
-            </div>
-          ))}
-        </div>
-        <label className="mt-8 flex items-center gap-3 font-sans text-[18px] text-term-text">
-          <input
-            type="checkbox"
-            checked={deck.calm}
-            onChange={() => deck.toggle("calm")}
-            className="h-5 w-5 accent-[#E39A16]"
-          />
-          Calm mode — turn off all non-essential motion
-        </label>
-        <p className="mt-6 font-mono text-[13px] tracking-[0.18em] text-term-comment">
-          MADE FOR DEVOPSDAYS CAIRO 2026
-        </p>
-      </div>
-    </div>
-  );
-}
-
-export function BlankOverlay() {
-  const { overlay, setOverlay } = useDeck();
-  if (overlay !== "black" && overlay !== "white") return null;
-  return (
-    <div
-      onClick={() => setOverlay(null)}
-      className={`fixed inset-0 z-50 ${overlay === "black" ? "bg-black" : "bg-white"}`}
-    />
-  );
-}
-
-/* ------------------------------------------------------- laser / spotlight */
-
-export function Pointer() {
-  const { laser, spotlight } = useDeck();
-  const [pos, setPos] = useState({ x: -100, y: -100 });
-  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+  const visible = useIdle(2000);
+  const { download, busy } = useDownloadPdf();
 
   useEffect(() => {
-    if (!laser && !spotlight) return;
-    let id = 0;
-    const onMove = (e: MouseEvent) => {
-      setPos({ x: e.clientX, y: e.clientY });
-      if (laser) {
-        id += 1;
-        const point = { x: e.clientX, y: e.clientY, id };
-        setTrail((t) => [...t.slice(-9), point]);
-      }
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [laser, spotlight]);
-
-  if (!laser && !spotlight) return null;
+    const onDl = () => void download();
+    window.addEventListener(DOWNLOAD_EVENT, onDl);
+    return () => window.removeEventListener(DOWNLOAD_EVENT, onDl);
+  }, [download]);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-45">
-      {spotlight ? (
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(circle 190px at ${pos.x}px ${pos.y}px, transparent 0%, transparent 60%, rgba(15,28,43,0.88) 100%)`,
-          }}
-        />
-      ) : null}
-      {laser ? (
-        <>
-          {trail.map((t, i) => (
-            <span
-              key={t.id}
-              className="absolute rounded-full bg-gold"
-              style={{
-                left: t.x - 4,
-                top: t.y - 4,
-                width: 8,
-                height: 8,
-                opacity: (i + 1) / (trail.length * 2.2),
-              }}
-            />
-          ))}
-          <span
-            className="absolute rounded-full bg-gold shadow-[0_0_24px_10px_rgba(227,154,22,0.55)]"
-            style={{ left: pos.x - 7, top: pos.y - 7, width: 14, height: 14 }}
-          />
-        </>
-      ) : null}
+    <div
+      className={`absolute bottom-[18px] left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-line bg-surface/95 px-2 py-1 transition-opacity duration-300 ${
+        visible ? "opacity-100" : "pointer-events-none opacity-0"
+      }`}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <Btn label="Previous" onClick={deck.prev}>
+        <ChevronLeft className="h-4 w-4" />
+      </Btn>
+      <span className="min-w-[88px] text-center font-mono text-[13px] text-muted tabular-nums">
+        {deck.screen.id} · {deck.step}/{deck.screen.steps}
+      </span>
+      <Btn label="Next" onClick={deck.next}>
+        <ChevronRight className="h-4 w-4" />
+      </Btn>
+      <span className="mx-1 h-5 w-px bg-line" />
+      <Btn label="Overview (O)" onClick={() => deck.setOverlay(deck.overlay === "overview" ? null : "overview")}>
+        <LayoutGrid className="h-4 w-4" />
+      </Btn>
+      <Btn label="Presenter (N)" onClick={() => window.open("/presenter", "ai-era-presenter", "width=1440,height=900")}>
+        <MonitorPlay className="h-4 w-4" />
+      </Btn>
+      <Btn label="Replay screen (R)" onClick={deck.resetScreen}>
+        <RotateCcw className="h-4 w-4" />
+      </Btn>
+      <Btn label="Blackout (B)" onClick={() => deck.setOverlay(deck.overlay === "black" ? null : "black")}>
+        <Square className="h-4 w-4" />
+      </Btn>
+      <Btn
+        label="Fullscreen (F)"
+        onClick={() =>
+          document.fullscreenElement
+            ? void document.exitFullscreen()
+            : void document.documentElement.requestFullscreen?.()
+        }
+      >
+        <Maximize className="h-4 w-4" />
+      </Btn>
+      <Btn label="Restart deck" onClick={() => deck.goto(0)}>
+        <SkipBack className="h-4 w-4" />
+      </Btn>
+      <Btn label="Download PDF (D)" onClick={() => void download()}>
+        {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+      </Btn>
     </div>
   );
 }
 
-/* ------------------------------------------------------------ notes drawer */
+export function Blackout() {
+  const { overlay } = useDeck();
+  if (overlay !== "black") return null;
+  return <div className="absolute inset-0 z-50 bg-black" aria-label="Blackout" />;
+}
 
-export function NotesDrawer() {
-  const { notesOpen, slide } = useDeck();
+export function SourceDrawer() {
+  const deck = useDeck();
+  if (deck.overlay !== "sources") return null;
+  const list = sourcesFor(deck.screen.id);
   return (
-    <AnimatePresence>
-      {notesOpen ? (
-        <motion.aside
-          initial={{ y: 200, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 200, opacity: 0 }}
-          className="fixed right-0 bottom-0 left-0 z-40 max-h-[38vh] overflow-auto border-t border-navy-line bg-navy px-8 py-5"
-        >
-          <p className="font-mono text-[13px] tracking-[0.2em] text-gold">
-            CUE · {slide.notes.cue}
-          </p>
-          <p className="mt-3 font-sans text-[20px] leading-[1.45] text-term-text">
-            {slide.notes.say}
-          </p>
-          {slide.notes.fact ? (
-            <p className="mt-3 font-serif text-[17px] italic text-term-comment">
-              {slide.notes.fact}
-            </p>
-          ) : null}
-        </motion.aside>
-      ) : null}
-    </AnimatePresence>
+    <aside
+      className="absolute top-0 right-0 bottom-0 z-50 w-[min(520px,90vw)] overflow-y-auto border-l border-line bg-surface p-6"
+      onClick={(e) => e.stopPropagation()}
+      aria-label="Sources"
+    >
+      <div className="flex items-center justify-between">
+        <p className="font-mono text-[12px] tracking-[0.14em] text-muted uppercase">Sources · {deck.screen.id}</p>
+        <button aria-label="Close sources" onClick={() => deck.setOverlay(null)} className="text-muted hover:text-text">
+          <X className="h-5 w-5" />
+        </button>
+      </div>
+      {list.length === 0 ? (
+        <p className="mt-6 text-[15px] text-muted">No sources on this screen.</p>
+      ) : (
+        <ul className="mt-6 space-y-5">
+          {list.map((s) => (
+            <li key={s.id} className="border-t border-line pt-4">
+              <a href={s.url} target="_blank" rel="noopener noreferrer" className="font-display text-[18px] font-bold text-text hover:underline">
+                {s.title}
+              </a>
+              <p className="mt-1 font-mono text-[12px] text-muted">
+                {s.organisation} · {s.date}
+              </p>
+              {s.statistic || s.excerpt ? <p className="mt-2 text-[15px] text-text">{s.statistic ?? s.excerpt}</p> : null}
+              <p className="mt-2 text-[13px] text-muted">Method: {s.method}</p>
+              <p className="mt-1 text-[13px] text-muted">Caveat: {s.caveat}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </aside>
   );
 }
 
-/* ---------------------------------------------------------------- a11y */
-
-export function LiveRegion() {
-  const { index, total } = useDeck();
+export function OverviewGrid() {
+  const deck = useDeck();
+  if (deck.overlay !== "overview") return null;
   return (
-    <div className="sr-only" aria-live="polite">
-      Slide {index + 1} of {total}
+    <div className="absolute inset-0 z-50 overflow-y-auto bg-bg p-8" onClick={(e) => e.stopPropagation()}>
+      <div className="mb-6 flex items-center justify-between">
+        <p className="font-mono text-[12px] tracking-[0.14em] text-muted uppercase">Overview</p>
+        <button aria-label="Close overview" onClick={() => deck.setOverlay(null)} className="text-muted hover:text-text">
+          <X className="h-5 w-5" />
+        </button>
+      </div>
+      {actsInDeck.map((act) => (
+        <section key={act} className="mb-8">
+          <h3 className="mb-3 font-display text-[18px] font-bold text-text">{act}</h3>
+          <div className="flex flex-wrap gap-4">
+            {screens.map((s, i) =>
+              s.act !== act ? null : (
+                <button
+                  key={s.id}
+                  onClick={() => {
+                    deck.goto(i);
+                    deck.setOverlay(null);
+                  }}
+                  className={`overflow-hidden rounded-md border text-left ${i === deck.index ? "border-[var(--accent)]" : "border-line"}`}
+                >
+                  <MiniStage width={240}>
+                    <ScreenRenderer screen={s} step={s.steps} choice={null} />
+                  </MiniStage>
+                  <p className="px-2 py-1 font-mono text-[12px] text-muted">{s.id}</p>
+                </button>
+              ),
+            )}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }

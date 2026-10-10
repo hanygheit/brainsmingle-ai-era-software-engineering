@@ -10,19 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OverviewRouteImport } from './routes/overview'
+import { Route as BlueprintRouteImport } from './routes/blueprint'
+import { Route as EngineTestRouteImport } from './routes/engine-test'
 import { Route as PresenterRouteImport } from './routes/presenter'
 import { Route as PrintRouteImport } from './routes/print'
 import { Route as VoteRouteImport } from './routes/vote'
+import { Route as PresentNRouteImport } from './routes/present.$n'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OverviewRoute = OverviewRouteImport.update({
-  id: '/overview',
-  path: '/overview',
+const BlueprintRoute = BlueprintRouteImport.update({
+  id: '/blueprint',
+  path: '/blueprint',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EngineTestRoute = EngineTestRouteImport.update({
+  id: '/engine-test',
+  path: '/engine-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PresenterRoute = PresenterRouteImport.update({
@@ -40,43 +47,78 @@ const VoteRoute = VoteRouteImport.update({
   path: '/vote',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PresentNRoute = PresentNRouteImport.update({
+  id: '/present/$n',
+  path: '/present/$n',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/overview': typeof OverviewRoute
+  '/blueprint': typeof BlueprintRoute
+  '/engine-test': typeof EngineTestRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/vote': typeof VoteRoute
+  '/present/$n': typeof PresentNRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/overview': typeof OverviewRoute
+  '/blueprint': typeof BlueprintRoute
+  '/engine-test': typeof EngineTestRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/vote': typeof VoteRoute
+  '/present/$n': typeof PresentNRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/overview': typeof OverviewRoute
+  '/blueprint': typeof BlueprintRoute
+  '/engine-test': typeof EngineTestRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/vote': typeof VoteRoute
+  '/present/$n': typeof PresentNRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/overview' | '/presenter' | '/print' | '/vote'
+  fullPaths:
+    | '/'
+    | '/blueprint'
+    | '/engine-test'
+    | '/presenter'
+    | '/print'
+    | '/vote'
+    | '/present/$n'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/overview' | '/presenter' | '/print' | '/vote'
-  id: '__root__' | '/' | '/overview' | '/presenter' | '/print' | '/vote'
+  to:
+    | '/'
+    | '/blueprint'
+    | '/engine-test'
+    | '/presenter'
+    | '/print'
+    | '/vote'
+    | '/present/$n'
+  id:
+    | '__root__'
+    | '/'
+    | '/blueprint'
+    | '/engine-test'
+    | '/presenter'
+    | '/print'
+    | '/vote'
+    | '/present/$n'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  OverviewRoute: typeof OverviewRoute
+  BlueprintRoute: typeof BlueprintRoute
+  EngineTestRoute: typeof EngineTestRoute
   PresenterRoute: typeof PresenterRoute
   PrintRoute: typeof PrintRoute
   VoteRoute: typeof VoteRoute
+  PresentNRoute: typeof PresentNRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -88,11 +130,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/overview': {
-      id: '/overview'
-      path: '/overview'
-      fullPath: '/overview'
-      preLoaderRoute: typeof OverviewRouteImport
+    '/blueprint': {
+      id: '/blueprint'
+      path: '/blueprint'
+      fullPath: '/blueprint'
+      preLoaderRoute: typeof BlueprintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/engine-test': {
+      id: '/engine-test'
+      path: '/engine-test'
+      fullPath: '/engine-test'
+      preLoaderRoute: typeof EngineTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/presenter': {
@@ -116,15 +165,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VoteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/present/$n': {
+      id: '/present/$n'
+      path: '/present/$n'
+      fullPath: '/present/$n'
+      preLoaderRoute: typeof PresentNRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  OverviewRoute: OverviewRoute,
+  BlueprintRoute: BlueprintRoute,
+  EngineTestRoute: EngineTestRoute,
   PresenterRoute: PresenterRoute,
   PrintRoute: PrintRoute,
   VoteRoute: VoteRoute,
+  PresentNRoute: PresentNRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

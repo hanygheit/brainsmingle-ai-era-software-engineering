@@ -24,36 +24,19 @@ export const verifyPrintAccess = createServerFn({ method: "GET" })
     }
   });
 
-const PollAdmin = z.object({
-  pin: z.string().max(64),
-  session: z.string().max(40),
-  action: z.enum(["reset", "open", "close"]),
-});
-
-export const pollAdmin = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) => PollAdmin.parse(d))
+/** Clears every vote of one poll. Requires the PRESENTER_PIN secret. */
+export const resetPoll = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z.object({ pin: z.string().max(64), poll: z.enum(["s2-challenge", "s7-interview"]) }).parse(d),
+  )
   .handler(async ({ data }) => {
     const { checkPin } = await import("./print-token.server");
-    if (process.env["PRESENTER_PIN"] && !checkPin(data.pin)) {
-      return { ok: false as const, error: "Wrong presenter PIN." };
+    if (!process.env["PRESENTER_PIN"]) {
+      return { ok: false as const, error: "Add the PRESENTER_PIN secret first." };
     }
+    if (!checkPin(data.pin)) return { ok: false as const, error: "Wrong presenter PIN." };
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    if (data.action === "reset") {
-      const { error } = await supabaseAdmin.from("poll_votes").delete().eq("session_code", data.session);
-      if (error) return { ok: false as const, error: error.message };
-    }
-    const { data: row } = await supabaseAdmin
-      .from("poll_sessions")
-      .select("version")
-      .eq("session_code", data.session)
-      .maybeSingle();
-    const patch: { session_code: string; version: number; updated_at: string; is_open?: boolean } = {
-      session_code: data.session,
-      version: (row?.version ?? 0) + 1,
-      updated_at: new Date().toISOString(),
-    };
-    if (data.action !== "reset") patch.is_open = data.action === "open";
-    const { error } = await supabaseAdmin.from("poll_sessions").upsert(patch);
+    const { error } = await supabaseAdmin.from("poll_votes").delete().eq("poll_id", data.poll);
     if (error) return { ok: false as const, error: error.message };
     return { ok: true as const };
   });
