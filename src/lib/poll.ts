@@ -80,7 +80,7 @@ function writeManual(poll: PollId, counts: Counts) {
 export function addManual(poll: PollId, option: number) {
   if (option < 1 || option > 3) return;
   const c = readManual(poll);
-  c[option - 1] += 1;
+  c[option - 1] = (c[option - 1] ?? 0) + 1;
   writeManual(poll, c);
 }
 export const clearManual = (poll: PollId) => writeManual(poll, zero());
@@ -91,7 +91,7 @@ async function fetchCounts(poll: PollId): Promise<Counts> {
   if (error) throw error;
   const c = zero();
   (data ?? []).forEach((r) => {
-    if (r.option && r.option >= 1 && r.option <= 3) c[r.option - 1] += 1;
+    if (r.option && r.option >= 1 && r.option <= 3) c[r.option - 1] = (c[r.option - 1] ?? 0) + 1;
   });
   return c;
 }
