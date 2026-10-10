@@ -62,24 +62,24 @@ export function S18({ step }: ScreenProps) {
       {zoom || print ? (
         <div className={print ? "mt-[16px] grid grid-cols-2 gap-[20px]" : "mt-[28px] grid grid-cols-2 gap-[32px]"}>
           <div className="col-span-2"><Eyebrow>{tl.zoomLabel}</Eyebrow></div>
-          <div className="rounded-[20px] border border-line bg-surface p-[32px]">
+          <div className={`rounded-[20px] border border-line bg-surface ${print ? "p-[18px]" : "p-[32px]"}`}>
             <p className="t-tag text-muted">BEFORE</p>
-            <p className="mt-[12px] text-[28px] leading-[1.4] text-muted">{tl.zoomBefore}</p>
+            <p className={`mt-[8px] leading-[1.35] text-muted ${print ? "text-[20px]" : "text-[28px]"}`}>{tl.zoomBefore}</p>
           </div>
-          <div className="rounded-[20px] border border-own bg-surface p-[32px]">
+          <div className={`rounded-[20px] border border-own bg-surface ${print ? "p-[18px]" : "p-[32px]"}`}>
             <p className="t-tag text-own">AFTER</p>
-            <p className="mt-[12px] text-[28px] leading-[1.4] text-text">
+            <p className={`mt-[8px] leading-[1.35] text-text ${print ? "text-[20px]" : "text-[28px]"}`}>
               {p1}{mark("explain", "var(--direct)")}{p2}{mark("test", "var(--validate)")}{p3}{mark("flags", "var(--own)")}{rest3}
             </p>
           </div>
         </div>
       ) : null}
       {!zoom || print ? (
-        <div className="mt-[24px] flex flex-col gap-[10px]">
+        <div className={`${print ? "mt-[12px] gap-[6px]" : "mt-[24px] gap-[10px]"} flex flex-col`}>
           <div className="grid grid-cols-[240px_1fr_1.6fr] gap-[24px] px-[24px] t-tag text-muted"><span /><span>BEFORE</span><span>AFTER</span></div>
           {tl.levers.map(([name, before, aft], i) => (
             <Reveal key={name} on={step >= i + 1} y={10}>
-              <div className="grid grid-cols-[240px_1fr_1.6fr] items-start gap-[24px] rounded-[14px] border border-line bg-surface px-[24px] py-[14px]">
+              <div className={`grid grid-cols-[240px_1fr_1.6fr] items-start gap-[24px] rounded-[14px] border border-line bg-surface px-[24px] ${print ? "py-[8px]" : "py-[14px]"}`}>
                 <span className="font-display text-[26px] font-bold text-text">{name}</span>
                 <span className="text-[21px] text-muted">{before}</span>
                 <Reveal on={step >= i + 1} delay={0.3} y={0}>
@@ -90,7 +90,7 @@ export function S18({ step }: ScreenProps) {
           ))}
         </div>
       ) : null}
-      <Reveal on={step >= 5} className="mt-auto flex flex-wrap gap-[12px]">
+      <Reveal on={step >= 5} className={`mt-auto flex flex-wrap gap-[12px] ${print ? "pb-[20px]" : ""}`}>
         {tl.chips.map((c) => <Chip key={c}>{c}</Chip>)}
       </Reveal>
     </div>
