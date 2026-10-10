@@ -289,7 +289,7 @@ export function AudienceCards({
   active = null,
 }: {
   labels: [string, string, string] | string[];
-  tally?: number[];
+  tally?: number[] | undefined;
   action?: string;
   active?: number | null;
 }) {
