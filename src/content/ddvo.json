@@ -1,1 +1,98 @@
-{}
+{
+  "columns": [
+    [
+      "DELEGATE",
+      "delegate",
+      "Which bounded execution can AI perform?"
+    ],
+    [
+      "DIRECT",
+      "direct",
+      "What intent, context, constraints and acceptance criteria must I set?"
+    ],
+    [
+      "VALIDATE",
+      "validate",
+      "What evidence must I inspect, test and challenge?"
+    ],
+    [
+      "OWN",
+      "own",
+      "What am I accountable for, whatever wrote it?"
+    ]
+  ],
+  "seal": "ENGINEER OF RECORD",
+  "tag": "A responsibility framework, not a sequence",
+  "stages": [
+    "Student",
+    "Fresh grad",
+    "Junior",
+    "Mid",
+    "Senior",
+    "Lead"
+  ],
+  "rows": [
+    [
+      "Explanations, hints, examples",
+      "Own learning goal: explain, don't solve",
+      "Check explanations against docs",
+      "Their understanding and submission"
+    ],
+    [
+      "Scaffolding, exploration, test drafts",
+      "Acceptance criteria for a small task",
+      "Every line of the diff",
+      "One function or fix end to end"
+    ],
+    [
+      "Well-specified implementation",
+      "Plan and context for a feature slice",
+      "Edge cases, tests, basic security",
+      "Their PRs to production"
+    ],
+    [
+      "Multi-step & parallel implementation",
+      "Decomposition, interfaces, context files",
+      "Verification strategy; others' AI PRs",
+      "A feature or service"
+    ],
+    [
+      "Most implementation; investigations; prototypes",
+      "Architecture, guardrails, conventions",
+      "Threat models; quality bar",
+      "A subsystem and its reliability"
+    ],
+    [
+      "Analysis, drafting, first-pass review",
+      "Team AI standards, SDLC, capability framework",
+      "Quality gates, metrics, stability",
+      "Team outcomes and people's growth"
+    ]
+  ],
+  "pipeline": [
+    "Student",
+    "Graduate",
+    "Junior",
+    "Mid",
+    "Senior",
+    "Lead"
+  ],
+  "levers": [
+    [
+      "TEACH",
+      "universities"
+    ],
+    [
+      "PREPARE",
+      "graduates"
+    ],
+    [
+      "DEVELOP",
+      "engineers"
+    ],
+    [
+      "ENABLE",
+      "companies: tools, training, measurement"
+    ]
+  ]
+}

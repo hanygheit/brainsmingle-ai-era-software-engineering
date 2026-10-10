@@ -1,1 +1,51 @@
-{}
+{
+  "headline": "100% licensed. Not necessarily AI-ready.",
+  "toolFirst": {
+    "label": "Tool-first",
+    "items": [
+      "Buy licences",
+      "One-off workshop",
+      "Count active users",
+      "Assume productivity improved"
+    ]
+  },
+  "capFirst": {
+    "label": "Capability-first",
+    "items": [
+      "Choose workflows & safeguards",
+      "Train & mentor by career stage",
+      "Evaluate delivery & quality",
+      "Scale on demonstrated outcomes"
+    ]
+  },
+  "levers": [
+    [
+      "Onboarding",
+      "Read docs, fix a starter bug",
+      "First feature with an agent + walkthrough · AI-off debugging drill · team context files"
+    ],
+    [
+      "Development plan",
+      "“Complete an AI course”",
+      "“Deliver one agent-assisted repository-level change, show the context and constraints you gave the agent, and independently validate the result against defined acceptance criteria.”"
+    ],
+    [
+      "Mentoring",
+      "Answer questions",
+      "Review agent sessions (plan, prompts, diffs) · explain-it-back"
+    ],
+    [
+      "Promotion",
+      "Output volume",
+      "Delegation radius · decision quality · defects caught before review · people grown"
+    ]
+  ],
+  "zoomLabel": "Junior · Code quality",
+  "zoomBefore": "Writes clean, readable code that follows team standards and is covered by unit tests.",
+  "zoomAfter": "Delivers changes — by hand or with an agent — that meet team standards; can explain every line of their PR; adds the test that would catch the agent's likely mistake; flags any AI output they cannot verify.",
+  "chips": [
+    "Time to 10th PR: 91 → 49 days for daily AI users (DX, industry data)",
+    "‘the first stop for questions that used to go to colleagues’ — Anthropic, Dec 2025",
+    "‘manage juniors for learning, not production.’ — Kent Beck"
+  ]
+}

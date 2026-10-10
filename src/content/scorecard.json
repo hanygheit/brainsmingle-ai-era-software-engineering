@@ -1,1 +1,35 @@
-{}
+{
+  "layers": [
+    [
+      "Adoption",
+      "seats, usage, % AI-generated code",
+      "ACTIVITY"
+    ],
+    [
+      "Capability",
+      "agentic maturity, review quality, defects caught before review",
+      ""
+    ],
+    [
+      "Delivery",
+      "lead time, review turnaround",
+      ""
+    ],
+    [
+      "Quality",
+      "change failure rate, escaped defects, incident recovery",
+      ""
+    ],
+    [
+      "Business value",
+      "outcomes delivered, cost per change",
+      "OUTCOMES"
+    ]
+  ],
+  "tags": [
+    "Faros: bugs per developer +54%, review time +441%",
+    "DORA: throughput up, stability down"
+  ],
+  "last": "Don't measure how much AI they use. Measure what they can safely own.",
+  "small": "AI scales execution. Our job is to scale engineering capability."
+}
