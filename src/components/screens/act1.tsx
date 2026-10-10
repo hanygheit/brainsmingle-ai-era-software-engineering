@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArcMotif, EASE, Eyebrow, StatNumber } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import c from "@/content/act1.json";
@@ -10,9 +10,11 @@ const H = "font-display font-bold tracking-[-0.03em] text-text";
 /* ---------- S3 · Everyone can build software now ---------- */
 function TypeIn({ text, active }: { text: string; active: boolean }) {
   const reduce = useReducedMotion();
-  const [n, setN] = useState(active && !reduce ? 0 : text.length);
+  // Already active on mount = opened in its final state (back / print): show full text.
+  const activeAtMount = useRef(active);
+  const [n, setN] = useState(text.length);
   useEffect(() => {
-    if (!active || reduce) return setN(text.length);
+    if (!active || reduce || activeAtMount.current) return setN(text.length);
     setN(0);
     const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + 2)), 20);
     return () => clearInterval(id);

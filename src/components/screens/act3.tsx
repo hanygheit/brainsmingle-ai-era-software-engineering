@@ -128,9 +128,11 @@ export function S14({ step }: ScreenProps) {
 /* ---------- S15 ---------- */
 function TypeIn({ text, active }: { text: string; active: boolean }) {
   const reduce = useReducedMotion();
-  const [n, setN] = useState(active && !reduce ? 0 : text.length);
+  // Already active on mount = opened in its final state (back / print): show full text.
+  const activeAtMount = useRef(active);
+  const [n, setN] = useState(text.length);
   useEffect(() => {
-    if (!active || reduce) return setN(text.length);
+    if (!active || reduce || activeAtMount.current) return setN(text.length);
     setN(0);
     const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + 2)), 22);
     return () => clearInterval(id);

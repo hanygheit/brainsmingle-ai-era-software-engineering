@@ -156,19 +156,18 @@ export function S2({ step, choice }: ScreenProps) {
         <h1 className="font-display text-[88px] leading-[1] font-bold tracking-[-0.035em] text-text">{c.s2.title}</h1>
         <p className="mt-[20px] text-[34px] text-muted">{c.s2.subtitle}</p>
       </div>
-      <Reveal on={step >= 1} className="absolute top-[300px] right-[96px] left-[96px] flex items-end justify-between">
-        <div>
-          <Eyebrow>{c.s2.question}</Eyebrow>
-          <p className="mt-[10px] font-display text-[36px] font-bold text-text">{c.s2.prompt}</p>
-        </div>
-        <p className="font-mono text-[18px] text-muted">or vote: {short}</p>
+      <Reveal on={step >= 1} className="absolute top-[290px] right-[96px] left-[96px]">
+        <Eyebrow>{c.s2.question}</Eyebrow>
+        <p className="mt-[8px] font-display text-[34px] font-bold whitespace-nowrap text-text">
+          {c.s2.prompt} <span className="ml-[16px] font-mono text-[18px] font-normal text-muted">or vote: {short}</span>
+        </p>
       </Reveal>
       <Reveal on={step >= 1} className="absolute inset-0" y={24}>
         <div className="absolute inset-0" style={{ transform: "translateY(-250px)" }}>
           <AudienceCards labels={c.s2.cards} tally={counts} active={choice} />
         </div>
       </Reveal>
-      <Reveal on={step >= 3} className="absolute inset-x-0 top-[732px] text-center">
+      <Reveal on={step >= 3} className="absolute inset-x-0 top-[696px] text-center">
         <p className="font-mono text-[28px] text-own">{c.s2.journey}</p>
       </Reveal>
       <Reveal on={step >= 2} className="absolute bottom-[80px] left-[96px]">
