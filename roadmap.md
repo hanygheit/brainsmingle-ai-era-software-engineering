@@ -4,3 +4,4 @@
 - [x] Align the web deck's rules, examples, order, and speaker notes with the approved presentation
 - [x] Verify all approved slides, navigation, and current PDF availability (23 slides; 23-page slides PDF and 46-page notes PDF)
 - [x] Slide 8 (five gates overview): list each gate's four rule titles under its card; refresh both PDFs
+- [x] PDF download from the app's own backend storage, no external keys: regenerate both PDFs for the remix backend and verify the button
