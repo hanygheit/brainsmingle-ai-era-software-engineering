@@ -9,6 +9,7 @@ import { sourcesFor } from "@/content/sources";
 import { useDeck } from "@/deck/store";
 import { addManual, clearManual, POLL_CONTENT, usePollCounts } from "@/lib/poll";
 import { resetPoll } from "@/lib/presenter.functions";
+import { pdfInfo, uploadPdf } from "@/lib/export-pdf.functions";
 import { readPin, savePin } from "@/lib/presenter-pin";
 import { MiniStage } from "./Stage";
 import { ScreenRenderer } from "./ScreenRenderer";
@@ -231,6 +232,8 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
           ))}
         </div>
 
+        <PdfUpload />
+
         <div>
           <p className="mb-1 font-mono text-[11px] text-muted">SOURCES</p>
           {srcs.length ? (
@@ -246,6 +249,71 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function PdfUpload() {
+  const info = useServerFn(pdfInfo);
+  const upload = useServerFn(uploadPdf);
+  const [state, setState] = useState<{ stored: boolean; uploadedAt?: string | null; pages?: number } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const input = useRef<HTMLInputElement>(null);
+  const refresh = () => void info().then(setState).catch(() => setState(null));
+  useEffect(refresh, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const onFile = async (file: File) => {
+    let pin = readPin();
+    if (!pin) {
+      pin = window.prompt("Presenter PIN") ?? "";
+      if (!pin) return;
+    }
+    setBusy(true);
+    try {
+      const buf = new Uint8Array(await file.arrayBuffer());
+      let bin = "";
+      for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
+      const r = await upload({ data: { pin, base64: btoa(bin) } });
+      if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
+      savePin(pin);
+      toast.success(`PDF uploaded · ${r.pages} pages`);
+      refresh();
+    } catch {
+      toast.error("Upload failed. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className="rounded-lg border border-line p-3">
+      <div className="flex items-center justify-between">
+        <p className="font-mono text-[12px] tracking-[0.12em] text-muted uppercase">PDF</p>
+        <button
+          onClick={() => input.current?.click()}
+          disabled={busy}
+          className="rounded border border-line px-2 py-1 font-mono text-[12px] text-text hover:border-[var(--accent)]"
+        >
+          {busy ? "Uploading…" : "Upload PDF"}
+        </button>
+        <input
+          ref={input}
+          type="file"
+          accept="application/pdf"
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            e.target.value = "";
+            if (f) void onFile(f);
+          }}
+        />
+      </div>
+      <p className="mt-1 text-[13px] text-muted">
+        {state?.stored
+          ? `Uploaded ${state.uploadedAt ? new Date(state.uploadedAt).toLocaleString() : ""} · ${state.pages ?? "?"} pages`
+          : "No PDF stored yet"}
+      </p>
     </div>
   );
 }
