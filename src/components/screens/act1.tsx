@@ -73,13 +73,13 @@ export function S3({ step }: ScreenProps) {
           </div>
           <div className="flex flex-col gap-[24px]">
             <Reveal on={step >= 7}>
-              <div className="rounded-[20px] border border-line bg-surface p-[32px]">
+              <div className="theme-stage rounded-[20px] border border-line bg-surface p-[32px]">
                 <p className="t-tag text-muted">Then</p>
                 <p className="mt-[10px] font-mono text-[26px] text-muted">{s.then}</p>
               </div>
             </Reveal>
             <Reveal on={step >= 8}>
-              <div className="rounded-[20px] border border-own bg-surface p-[32px]">
+              <div className="theme-stage rounded-[20px] border border-own bg-surface p-[32px]">
                 <p className="t-tag text-own">Now</p>
                 <p className="mt-[10px] min-h-[180px] font-mono text-[26px] leading-[1.4] text-text">
                   <TypeIn text={s.now} active={step === 8} />
