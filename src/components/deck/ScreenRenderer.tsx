@@ -4,6 +4,7 @@ import { Eyebrow, Headline } from "@/components/kit";
 import { S0, S1, S2 } from "@/components/screens/opening";
 import { S3, S4, S5, S6 } from "@/components/screens/act1";
 import { S7, S8, S9, S10, S11 } from "@/components/screens/act2";
+import { S12, S13, S14, S15, S16, S17 } from "@/components/screens/act3";
 
 export interface ScreenProps {
   screen: Screen;
@@ -14,7 +15,7 @@ export interface ScreenProps {
 }
 
 /** Screen components register here by id ("S0".."S23"); later prompts fill this in. */
-const REGISTRY: Partial<Record<string, ComponentType<ScreenProps>>> = { S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11 };
+const REGISTRY: Partial<Record<string, ComponentType<ScreenProps>>> = { S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16, S17 };
 
 export function ScreenRenderer(props: ScreenProps & { replay?: number }) {
   const C = REGISTRY[props.screen.id] ?? PlaceholderScreen;
