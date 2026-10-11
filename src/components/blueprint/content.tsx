@@ -5,6 +5,8 @@ import cm from "@/content/careerMatrix.json";
 import ddvo from "@/content/ddvo.json";
 import assessment from "@/content/assessment.json";
 import scorecard from "@/content/scorecard.json";
+import plans from "@/content/plans.json";
+import { stopColors } from "@/deck/theme";
 import { sources } from "@/content/sources";
 import { screens } from "@/content/screens";
 import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
@@ -13,7 +15,7 @@ import qrPres from "@/assets/qr-presentation-ai-era-software-engineering.svg.ass
 
 
 export const BLUEPRINT_TITLE = "AI-Era Software Engineering — The Blueprint";
-export const BLUEPRINT_DESC = "Learning plans, rubrics and the full skills matrix from the BrainsMingle AI Summit 2026 talk";
+export const BLUEPRINT_DESC = "Plans by role, learning plans, rubrics and the full skills matrix from the BrainsMingle AI Summit 2026 talk";
 
 const STAGES = ["Student", "Fresh grad", "Junior", "Mid", "Senior", "Lead"];
 
@@ -68,6 +70,7 @@ const SOFT = [
 ];
 
 export const SECTIONS: [string, string][] = [
+  ["plans", "Plans by role"],
   ["matrix", "Skills matrix"],
   ["stages", "Stage plans"],
   ["graduate", "8-week plan"],
@@ -91,14 +94,52 @@ function Section({ id, letter, title, children }: { id: string; letter: string; 
   );
 }
 
-/** Sections (a)–(i), shared by /blueprint and the PDF pages in /print. */
+/** Sections (a)–(j), shared by /blueprint and the PDF pages in /print. */
 export function BlueprintSections() {
   const bySlide = screens
     .map((s) => ({ s, list: sources.filter((x) => x.screens.includes(s.id)) }))
     .filter((g) => g.list.length);
   return (
     <>
-        <Section id="matrix" letter="a" title="The full 16-capability emphasis matrix">
+        <Section id="plans" letter="a" title="Plans by role — the action behind every stop">
+          <p className="max-w-3xl text-[16px] text-muted">{plans.intro}</p>
+          <div className="mt-6 grid gap-5 lg:grid-cols-2">
+            {plans.roles.map((r) => {
+              const { fill } = stopColors(r.stop);
+              const ink = `color-mix(in oklab, ${fill} 72%, #14161C)`;
+              return (
+                <article key={r.id} className="bp-avoid rounded-xl border border-t-4 border-line bg-surface p-5" style={{ borderTopColor: fill }}>
+                  <h3 className="font-display text-[22px] font-bold" style={{ color: ink }}>{r.title}</h3>
+                  <p className="mt-2 rounded-lg px-3 py-2 text-[15px] font-semibold" style={{ background: `color-mix(in oklab, ${fill} 9%, var(--surface))` }}>
+                    <span className="mr-2 font-mono text-[11px] tracking-[0.16em]" style={{ color: ink }}>ACTION</span>
+                    {r.action}
+                  </p>
+                  {r.blocks.map(([h, items]) => (
+                    <div key={h as string} className="mt-4">
+                      <p className="font-mono text-[12px] tracking-[0.12em] uppercase" style={{ color: ink }}>{h as string}</p>
+                      <ul className="mt-2 list-disc space-y-1 pl-5 text-[15px]">
+                        {(items as string[]).map((it) => <li key={it}>{it}</li>)}
+                      </ul>
+                    </div>
+                  ))}
+                </article>
+              );
+            })}
+          </div>
+          <h3 className="mt-10 font-display text-[22px] font-bold">{plans.toolsTitle}</h3>
+          <table className="mt-3 w-full text-[15px]">
+            <tbody>
+              {plans.tools.map(([k, v]) => (
+                <tr key={k} className="border-b border-line align-top">
+                  <td className="w-[200px] py-3 pr-4 font-mono text-[12px] tracking-[0.12em] text-muted uppercase">{k}</td>
+                  <td className="py-3">{v}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Section>
+
+        <Section id="matrix" letter="b" title="The full 16-capability emphasis matrix">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] border-separate border-spacing-1 text-[14px]">
               <thead>
@@ -133,7 +174,7 @@ export function BlueprintSections() {
           <p className="mt-4 font-mono text-[13px] text-muted">Proposed learning emphasis, not skill scores.</p>
         </Section>
 
-        <Section id="stages" letter="b" title="The six stage plans">
+        <Section id="stages" letter="c" title="The six stage plans">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {cm.panels.map((p, i) => (
               <article key={i} className="bp-avoid rounded-xl border border-line bg-surface p-5">
@@ -152,7 +193,7 @@ export function BlueprintSections() {
           </div>
         </Section>
 
-        <Section id="graduate" letter="c" title="The 8-week graduate plan">
+        <Section id="graduate" letter="d" title="The 8-week graduate plan">
           <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {WEEKS.map(([w, t]) => (
               <li key={w} className="bp-avoid rounded-xl border border-line bg-surface p-5">
@@ -163,7 +204,7 @@ export function BlueprintSections() {
           </ol>
         </Section>
 
-        <Section id="rubric" letter="d" title="The weighted assessment rubric">
+        <Section id="rubric" letter="e" title="The weighted assessment rubric">
           <table className="w-full text-[15px]">
             <tbody>
               {RUBRIC.map(([k, w]) => (
@@ -192,7 +233,7 @@ export function BlueprintSections() {
           </div>
         </Section>
 
-        <Section id="scorecard" letter="e" title="The five-layer scorecard">
+        <Section id="scorecard" letter="f" title="The five-layer scorecard">
           <ol className="space-y-2">
             {scorecard.layers.map(([name, ex, label], i) => (
               <li key={name} className="bp-avoid flex flex-wrap items-baseline gap-x-4 gap-y-1 rounded-xl border border-line bg-surface p-4">
@@ -207,7 +248,7 @@ export function BlueprintSections() {
           </ol>
         </Section>
 
-        <Section id="ddvo" letter="f" title="Delegate / Direct / Validate / Own by stage">
+        <Section id="ddvo" letter="g" title="Delegate / Direct / Validate / Own by stage">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-[14px]">
               <thead>
@@ -232,7 +273,7 @@ export function BlueprintSections() {
           </div>
         </Section>
 
-        <Section id="stack" letter="g" title="The layered learning stack">
+        <Section id="stack" letter="h" title="The layered learning stack">
           <div className="grid gap-8 lg:grid-cols-2">
             <ol className="flex flex-col-reverse gap-2">
               {STACK.map((l, i) => (
@@ -256,7 +297,7 @@ export function BlueprintSections() {
           </div>
         </Section>
 
-        <Section id="repo" letter="h" title="Starter repo for agentic practice">
+        <Section id="repo" letter="i" title="Starter repo for agentic practice">
           <a
             href="https://github.com/hanygheit/ai-agent-on-call"
             target="_blank"
@@ -268,7 +309,7 @@ export function BlueprintSections() {
           <p className="mt-3 text-[16px] text-muted">AGENTS.md, hooks and tests to practise L3–L5 delegation.</p>
         </Section>
 
-        <Section id="sources" letter="i" title="All sources">
+        <Section id="sources" letter="j" title="All sources">
           <div className="space-y-8">
             {bySlide.map(({ s, list }) => (
               <div key={s.id} className="bp-avoid">

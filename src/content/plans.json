@@ -1,0 +1,82 @@
+{
+  "intro": "Every stop of the talk ends with one action. These are the full plans behind them. Tools are named as examples, grouped by purpose — not endorsements.",
+  "roles": [
+    {
+      "id": "students",
+      "stop": 3,
+      "title": "Students",
+      "action": "This month: build one small API by hand, extend it with an agent — and explain both.",
+      "blocks": [
+        ["Learn now", ["Programming, data structures & algorithms", "HTTP, APIs & SQL", "Git, testing and debugging", "Auth basics and the OWASP Top 10", "Reading code you didn't write", "Writing a clear specification: inputs, outputs, constraints, acceptance criteria"]],
+        ["Weekly habits", ["First version by hand — AI may explain, not solve", "Then ask AI for an alternative and explain the trade-off in your own words", "A 30-minute AI-off kata: an algorithm, a bug or a small refactor", "A log of what the AI got wrong — and how you noticed", "Teach back one concept a week: a post, a talk or a study partner"]],
+        ["Portfolio project — one small API, built twice", ["v1 by hand: a small REST API with auth, a database and tests", "v2: extend it with a coding agent — one new feature, end to end", "Ship a README, an AGENTS.md (your rules for the agent) and a process log", "Negative tests for every auth rule, and a short “3 AI mistakes I caught” write-up", "A 5-minute walkthrough video that explains every design decision"]],
+        ["Ready when", ["You can build and debug a small service with AI off — and explain the version you built with AI"]]
+      ]
+    },
+    {
+      "id": "educators",
+      "stop": 4,
+      "title": "Universities & educators",
+      "action": "This term: change one assignment — AI allowed, explanation required.",
+      "blocks": [
+        ["This month — set the rule", ["Publish an AI rule for every assignment: a secure lane (AI-off, in person or oral) or an open lane (AI allowed and scaffolded) — e.g. the University of Sydney's two-lane model", "Or label each task with the five-level AI Assessment Scale: No AI · AI Planning · AI Collaboration · Full AI · AI Exploration", "Every lecturer runs a coding agent on their own assignment and notes what it gets right and wrong"]],
+        ["This term — change the evidence", ["Pick one assignment per course and add a 5-minute oral defence, a planted-bug review, a live change request (15 minutes, AI allowed, explained afterwards) and a process log", "Use the rubric in section (e) and calibrate it across staff with three sample submissions", "Teach the Keep · Shift · Add · Prove model explicitly to students"]],
+        ["This year — change the course", ["AI-off checkpoints in foundation courses; an agentic capstone in the final year", "A monthly staff community of practice: share assignments, rubrics and failures", "Compare grades with oral-defence results to see where the old assessment over-graded", "Update the syllabus: keep the core, shift the weight, add agentic workflows and AI-aware security"]]
+      ]
+    },
+    {
+      "id": "graduates",
+      "stop": 5,
+      "title": "Fresh graduates",
+      "action": "Make it visible: every PR explained, every agent mistake logged.",
+      "blocks": [
+        ["Stand out — before day one", ["One project with a process log and an AGENTS.md", "One merged open-source pull request", "An “AI mistakes I caught” write-up", "Be ready to explain every line — and to change it live"]],
+        ["Days 1–30 — learn the system", ["Set up your agent with the team's context files and conventions", "Read the codebase with AI as a guide; draw the architecture yourself", "Fix three small bugs — first attempt by hand, then compare with the agent"]],
+        ["Days 31–60 — contribute", ["Issue → plan → agent → verify → PR, with the plan approved before the code", "A negative test with every change", "Pair with a senior on one agent session; ask them to review your prompts and diffs"]],
+        ["Days 61–90 — own", ["One small feature, end to end", "A written design rationale: two alternatives considered, and why this one", "Catch one bug before review — and write down how you found it"]]
+      ]
+    },
+    {
+      "id": "engineers",
+      "stop": 6,
+      "title": "Current engineers",
+      "action": "This sprint: review one agent session as a team — and do one task AI-off.",
+      "blocks": [
+        ["Developer", ["Master one agent end to end: issue → approved plan → PR, with your own verification", "A weekly AI-off kata; own the regression tests", "Ready when you catch agent errors before reviewers do"]],
+        ["Senior", ["Own the guardrails and the context: AGENTS.md, hooks, review rules", "Threat-model AI-generated changes", "Coach juniors through their agent sessions — plans, prompts and diffs", "Ready when the teams around you produce better AI-assisted work"]],
+        ["Lead / architect", ["Publish team AI standards and update the competency matrix", "Measure stability as well as throughput", "Make agent-session review part of mentoring and promotion", "Ready when the team ships faster, stability holds and juniors grow judgment"]],
+        ["New ways of learning — every level", ["Pair with an agent: state the intent, approve the plan, review every diff", "Practise AI-off: one kata or debugging session a week", "Review agent sessions as a team, like code review", "Write the context every agent on the team reads"]]
+      ]
+    },
+    {
+      "id": "leaders",
+      "stop": 1,
+      "title": "Engineering leaders",
+      "action": "Rewrite one development plan around what people can safely own.",
+      "blocks": [
+        ["Development plans", ["Replace “complete an AI course” with a demonstrable outcome: deliver one agent-assisted repository-level change, show the context and constraints you gave the agent, and independently validate the result against defined acceptance criteria"]],
+        ["Mentoring", ["Review agent sessions — plan, prompts, diffs — and ask people to explain the change back", "Manage juniors for learning, not production (Kent Beck)"]],
+        ["Promotion", ["Delegation radius · decision quality · defects caught before review · people grown — not output volume"]]
+      ]
+    },
+    {
+      "id": "companies",
+      "stop": 7,
+      "title": "Companies",
+      "action": "Start Monday: baseline first — then adopt, train and measure together.",
+      "blocks": [
+        ["Days 1–30 — foundations", ["A clear, communicated AI stance and guardrails: data, security, review rules", "Two or three workflows, with pilot teams", "Baseline delivery and quality (lead time, change failure rate, escaped defects) before rollout", "Context files in key repositories"]],
+        ["Days 31–60 — capability", ["Training by career stage, not a one-off workshop — BCG: regular use is sharply higher with at least five hours of training", "Mentoring through agent-session reviews", "Update onboarding and one competency row"]],
+        ["Days 61–90 — measure & scale", ["Compare with the baseline across delivery, quality and capability — not seats or % AI-generated code", "Scale or stop each workflow on evidence", "Update development plans and promotion criteria"]],
+        ["Use as a checklist", ["DORA AI Capabilities Model: clear AI stance · healthy data ecosystems · AI-accessible internal data · strong version control · small batches · user-centric focus · quality internal platforms"]]
+      ]
+    }
+  ],
+  "toolsTitle": "Example tools by purpose — not endorsements",
+  "tools": [
+    ["Learning", "ChatGPT study mode · Claude learning mode · Gemini Guided Learning · CS50.ai"],
+    ["Coding assistants", "GitHub Copilot (free for verified students) · Cursor · JetBrains AI · Gemini Code Assist"],
+    ["Coding agents", "Claude Code · OpenAI Codex · Copilot coding agent · Gemini CLI"],
+    ["Testing & review", "xUnit / JUnit / pytest · Playwright · AI pull-request review"]
+  ]
+}
