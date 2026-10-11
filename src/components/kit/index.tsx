@@ -270,7 +270,14 @@ export function CodeDiff({
 }) {
   return (
     <div className="theme-stage w-[1100px] overflow-hidden rounded-[16px] border border-line bg-surface">
-      {title ? <div className="border-b border-line px-[24px] py-[14px] t-tag text-muted">{title}</div> : null}
+      {title ? (
+        <div className="flex items-center gap-[10px] border-b border-line px-[24px] py-[14px]">
+          <span className="win-dot" />
+          <span className="win-dot" />
+          <span className="win-dot" />
+          <span className="ml-[12px] t-tag text-muted">{title}</span>
+        </div>
+      ) : null}
       <pre className="py-[20px] font-mono text-[22px] leading-[1.55]">
         {code.split("\n").map((l, i) => {
           const n = i + 1;
@@ -317,11 +324,23 @@ export function AudienceCards({
           return (
             <div
               key={i}
-              className="relative min-h-[260px] overflow-hidden rounded-[20px] border bg-surface p-[36px] transition-colors duration-300"
-              style={{ borderColor: on ? "var(--accent)" : "var(--line)" }}
+              className="relative min-h-[260px] overflow-hidden rounded-[20px] border bg-surface p-[36px] transition-[border-color,box-shadow] duration-300"
+              style={{
+                borderColor: on ? "var(--accent)" : "var(--line)",
+                boxShadow: on ? "0 0 0 1px var(--accent), 0 0 60px -12px color-mix(in oklab, var(--accent) 55%, transparent)" : undefined,
+              }}
             >
-              <p className="font-display text-[56px] font-bold text-muted">{i + 1}</p>
-              <p className="mt-[12px] t-body text-text">{labels[i]}</p>
+              <span
+                className="inline-flex h-[72px] w-[72px] items-center justify-center rounded-[18px] border font-display text-[40px] font-bold transition-colors duration-300"
+                style={{
+                  borderColor: on ? "var(--accent)" : "var(--line)",
+                  color: on ? "var(--accent)" : "var(--muted)",
+                  background: on ? "color-mix(in oklab, var(--accent) 14%, transparent)" : "color-mix(in oklab, var(--text) 4%, transparent)",
+                }}
+              >
+                {i + 1}
+              </span>
+              <p className="mt-[20px] t-body text-text">{labels[i]}</p>
               {tally ? (
                 <div className="mt-[20px]">
                   <div className="h-[6px] w-full rounded-full bg-line">

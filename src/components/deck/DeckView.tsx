@@ -66,10 +66,10 @@ function DeckInner() {
             <motion.div
               key={`${deck.screen.id}-${deck.replay}`}
               className="absolute inset-0 z-10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: reduce ? 1 : 1.012 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: reduce ? 0.15 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: reduce ? 0.15 : 0.45, ease: [0.22, 1, 0.36, 1] }}
             >
               <ScreenRenderer
                 screen={deck.screen}

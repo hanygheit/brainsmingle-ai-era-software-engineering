@@ -66,7 +66,21 @@ export function S20({ step }: ScreenProps) {
       <p className={`${H} text-[72px]`}>{s.headline}</p>
       <div className="flex flex-1 items-center">
         <Reveal on={step >= 1}>
-          <p className="max-w-[1500px] font-display text-[72px] leading-[1.1] font-bold tracking-[-0.02em] text-validate">{s.stanford}</p>
+          <p className="max-w-[1500px] font-display text-[72px] leading-[1.1] font-bold tracking-[-0.02em] text-text">
+            {(() => {
+              // Same sentence; the figure after the colon is set as the hero.
+              const at = s.stanford.indexOf(": ");
+              if (at < 0) return <span className="text-validate">{s.stanford}</span>;
+              return (
+                <>
+                  {s.stanford.slice(0, at + 1)}{" "}
+                  <span className="whitespace-nowrap text-validate underline decoration-[color-mix(in_oklab,var(--validate)_35%,transparent)] decoration-[10px] underline-offset-[14px]">
+                    {s.stanford.slice(at + 2)}
+                  </span>
+                </>
+              );
+            })()}
+          </p>
           <div className="mt-[20px]"><Tag>{s.stanfordSrc}</Tag></div>
         </Reveal>
       </div>
@@ -104,7 +118,7 @@ export function S22({ step }: ScreenProps) {
       </div>
       <Reveal on={step >= 8} className="mt-auto">
         <Tag>{s.tag}</Tag>
-        <p className={`${H} mt-[16px] text-[56px]`}>{s.last}</p>
+        <p className={`${H} keyline mt-[16px] text-[56px]`}>{s.last}</p>
       </Reveal>
     </div>
   );
@@ -142,7 +156,7 @@ export function S23({ step }: ScreenProps) {
         })}
       </div>
       <Reveal on={step >= 2} className="absolute right-[96px] bottom-[96px] left-[96px]">
-        <p className={`${H} text-[56px]`}>{s.headline}</p>
+        <p className={`${H} keyline text-[56px]`}>{s.headline}</p>
         <p className="mt-[12px] text-[30px] text-muted">{s.sub}</p>
       </Reveal>
     </div>
@@ -248,7 +262,12 @@ export function S28({ step }: ScreenProps) {
         </div>
         <div className="w-[720px]">
           <div className="theme-stage overflow-hidden rounded-[16px] border border-line bg-surface">
-            <div className="border-b border-line px-[24px] py-[12px] t-tag text-muted">{s.file}</div>
+            <div className="flex items-center gap-[10px] border-b border-line px-[24px] py-[12px]">
+              <span className="win-dot" />
+              <span className="win-dot" />
+              <span className="win-dot" />
+              <span className="ml-[12px] t-tag text-muted">{s.file}</span>
+            </div>
             <div className="space-y-[6px] p-[24px] font-mono text-[20px] leading-[1.5]">
               {s.code.map((l, i) => (
                 <p key={l} className="rounded-[6px] px-[8px] transition-colors duration-300" style={{ background: i === 0 && step >= 6 ? "color-mix(in oklab, var(--validate-fill) 22%, transparent)" : "transparent", color: "var(--text)" }}>
@@ -261,7 +280,7 @@ export function S28({ step }: ScreenProps) {
         </div>
       </div>
       <Reveal on={step >= 7} className="mt-[24px]">
-        <p className={`${H} text-[56px]`}>{s.last}</p>
+        <p className={`${H} keyline text-[56px]`}>{s.last}</p>
       </Reveal>
     </div>
   );
@@ -334,7 +353,7 @@ export function S29({ choice }: ScreenProps) {
           <p className="mt-[10px] text-[24px] text-text">{panel.ready}</p>
         </div>
       </div>
-      <p className="mt-[24px] font-display text-[34px] font-bold text-text">{cm.footer}</p>
+      <p className="keyline mt-[24px] font-display text-[34px] font-bold text-text">{cm.footer}</p>
     </div>
   );
 }

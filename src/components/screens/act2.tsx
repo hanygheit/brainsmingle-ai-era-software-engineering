@@ -180,7 +180,7 @@ export function S15({ step }: ScreenProps) {
         </div>
       </Reveal>
       <Reveal on={step >= 2} className="mt-auto">
-        <p className={`${H} text-[60px]`}>{s.last}</p>
+        <p className={`${H} keyline text-[60px]`}>{s.last}</p>
       </Reveal>
     </div>
   );
@@ -225,7 +225,7 @@ export function S16({ step }: ScreenProps) {
         <p className="text-[22px] text-muted">{s.gregg}</p>
       </Reveal>
       <Reveal on={step >= 3} className="mt-auto">
-        <p className={`${H} text-[60px]`}>{s.last}</p>
+        <p className={`${H} keyline text-[60px]`}>{s.last}</p>
       </Reveal>
     </div>
   );
@@ -282,7 +282,7 @@ export function S17({ step }: ScreenProps) {
         </blockquote>
       </Reveal>
       <Reveal on={step >= 4} className="mt-auto">
-        <p className={`${H} text-[44px] leading-[1.15]`}>{asm.headline}</p>
+        <p className={`${H} keyline text-[44px] leading-[1.15]`}>{asm.headline}</p>
       </Reveal>
     </div>
   );

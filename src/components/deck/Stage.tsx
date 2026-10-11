@@ -1,4 +1,7 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+
+// Measure before first paint on the client (no flash of an unscaled canvas); plain effect on the server.
+const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /**
  * Renders children on a fixed 1920x1080 canvas, scaled to fit the container
@@ -23,11 +26,14 @@ export function Stage({
   onSwipe?: (dir: 1 | -1) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [box, setBox] = useState({ w: 1920, h: 1080 });
-  const scale = Math.min(box.w / 1920, box.h / 1080);
+  // null until measured: the server cannot know the window, so the canvas stays hidden until the first measure.
+  const [box, setBox] = useState<{ w: number; h: number } | null>(null);
+  const measured = box !== null;
+  const { w: bw, h: bh } = box ?? { w: 1920, h: 1080 };
+  const scale = Math.min(bw / 1920, bh / 1080);
   const touchX = useRef<number | null>(null);
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const update = () => {
@@ -62,14 +68,14 @@ export function Stage({
       <div
         className={framed ? "deck-frame deck-frame--framed" : "deck-frame"}
         style={(() => {
-          if (!framed) return undefined;
+          if (!framed) return measured ? undefined : { visibility: "hidden" as const };
           // Whole-pixel box: a fractional offset would blur every glyph on the slide.
           const w = Math.round(1920 * scale);
           const h = Math.round(1080 * scale);
-          return { width: w, height: h, left: Math.round((box.w - w) / 2), top: Math.round((box.h - h) / 2) };
+          return { width: w, height: h, left: Math.round((bw - w) / 2), top: Math.round((bh - h) / 2), visibility: measured ? undefined : ("hidden" as const) };
         })()}
       >
-        <div className="deck-stage" style={{ transform: `scale(${scale})` }}>
+        <div className="deck-stage" style={{ transform: `scale(${scale})`, visibility: measured ? undefined : "hidden" }}>
           {children}
         </div>
         {overlay}

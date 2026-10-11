@@ -86,7 +86,7 @@ export function S5({ step }: ScreenProps) {
           <ArcMotif count={6} radius={640} />
         </motion.div>
       </div>
-      <div className="relative mt-[64px] flex flex-col gap-[22px]">
+      <div className="relative mt-[56px] flex flex-col items-start gap-[18px]">
         {s.rungs.map(([name, hand], i) => {
           const last = i === 5;
           return (
@@ -98,10 +98,14 @@ export function S5({ step }: ScreenProps) {
                   e.stopPropagation();
                   setPop((p) => !p);
                 }}
-                className="flex items-baseline gap-[24px] text-left"
-                style={{ marginLeft: i * 72 }}
+                className="flex items-baseline gap-[24px] rounded-[16px] border bg-surface px-[28px] py-[12px] text-left"
+                style={{
+                  marginLeft: i * 72,
+                  borderColor: last ? "var(--own)" : "var(--line)",
+                  boxShadow: last ? "0 0 0 1px var(--own), 0 18px 44px -18px color-mix(in oklab, var(--own) 55%, transparent)" : undefined,
+                }}
               >
-                <span className="font-mono text-[24px] text-muted">{i + 1}</span>
+                <span className="act-ink font-mono text-[24px] font-semibold">{i + 1}</span>
                 <span className={`${H} text-[44px] ${last ? "underline decoration-own decoration-2 underline-offset-8" : ""}`}>{name}</span>
                 <span className="text-[30px] text-muted">— {hand}</span>
               </button>
@@ -192,7 +196,7 @@ export function S7({ step }: ScreenProps) {
         </Reveal>
       </div>
       <Reveal on={step >= 4} className="mt-auto">
-        <p className={`${H} text-[64px]`}>{s.last}</p>
+        <p className={`${H} keyline text-[64px]`}>{s.last}</p>
       </Reveal>
     </div>
   );
@@ -207,16 +211,21 @@ export function S8({ step }: ScreenProps) {
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <SrcTag items={[step >= 1 && "Anthropic, 14 Sep 2026", "Axios, Jan 2026"]} />
       <div className="relative">
-        <div className="flex gap-[16px]">
+        <div className="flex gap-[36px]">
           {s.stages.map((st, i) => {
             const hot = i === ci;
             return (
               <div
                 key={st}
-                className="flex h-[120px] flex-1 items-center justify-center rounded-[16px] border bg-surface text-center text-[26px] font-semibold transition-colors duration-700"
-                style={{ borderColor: hot ? "var(--validate)" : "var(--line)", color: hot ? "var(--validate)" : "var(--text)", boxShadow: hot ? "0 0 48px color-mix(in oklab, var(--validate) 45%, transparent)" : "none" }}
+                className="relative flex h-[120px] flex-1 items-center justify-center rounded-[16px] border bg-surface text-center text-[26px] font-semibold transition-colors duration-700"
+                style={{ borderColor: hot ? "var(--validate)" : "var(--line)", color: hot ? "var(--validate)" : "var(--text)", boxShadow: hot ? "0 0 48px color-mix(in oklab, var(--validate) 45%, transparent)" : undefined }}
               >
                 {st}
+                {i < s.stages.length - 1 ? (
+                  <svg className="absolute top-1/2 -right-[30px] -translate-y-1/2" width="24" height="24" viewBox="0 0 24 24" aria-hidden>
+                    <path d="M9 5l7 7-7 7" fill="none" stroke="var(--muted)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ) : null}
               </div>
             );
           })}
@@ -243,7 +252,7 @@ export function S8({ step }: ScreenProps) {
       </div>
       <div className="mt-auto">
         <Reveal on={step >= 3}>
-          <p className={`${H} text-[56px]`}>{s.last}</p>
+          <p className={`${H} keyline text-[56px]`}>{s.last}</p>
         </Reveal>
         <p className="mt-[28px] max-w-[1600px] text-[20px] text-muted">{s.footer}</p>
       </div>
@@ -301,7 +310,7 @@ export function S9({ step }: ScreenProps) {
         {s.band.map((b) => <Tag key={b}>{b}</Tag>)}
       </Reveal>
       <Reveal on={step >= 3} className="mt-auto">
-        <p className={`${H} text-[64px]`}>{s.last}</p>
+        <p className={`${H} keyline text-[64px]`}>{s.last}</p>
       </Reveal>
     </div>
   );

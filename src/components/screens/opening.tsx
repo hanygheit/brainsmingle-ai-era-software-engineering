@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArcMotif, AudienceCards, EASE, Eyebrow, QRTile, Terminal, type TermStatus } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import { BRAINSMINGLE_URL, EVENT, LINKEDIN_URL, voteUrl } from "@/config";
+import { ACT_COLORS_ON_NAVY, NUMBERED_ACTS } from "@/deck/theme";
 import c from "@/content/opening.json";
 import { usePollCounts } from "@/lib/poll";
 import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
@@ -50,6 +51,41 @@ function Countdown() {
   );
 }
 
+/** Title with the signature gradient on its first word ("AI-Era"). */
+function SignatureTitle({ text }: { text: string }) {
+  const [first, ...rest] = text.split(" ");
+  return (
+    <>
+      <span className="text-gradient-signature">{first}</span> {rest.join(" ")}
+    </>
+  );
+}
+
+/** The talk's route as act-coloured chips (one per act, in order). */
+function Journey({ text }: { text: string }) {
+  const parts = text.split(" → ");
+  return (
+    <div className="flex items-center justify-center gap-[14px] font-mono text-[24px]">
+      {parts.map((p, i) => {
+        const act = NUMBERED_ACTS[i];
+        const ink = (act && ACT_COLORS_ON_NAVY[act.act]) ?? "var(--own)";
+        return (
+          <span key={p} className="flex items-center gap-[14px]">
+            <span
+              className="inline-flex items-center gap-[12px] rounded-full border px-[20px] py-[8px] text-text"
+              style={{ borderColor: `color-mix(in oklab, ${ink} 50%, transparent)`, background: `color-mix(in oklab, ${ink} 12%, transparent)` }}
+            >
+              <span className="h-[9px] w-[9px] rounded-full" style={{ background: ink }} />
+              {p}
+            </span>
+            {i < parts.length - 1 ? <span className="text-muted">→</span> : null}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ---------- S0 · Lobby ---------- */
 export function S0(_: ScreenProps) {
   return (
@@ -59,7 +95,7 @@ export function S0(_: ScreenProps) {
         <Pill>{c.s0.eyebrow}</Pill>
       </div>
       <div className="absolute inset-x-0 top-0 bottom-[180px] flex flex-col items-center justify-center text-center">
-        <h1 className="font-display text-[108px] leading-[1] font-bold tracking-[-0.04em] text-text">{c.s0.title}</h1>
+        <h1 className="font-display text-[108px] leading-[1] font-bold tracking-[-0.04em] text-text"><SignatureTitle text={c.s0.title} /></h1>
         <p className="mt-[28px] text-[38px] text-muted">{c.s0.subtitle}</p>
         <div className="mt-[40px]">
           <BrandBar width={280} />
@@ -85,12 +121,14 @@ export function S1({ step }: ScreenProps) {
   const lines = c.s1.terminal as { text: string; status?: TermStatus }[];
   const visible = useTicker(lines.length, 120, step === 1, step >= 2);
   const dim = step >= 3;
+  // Blur is screen-only: rasterised blur bloats the PDF; dim + spotlight carry the print state.
+  const print = usePrintMode();
   return (
     <div className="relative h-full w-full overflow-hidden">
       <motion.div
         className="absolute inset-0 flex gap-[64px] p-[96px]"
         initial={false}
-        animate={{ opacity: dim ? 0.25 : 1 }}
+        animate={{ opacity: dim ? 0.3 : 1, filter: dim && !reduce && !print ? "blur(3px)" : "blur(0px)" }}
         transition={{ duration: reduce ? 0.15 : 0.3, ease: EASE }}
       >
         {/* App preview */}
@@ -133,15 +171,24 @@ export function S1({ step }: ScreenProps) {
           </div>
         </div>
       </motion.div>
+      {/* Spotlight scrim behind the punchline */}
+      <motion.div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 50% 42% at 50% 50%, rgba(15, 27, 51, 0.94) 0%, rgba(15, 27, 51, 0.7) 50%, rgba(15, 27, 51, 0) 85%)" }}
+        initial={false}
+        animate={{ opacity: dim ? 1 : 0 }}
+        transition={{ duration: reduce ? 0.15 : 0.4, ease: EASE }}
+        aria-hidden
+      />
       <div className="absolute top-[40px] right-[96px]">
         <Tag>{c.s1.tag}</Tag>
       </div>
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
         <Reveal on={dim}>
-          <p className="font-display text-[96px] leading-[1] font-bold tracking-[-0.035em] text-text">{c.s1.line1}</p>
+          <p className="font-display text-[112px] leading-[1] font-bold tracking-[-0.04em] text-text">{c.s1.line1}</p>
         </Reveal>
         <Reveal on={dim} delay={0.3}>
-          <p className="mt-[32px] font-display text-[96px] leading-[1] font-bold tracking-[-0.035em] text-own">{c.s1.line2}</p>
+          <p className="mt-[28px] pb-[0.08em] font-display text-[112px] leading-[1] font-bold tracking-[-0.04em]"><span className="text-gradient-signature">{c.s1.line2}</span></p>
         </Reveal>
       </div>
     </div>
@@ -159,7 +206,7 @@ export function S2({ step, choice }: ScreenProps) {
         <ArcMotif count={6} radius={460} />
       </div>
       <div className="absolute inset-x-0 top-[96px] flex flex-col items-center text-center">
-        <h1 className="font-display text-[88px] leading-[1] font-bold tracking-[-0.035em] text-text">{c.s2.title}</h1>
+        <h1 className="font-display text-[88px] leading-[1] font-bold tracking-[-0.035em] text-text"><SignatureTitle text={c.s2.title} /></h1>
         <p className="mt-[20px] text-[34px] text-muted">{c.s2.subtitle}</p>
       </div>
       <Reveal on={step >= 1} className="absolute top-[290px] right-[96px] left-[96px]">
@@ -174,7 +221,7 @@ export function S2({ step, choice }: ScreenProps) {
         </div>
       </Reveal>
       <Reveal on={step >= 3} className="absolute inset-x-0 top-[696px] text-center">
-        <p className="font-mono text-[28px] text-own">{c.s2.journey}</p>
+        <Journey text={c.s2.journey} />
       </Reveal>
       <Reveal on={step >= 2} className="absolute bottom-[80px] left-[96px]">
         <SpeakerBlock compact />

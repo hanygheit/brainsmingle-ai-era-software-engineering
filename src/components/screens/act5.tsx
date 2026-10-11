@@ -158,7 +158,7 @@ export function S34({ step }: ScreenProps) {
           {sc.tags.map((t) => <Chip key={t} color="var(--validate)">{t}</Chip>)}
         </Reveal>
         <Reveal on={step >= 2}>
-          <p className={`${H} text-[48px] leading-[1.1]`}>{sc.last}</p>
+          <p className={`${H} keyline text-[48px] leading-[1.1]`}>{sc.last}</p>
           <p className="mt-[20px] text-[26px] text-muted">{sc.small}</p>
         </Reveal>
       </div>
@@ -305,7 +305,7 @@ export function S38(_: ScreenProps) {
       <div className="absolute top-[96px] left-[96px] max-w-[1700px]">
         <Reveal on><p className={`${H} text-[60px] leading-[1.15]`}>{s.l1}</p></Reveal>
         <Reveal on delay={0.06}>
-          <p className={`${H} text-[60px] leading-[1.15]`}>{s.l2a}<span className="text-own">{s.l2b}</span>{s.l2c}</p>
+          <p className={`${H} text-[60px] leading-[1.15]`}>{s.l2a}<span className="text-gradient-signature">{s.l2b}</span>{s.l2c}</p>
         </Reveal>
       </div>
       <Reveal on delay={0.12} className="absolute top-[330px] right-[96px] left-[96px]">

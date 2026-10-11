@@ -507,3 +507,26 @@
     scrollbar-color: var(--line) transparent;
   }
 }
+
+/* ---------------------------------------------------------------
+ * Signature accents
+ * ------------------------------------------------------------- */
+/* Own → Direct gradient for hero words on the navy stage (both ends ≥ 4.5:1 on navy). */
+.text-gradient-signature {
+  background-image: linear-gradient(95deg, #5ee6aa 0%, #8ab6ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Key line: an act-coloured bar hanging in the left margin marks the quotable line. */
+.keyline { position: relative; }
+.keyline::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 0.14em;
+  bottom: 0.14em;
+  width: 8px;
+  border-radius: 9999px;
+  background: var(--act, var(--own-fill));
+}
