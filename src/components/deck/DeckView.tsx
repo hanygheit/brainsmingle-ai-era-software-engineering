@@ -12,6 +12,7 @@ import {
   RoomFooter,
   RoomHeader,
   RotateHint,
+  SideArrows,
   SourceDrawer,
 } from "./Chrome";
 import { PointerInk, Spotlight } from "./Pointer";
@@ -60,6 +61,15 @@ function DeckInner() {
           framed={!fullscreen}
           onClickHalf={(dir) => (dir === 1 ? deck.next() : deck.prev())}
           onSwipe={(dir) => (dir === 1 ? deck.next() : deck.prev())}
+          gutterX={64}
+          aside={(gap, scale) => (
+            <div
+              className={fullscreen && paper ? "theme-chrome-paper contents" : "contents"}
+              style={fullscreen && paper && actColor ? { ["--act" as string]: actColor } : undefined}
+            >
+              <SideArrows gap={gap} scale={scale} framed={!fullscreen} />
+            </div>
+          )}
           overlay={
             <>
               <ProgressBar height={fullscreen ? 3 : 4} />

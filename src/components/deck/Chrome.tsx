@@ -200,6 +200,53 @@ export function ControlBar({ docked = false }: { docked?: boolean }) {
   );
 }
 
+const ARROW = 48;
+
+/**
+ * Previous / next arrows at the slide's left and right, same actions as the control
+ * bar. Beside the canvas whenever there is room (the windowed room keeps a gutter for
+ * them; side letterbox in fullscreen); otherwise on the slide's outer margin, clear of
+ * content. Fullscreen: they fade with the controls when the mouse is idle.
+ * Too narrow for a gutter (phones, windowed): none — swipe and the docked bar remain.
+ */
+export function SideArrows({ gap, scale, framed }: { gap: number; scale: number; framed: boolean }) {
+  const deck = useDeck();
+  const awake = useIdle(2000);
+  const outside = gap >= ARROW + 16;
+  if (framed && !outside) return null;
+  const visible = framed || awake;
+  // Outside: 16px clear of the canvas (centred in a narrower bar). Inside: scaled with the slide so it
+  // spans slide px 16–80 at most, inside the outer margin (content starts at 96).
+  const size = outside ? ARROW : Math.min(ARROW, 64 * scale);
+  const inset = outside ? Math.max((gap - ARROW) / 2, gap - ARROW - 16) : gap + 16 * scale;
+  const arrow = (dir: -1 | 1) => (
+    <button
+      type="button"
+      aria-label={dir === 1 ? "Next slide" : "Previous slide"}
+      title={dir === 1 ? "Next (→)" : "Previous (←)"}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (dir === 1) deck.next();
+        else deck.prev();
+      }}
+      onTouchStart={(e) => e.stopPropagation()}
+      onTouchEnd={(e) => e.stopPropagation()}
+      className={`glass absolute top-1/2 z-40 flex -translate-y-1/2 items-center justify-center rounded-full border border-line text-text transition-[opacity,background-color] duration-300 hover:bg-[color-mix(in_oklab,var(--text)_12%,var(--surface))] ${
+        visible ? (framed ? "opacity-60 hover:opacity-100" : "opacity-90 hover:opacity-100") : "pointer-events-none opacity-0"
+      }`}
+      style={{ width: size, height: size, [dir === 1 ? "right" : "left"]: inset }}
+    >
+      {dir === 1 ? <ChevronRight style={{ width: size * 0.42, height: size * 0.42 }} /> : <ChevronLeft style={{ width: size * 0.42, height: size * 0.42 }} />}
+    </button>
+  );
+  return (
+    <>
+      {arrow(-1)}
+      {arrow(1)}
+    </>
+  );
+}
+
 /* ---------- Windowed "stage room": header, footer, rotate hint ---------- */
 const pad2 = (n: number) => String(n).padStart(2, "0");
 

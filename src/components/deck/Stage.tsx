@@ -16,6 +16,8 @@ export function Stage({
   className = "",
   onClickHalf,
   onSwipe,
+  gutterX = 0,
+  aside,
 }: {
   children: ReactNode;
   /** Unscaled layer on top of the canvas, clipped to the frame (e.g. the progress bar). */
@@ -24,13 +26,18 @@ export function Stage({
   className?: string;
   onClickHalf?: (dir: 1 | -1) => void;
   onSwipe?: (dir: 1 | -1) => void;
+  /** Framed only: px kept clear left and right of the canvas (side arrows); dropped on narrow screens. */
+  gutterX?: number;
+  /** Unscaled layer beside the canvas: gets the gap from the container edge to the canvas, and the scale. */
+  aside?: (gap: number, scale: number) => ReactNode;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   // null until measured: the server cannot know the window, so the canvas stays hidden until the first measure.
   const [box, setBox] = useState<{ w: number; h: number } | null>(null);
   const measured = box !== null;
   const { w: bw, h: bh } = box ?? { w: 1920, h: 1080 };
-  const scale = Math.min(bw / 1920, bh / 1080);
+  const gx = framed && bw >= 600 ? gutterX : 0;
+  const scale = Math.min((bw - 2 * gx) / 1920, bh / 1080);
   const touchX = useRef<number | null>(null);
 
   useIsoLayoutEffect(() => {
@@ -80,6 +87,7 @@ export function Stage({
         </div>
         {overlay}
       </div>
+      {measured && aside ? aside((bw - 1920 * scale) / 2, scale) : null}
     </div>
   );
 }
