@@ -73,10 +73,12 @@ export function BrandBar({ width = 240, height = 4 }: { width?: number; height?:
 }
 
 /** Pill-shaped eyebrow used for event / context labels on the stage. */
-export function Pill({ children }: { children: ReactNode }) {
+export function Pill({ children, size = "stage" }: { children: ReactNode; size?: "stage" | "page" }) {
+  const cls =
+    size === "stage" ? "gap-[12px] px-[22px] py-[10px] text-[17px]" : "gap-2 px-3 py-1.5 text-[12px]";
   return (
-    <span className="inline-flex items-center gap-[12px] rounded-full border border-line bg-surface/60 px-[22px] py-[10px] font-mono text-[17px] tracking-[0.14em] text-muted uppercase">
-      <span className="h-[8px] w-[8px] rounded-full bg-own-fill" />
+    <span className={`inline-flex items-center rounded-full border border-line bg-surface/60 font-mono tracking-[0.14em] text-muted uppercase ${cls}`}>
+      <span className={`rounded-full bg-own-fill ${size === "stage" ? "h-[8px] w-[8px]" : "h-[6px] w-[6px]"}`} />
       {children}
     </span>
   );

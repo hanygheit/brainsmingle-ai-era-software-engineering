@@ -2,21 +2,29 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
  * Renders children on a fixed 1920x1080 canvas, scaled to fit the container
- * while keeping 16:9 and letterboxing with the terminal navy.
+ * while keeping 16:9. Unframed (fullscreen) it letterboxes with the slide's own
+ * background; framed (windowed) the canvas floats as a rounded, lit screen.
+ * The frame wrapper is always rendered so toggling never remounts the slide.
  */
 export function Stage({
   children,
+  overlay,
+  framed = false,
   className = "",
   onClickHalf,
   onSwipe,
 }: {
   children: ReactNode;
+  /** Unscaled layer on top of the canvas, clipped to the frame (e.g. the progress bar). */
+  overlay?: ReactNode;
+  framed?: boolean;
   className?: string;
   onClickHalf?: (dir: 1 | -1) => void;
   onSwipe?: (dir: 1 | -1) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const [box, setBox] = useState({ w: 1920, h: 1080 });
+  const scale = Math.min(box.w / 1920, box.h / 1080);
   const touchX = useRef<number | null>(null);
 
   useEffect(() => {
@@ -24,7 +32,7 @@ export function Stage({
     if (!el) return;
     const update = () => {
       const { width, height } = el.getBoundingClientRect();
-      setScale(Math.min(width / 1920, height / 1080));
+      setBox({ w: width, h: height });
     };
     update();
     const ro = new ResizeObserver(update);
@@ -35,7 +43,7 @@ export function Stage({
   return (
     <div
       ref={containerRef}
-      className={`deck-viewport h-full w-full ${className}`}
+      className={`deck-viewport h-full w-full ${framed ? "deck-viewport--framed" : ""} ${className}`}
       onClick={(e) => {
         if (!onClickHalf) return;
         const rect = e.currentTarget.getBoundingClientRect();
@@ -51,8 +59,20 @@ export function Stage({
         touchX.current = null;
       }}
     >
-      <div className="deck-stage" style={{ transform: `scale(${scale})` }}>
-        {children}
+      <div
+        className={framed ? "deck-frame deck-frame--framed" : "deck-frame"}
+        style={(() => {
+          if (!framed) return undefined;
+          // Whole-pixel box: a fractional offset would blur every glyph on the slide.
+          const w = Math.round(1920 * scale);
+          const h = Math.round(1080 * scale);
+          return { width: w, height: h, left: Math.round((box.w - w) / 2), top: Math.round((box.h - h) / 2) };
+        })()}
+      >
+        <div className="deck-stage" style={{ transform: `scale(${scale})` }}>
+          {children}
+        </div>
+        {overlay}
       </div>
     </div>
   );

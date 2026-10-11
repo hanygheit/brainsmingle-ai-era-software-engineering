@@ -34,7 +34,7 @@ React + TypeScript + TanStack Start + Tailwind, existing animation library, Lova
 - Code/terminal panels on paper: slate `#1B2540`, text `#F4F2EC`.
 - Framework colours — fills: delegate `#8E97AB`, direct `#4C8DFF`, validate `#F2B33D`, own `#3DDC97`. Text on paper: delegate `#5B6478`, direct `#2563EB`, validate `#9A6516`, own `#0B7A55`. Text on navy: `#B4BCCD`, `#8AB6FF`, `#F6C35C`, `#5EE6AA`. All text ≥ 4.5:1 contrast.
 - Fonts: Space Grotesk (display), Inter (body), JetBrains Mono (code), self-hosted.
-- Stage: fixed 1920×1080 canvas scaled to fit; letterbox bars use the slide's own background.
+- Stage: fixed 1920×1080 canvas scaled to fit. Fullscreen (F / F11): edge to edge, letterbox bars use the slide's own background. Windowed: "stage room" — navy `#0B152B` backdrop, slide framed (rounded, lit, act-tinted ambient glow), branded header with Present button, docked controls in the footer (`src/deck/useFullscreen.ts`, `RoomHeader`/`RoomFooter` in Chrome.tsx).
 
 ## Deck structure — 39 slides (0–38), `/present/0…/present/38`, control bar "N / 39"
 0 Lobby · 1 The code is ready (cold open) · 2 Ready for what? (poll `s2-challenge`)

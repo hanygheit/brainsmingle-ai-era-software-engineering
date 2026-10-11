@@ -1,7 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
+import { CheckCircle2 } from "lucide-react";
 import { castVote, isPollId, POLL_CONTENT } from "@/lib/poll";
+import { EVENT, SPEAKER } from "@/config";
+import opening from "@/content/opening.json";
+import monogram from "@/assets/hs-monogram.png.asset.json";
+import { BrandBar } from "@/components/screens/shared";
+
+const TALK_TITLE = opening.s0.title;
 
 export const Route = createFileRoute("/vote")({
   validateSearch: (s) => z.object({ poll: z.string().catch("s2-challenge") }).parse(s),
@@ -61,31 +68,70 @@ function VotePage() {
   };
 
   return (
-    <main className="min-h-dvh bg-bg px-5 py-8 font-sans text-text">
-      <div className="mx-auto max-w-md">
-        <p className="font-mono text-[12px] tracking-[0.14em] text-muted uppercase">Live poll</p>
-        <h1 className="mt-3 font-display text-[28px] leading-tight font-bold">{content.question}</h1>
+    <main className="deck-room relative min-h-dvh overflow-hidden px-5 pt-6 pb-10 font-sans text-text" style={{ ["--ambient" as string]: "#5EE6AA" }}>
+      <div className="room-backdrop" aria-hidden />
+      <div className="relative mx-auto max-w-md">
+        <header className="flex items-center gap-3">
+          <img src={monogram.url} alt="" className="h-[32px] w-[32px]" />
+          <div className="min-w-0 leading-tight">
+            <p className="truncate font-display text-[15px] font-bold">{TALK_TITLE}</p>
+            <p className="truncate font-mono text-[11px] tracking-[0.12em] text-muted uppercase">{EVENT.name}</p>
+          </div>
+        </header>
+
+        <p className="mt-10 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-[12px] tracking-[0.14em] text-muted uppercase">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-own-fill opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-own-fill" />
+          </span>
+          Live poll
+        </p>
+        <h1 className="mt-4 font-display text-[30px] leading-[1.1] font-bold tracking-[-0.02em] [text-wrap:balance]">{content.question}</h1>
+        <div className="mt-5">
+          <BrandBar width={120} height={3} />
+        </div>
+
         {mine ? (
-          <p className="mt-4 rounded-lg border border-[var(--accent)] p-3 text-[17px]">
-            Thanks — watch the screen. <span className="text-muted">You can change your vote.</span>
+          <p className="glass mt-6 flex items-start gap-3 rounded-2xl border border-[var(--own)] p-4 text-[16px]">
+            <CheckCircle2 className="mt-[2px] h-5 w-5 shrink-0 text-own" />
+            <span>
+              Thanks — watch the screen. <span className="text-muted">You can change your vote.</span>
+            </span>
           </p>
         ) : null}
         <div className="mt-6 space-y-3">
-          {([1, 2, 3] as const).map((n) => (
-            <button
-              key={n}
-              disabled={busy}
-              onClick={() => void vote(n)}
-              aria-pressed={mine === n}
-              className="flex min-h-[84px] w-full items-center gap-4 rounded-2xl border bg-surface px-5 text-left transition-colors"
-              style={{ borderColor: mine === n ? "var(--accent)" : "var(--line)" }}
-            >
-              <span className="font-display text-[36px] font-bold text-muted">{n}</span>
-              <span className="text-[18px]">{content.options[n - 1]}</span>
-            </button>
-          ))}
+          {([1, 2, 3] as const).map((n) => {
+            const on = mine === n;
+            return (
+              <button
+                key={n}
+                disabled={busy}
+                onClick={() => void vote(n)}
+                aria-pressed={on}
+                className="glass flex min-h-[84px] w-full items-center gap-4 rounded-2xl border px-5 text-left transition-[border-color,background-color,transform] duration-200 active:scale-[0.99] disabled:opacity-70"
+                style={{
+                  borderColor: on ? "var(--own)" : "var(--line)",
+                  backgroundColor: on ? "color-mix(in oklab, var(--own-fill) 12%, var(--surface))" : undefined,
+                }}
+              >
+                <span
+                  className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-xl border font-display text-[24px] font-bold"
+                  style={{ borderColor: on ? "var(--own)" : "var(--line)", color: on ? "var(--own)" : "var(--muted)" }}
+                >
+                  {n}
+                </span>
+                <span className="flex-1 text-[18px] leading-snug">{content.options[n - 1]}</span>
+                {on ? <CheckCircle2 className="h-5 w-5 shrink-0 text-own" aria-hidden /> : null}
+              </button>
+            );
+          })}
         </div>
         {err ? <p className="mt-4 text-[15px] text-[var(--fail)]">{err}</p> : null}
+
+        <footer className="mt-12 flex items-center justify-between border-t border-line pt-5 font-mono text-[11px] tracking-[0.12em] text-muted uppercase">
+          <span>{SPEAKER.name}</span>
+          <span>{EVENT.track}</span>
+        </footer>
       </div>
     </main>
   );

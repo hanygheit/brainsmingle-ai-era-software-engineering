@@ -103,7 +103,7 @@ function PollConsole({ poll }: { poll: PollId }) {
     toast.success(`${poll} reset`);
   };
   return (
-    <div className="rounded-lg border border-line p-3">
+    <div className="rounded-xl border border-line bg-surface/70 p-3">
       <div className="flex items-center justify-between">
         <p className="font-mono text-[12px] tracking-[0.12em] text-muted uppercase">{poll}</p>
         <span className="font-mono text-[11px]" style={{ color: online ? "var(--own)" : "var(--validate)" }}>
@@ -116,14 +116,14 @@ function PollConsole({ poll }: { poll: PollId }) {
           <button
             key={n}
             onClick={() => addManual(poll, n)}
-            className="flex-1 rounded border border-line py-1 font-mono text-[14px] text-text hover:border-[var(--accent)]"
+            className="flex-1 rounded-lg border border-line bg-surface/70 transition-colors py-1 font-mono text-[14px] text-text hover:border-[var(--accent)]"
             title={`Add one manual vote to option ${n}`}
           >
             {n} · <span className="tabular-nums">{counts[n - 1]}</span>
             {manual[n - 1] ? <span className="text-muted"> (+{manual[n - 1]})</span> : null}
           </button>
         ))}
-        <button onClick={() => void doReset()} className="rounded border border-line px-2 font-mono text-[12px] text-muted hover:text-[var(--fail)]">
+        <button onClick={() => void doReset()} className="rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] px-2 font-mono text-[12px] text-muted hover:text-[var(--fail)]">
           RESET
         </button>
       </div>
@@ -151,13 +151,13 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
           </p>
         </div>
         {!compact ? (
-          <div className="overflow-hidden rounded-lg border border-line">
+          <div className="overflow-hidden rounded-xl border border-line bg-surface/70">
             <MiniStage width={640}>
               <ScreenRenderer screen={deck.screen} choice={deck.choice} />
             </MiniStage>
           </div>
         ) : null}
-        <div className="min-h-0 flex-1 overflow-y-auto rounded-lg border border-line p-4 text-[22px] leading-[1.5] whitespace-pre-wrap">
+        <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border border-line bg-surface/70 p-4 text-[22px] leading-[1.5] whitespace-pre-wrap">
           {deck.screen.id === POLL_SCREEN["s7-interview"] ? <p className="mb-3 font-mono text-[18px] text-validate">Press 1/2/3 to reveal answers</p> : null}
           <Notes text={deck.screen.notes} />
         </div>
@@ -165,13 +165,13 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
 
       <div className="flex min-h-0 flex-col gap-4 overflow-y-auto">
         <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-lg border border-line p-3">
+          <div className="rounded-xl border border-line bg-surface/70 p-3">
             <p className="font-mono text-[11px] text-muted">SCREEN</p>
             <p className="font-display text-[40px] font-bold tabular-nums" style={{ color: holds ? "var(--text)" : paceColor(remaining) }}>
               {untimed ? "—" : fmt(remaining)}
             </p>
           </div>
-          <div className="rounded-lg border border-line p-3">
+          <div className="rounded-xl border border-line bg-surface/70 p-3">
             <p className="font-mono text-[11px] text-muted">TOTAL / {fmt(TARGET_TOTAL_SEC)}</p>
             <p
               className="font-display text-[40px] font-bold tabular-nums"
@@ -181,7 +181,7 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
             </p>
             <p className="font-mono text-[11px] text-muted">Slides 1–{QA_INDEX} plan: {fmt(talkTotalSec())}</p>
           </div>
-          <div className="col-span-2 rounded-lg border border-line p-3">
+          <div className="col-span-2 rounded-xl border border-line bg-surface/70 p-3">
             <p className="font-mono text-[11px] text-muted">CLOSE / {fmt(closeTotalSec())} (slides {QA_INDEX + 1}–{TOTAL_SCREENS - 1})</p>
             <p className="font-display text-[28px] font-bold tabular-nums" style={{ color: t.close > closeTotalSec() ? "var(--fail)" : "var(--text)" }}>
               {fmt(t.close)}
@@ -189,17 +189,17 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
           </div>
         </div>
         <div className="flex gap-2">
-          <button onClick={t.toggle} className="flex flex-1 items-center justify-center gap-2 rounded border border-line py-2 font-mono text-[13px]">
+          <button onClick={t.toggle} className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] py-2 font-mono text-[13px]">
             {t.running ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
             {t.running ? "PAUSE" : "START"}
           </button>
-          <button onClick={t.reset} className="flex items-center gap-2 rounded border border-line px-3 font-mono text-[13px]">
+          <button onClick={t.reset} className="flex items-center gap-2 rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] px-3 font-mono text-[13px]">
             <RotateCcw className="h-4 w-4" /> RESET
           </button>
-          <button onClick={deck.prev} aria-label="Previous" className="rounded border border-line px-3">
+          <button onClick={deck.prev} aria-label="Previous" className="rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] px-3">
             <ChevronLeft className="h-4 w-4" />
           </button>
-          <button onClick={deck.next} aria-label="Next" className="rounded border border-line px-3">
+          <button onClick={deck.next} aria-label="Next" className="rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] px-3">
             <ChevronRight className="h-4 w-4" />
           </button>
         </div>
@@ -207,7 +207,7 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
         <div>
           <p className="mb-2 font-mono text-[11px] text-muted">NEXT</p>
           {nextScreen ? (
-            <div className="overflow-hidden rounded-lg border border-line">
+            <div className="overflow-hidden rounded-xl border border-line bg-surface/70">
               <MiniStage width={compact ? 300 : 420}>
                 <ScreenRenderer screen={nextScreen} choice={null} />
               </MiniStage>
@@ -282,13 +282,13 @@ function PdfUpload() {
     }
   };
   return (
-    <div className="rounded-lg border border-line p-3">
+    <div className="rounded-xl border border-line bg-surface/70 p-3">
       <div className="flex items-center justify-between">
         <p className="font-mono text-[12px] tracking-[0.12em] text-muted uppercase">PDF</p>
         <button
           onClick={() => input.current?.click()}
           disabled={busy}
-          className="rounded border border-line px-2 py-1 font-mono text-[12px] text-text hover:border-[var(--accent)]"
+          className="rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] px-2 py-1 font-mono text-[12px] text-text hover:border-[var(--accent)]"
         >
           {busy ? "Uploading…" : "Upload PDF"}
         </button>

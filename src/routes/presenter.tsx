@@ -25,8 +25,11 @@ export const Route = createFileRoute("/presenter")({
 function PresenterPage() {
   useKeyboard({ presenterWindow: true });
   return (
-    <main className="h-dvh overflow-hidden bg-bg p-6 font-sans">
-      <PresenterPanel />
+    <main className="deck-room relative h-dvh overflow-hidden p-6 font-sans">
+      <div className="room-backdrop" aria-hidden />
+      <div className="relative h-full">
+        <PresenterPanel />
+      </div>
     </main>
   );
 }
