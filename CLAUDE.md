@@ -67,7 +67,7 @@ The talk follows a 7-stop agenda (slide 3). Stops 02–07 are acts 1–6 in conf
 
 ## PDF
 - `/print` (noindex) renders every slide's final/print state at 1920×1080 per page, then /blueprint pages, sets `window.__PRINT_READY = true`.
-- Generate: see README "Generate the PDF" (Playwright, `page.pdf({width:'1920px',height:'1080px',printBackground:true,tagged:true,outline:true})`). Playwright is a dev dependency (`bunx playwright install chromium` once). Locally: start the dev server, then `node scripts/export-pdf.mjs http://localhost:8080 AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026.pdf`. Current output: 56 pages (39 slides + Resources title + Blueprint).
+- Generate: see README "Generate the PDF" (Playwright, `page.pdf({width:'1920px',height:'1080px',printBackground:true,tagged:true,outline:true})`). Playwright is a dev dependency (`bunx playwright install chromium` once). Locally: start the dev server, then `node scripts/export-pdf.mjs http://localhost:8080 AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026.pdf`. Current output: 76 pages (50 slides + Resources title + 25 Blueprint pages).
 - Lovable-hosted assets (`/__l5e/assets-v1/…`: monogram, QR images) 404 on the local dev server; `export-pdf.mjs` fetches them from the published site when the base URL isn't the live site. These 404s in local dev are expected.
 - `*.pdf` is git-ignored: the PDF stays in the repo root locally and is never committed.
 - Upload in the presenter window (PIN) → stored as PDF_FILENAME → every Download PDF button serves it. Re-generate and re-upload after any slide change.
