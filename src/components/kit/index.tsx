@@ -35,6 +35,19 @@ export function SourceTag({ children }: { children: ReactNode }) {
   return <p className="t-small absolute right-[96px] bottom-[40px] font-mono text-muted">{children}</p>;
 }
 
+/* ---------- QuoteGlyph (decorative oversized opening quote) ---------- */
+export function QuoteGlyph({ className = "", size = 240, color = "var(--accent)" }: { className?: string; size?: number; color?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={`pointer-events-none font-display leading-none font-bold select-none ${className}`}
+      style={{ fontSize: size, color, opacity: 0.14 }}
+    >
+      “
+    </span>
+  );
+}
+
 /* ---------- QuoteCard ---------- */
 export function QuoteCard({
   quote,
@@ -57,7 +70,8 @@ export function QuoteCard({
     .join("")
     .slice(0, 2);
   return (
-    <figure className="flex max-w-[1200px] gap-[40px] rounded-[20px] border border-line bg-surface p-[48px]">
+    <figure className="relative flex max-w-[1200px] gap-[40px] overflow-hidden rounded-[20px] border border-line bg-surface p-[48px]">
+      <QuoteGlyph className="absolute -top-[36px] right-[36px]" />
       {photo ? (
         <img src={photo} alt={speaker} className="h-[120px] w-[120px] shrink-0 rounded-full object-cover" />
       ) : (
@@ -187,9 +201,9 @@ export function Terminal({
   return (
     <div className="theme-stage w-[1100px] overflow-hidden rounded-[16px] border border-line bg-surface">
       <div className="flex items-center gap-[10px] border-b border-line px-[24px] py-[14px]">
-        <span className="h-[12px] w-[12px] rounded-full bg-line" />
-        <span className="h-[12px] w-[12px] rounded-full bg-line" />
-        <span className="h-[12px] w-[12px] rounded-full bg-line" />
+        <span className="win-dot" />
+        <span className="win-dot" />
+        <span className="win-dot" />
         <span className="ml-[12px] t-tag text-muted">{title}</span>
       </div>
       <div className="space-y-[8px] p-[28px] font-mono text-[24px] leading-[1.4]">

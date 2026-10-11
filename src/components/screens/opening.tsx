@@ -8,7 +8,7 @@ import c from "@/content/opening.json";
 import { usePollCounts } from "@/lib/poll";
 import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
 import qrBrains from "@/assets/qr-brainsmingle-hanysaad.svg.asset.json";
-import { Chip, Reveal, SpeakerBlock, Tag, useTicker } from "./shared";
+import { BrandBar, Chip, Pill, Reveal, SpeakerBlock, Tag, useTicker } from "./shared";
 
 function BreathingArcs({ radius = 520, opacity = 0.6 }: { radius?: number; opacity?: number }) {
   const reduce = useReducedMotion();
@@ -55,13 +55,16 @@ export function S0(_: ScreenProps) {
   return (
     <div className="relative h-full w-full overflow-hidden">
       <BreathingArcs />
-      <div className="absolute top-[96px] right-[96px] left-[96px]">
-        <Eyebrow>{c.s0.eyebrow}</Eyebrow>
+      <div className="absolute top-[88px] right-[96px] left-[96px]">
+        <Pill>{c.s0.eyebrow}</Pill>
       </div>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-        <h1 className="font-display text-[88px] leading-[1] font-bold tracking-[-0.035em] text-text">{c.s0.title}</h1>
-        <p className="mt-[24px] text-[34px] text-muted">{c.s0.subtitle}</p>
+      <div className="absolute inset-x-0 top-0 bottom-[180px] flex flex-col items-center justify-center text-center">
+        <h1 className="font-display text-[108px] leading-[1] font-bold tracking-[-0.04em] text-text">{c.s0.title}</h1>
+        <p className="mt-[28px] text-[38px] text-muted">{c.s0.subtitle}</p>
         <div className="mt-[40px]">
+          <BrandBar width={280} />
+        </div>
+        <div className="mt-[36px]">
           <Countdown />
         </div>
       </div>
@@ -93,9 +96,9 @@ export function S1({ step }: ScreenProps) {
         {/* App preview */}
         <div className="flex w-[620px] shrink-0 flex-col overflow-hidden rounded-[20px] border border-line bg-surface">
           <div className="flex items-center gap-[10px] border-b border-line px-[24px] py-[14px]">
-            <span className="h-[12px] w-[12px] rounded-full bg-line" />
-            <span className="h-[12px] w-[12px] rounded-full bg-line" />
-            <span className="h-[12px] w-[12px] rounded-full bg-line" />
+            <span className="win-dot" />
+            <span className="win-dot" />
+            <span className="win-dot" />
             <span className="ml-[12px] font-mono text-[18px] text-muted">{c.s1.app.name}</span>
           </div>
           <div className="flex flex-1 flex-col justify-center px-[72px]">

@@ -42,17 +42,25 @@ export function S31({ step }: ScreenProps) {
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <p className={`${H} text-[72px]`}>{tl.headline}</p>
-      <div className="mt-[64px] grid grid-cols-2 gap-[40px]">
-        {[tl.toolFirst, tl.capFirst].map((c, i) => (
+      <div className="flex flex-1 items-center pb-[40px]">
+        <div className="grid w-full grid-cols-2 gap-[40px]">
+          {[tl.toolFirst, tl.capFirst].map((c, i) => (
           <Reveal key={c.label} on={step >= i + 1}>
-            <div className="h-full rounded-[20px] border bg-surface p-[48px]" style={{ borderColor: i ? "var(--own)" : "var(--line)" }}>
-              <p className="font-display text-[48px] font-bold" style={{ color: i ? "var(--own)" : "var(--muted)" }}>{c.label}</p>
+            <div className="relative h-full overflow-hidden rounded-[20px] border bg-surface p-[48px]" style={{ borderColor: i ? "var(--own)" : "var(--line)" }}>
+              <div className="absolute inset-x-0 top-0 h-[6px]" style={{ background: i ? "var(--own-fill)" : "var(--line)" }} />
+              <p className="border-b border-line pb-[24px] font-display text-[48px] font-bold" style={{ color: i ? "var(--own)" : "var(--muted)" }}>{c.label}</p>
               <ul className="mt-[28px] space-y-[18px] text-[34px] leading-[1.3]" style={{ color: i ? "var(--text)" : "var(--muted)" }}>
-                {c.items.map((it) => <li key={it}>{it}</li>)}
+                {c.items.map((it) => (
+                  <li key={it} className="flex items-baseline gap-[20px]">
+                    <span className="w-[28px] shrink-0 font-mono text-[28px] font-semibold" style={{ color: i ? "var(--own)" : "var(--muted)" }} aria-hidden>{i ? "✓" : "–"}</span>
+                    {it}
+                  </li>
+                ))}
               </ul>
             </div>
           </Reveal>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -111,7 +119,11 @@ export function S33({ step }: ScreenProps) {
       <div className="flex flex-1 flex-col justify-center gap-[28px]">
         {tl.chips.map((t, i) => (
           <Reveal key={t} on={step >= 1} delay={i * 0.06}>
-            <p className="rounded-[20px] border border-line bg-surface px-[40px] py-[32px] font-mono text-[32px] leading-[1.35] text-text">{t}</p>
+            <div className="relative flex items-center gap-[32px] overflow-hidden rounded-[20px] border border-line bg-surface py-[32px] pr-[40px] pl-[48px]">
+              <span className="absolute inset-y-0 left-0 w-[6px] bg-[var(--act)]" aria-hidden />
+              <span className="act-ink font-mono text-[22px] font-semibold tabular-nums" aria-hidden>{String(i + 1).padStart(2, "0")}</span>
+              <p className="font-mono text-[32px] leading-[1.35] text-text">{t}</p>
+            </div>
           </Reveal>
         ))}
       </div>

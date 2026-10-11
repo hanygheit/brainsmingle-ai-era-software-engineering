@@ -17,6 +17,7 @@ import { screens, slideLabel } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
 import separators from "@/content/separators.json";
 import { useDeck } from "@/deck/store";
+import { isPaper } from "@/deck/theme";
 import { DOWNLOAD_EVENT } from "@/deck/useKeyboard";
 import { useDownloadPdf } from "@/components/kit";
 import { MiniStage } from "./Stage";
@@ -48,6 +49,8 @@ export function ProgressBar() {
 
 export function ActLabel() {
   const { screen } = useDeck();
+  // Paper slides carry their own act marker in the slide frame.
+  if (isPaper(screen.id)) return null;
   return (
     <p className="act-label pointer-events-none absolute bottom-[12px] left-[16px] z-30 font-mono text-[11px] tracking-[0.14em] text-muted uppercase">
       {screen.act}

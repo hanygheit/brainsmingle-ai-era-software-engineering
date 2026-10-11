@@ -326,3 +326,67 @@
   --accent: var(--act);
 }
 .theme-chrome-paper .act-label { color: color-mix(in oklab, var(--act) 70%, #14161c); }
+
+/* ---------------------------------------------------------------
+ * Keynote finish: stage atmosphere, lit surfaces, balanced type.
+ * Scoped to .slide-root (every rendered slide: deck, presenter, print).
+ * ------------------------------------------------------------- */
+.stage-atmosphere {
+  background:
+    radial-gradient(ellipse 55% 60% at 90% 95%, rgba(76, 141, 255, 0.11) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 40% at 6% 2%, rgba(94, 230, 170, 0.05) 0%, transparent 70%);
+}
+.stage-atmosphere::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(244, 242, 236, 0.085) 1.3px, transparent 1.7px);
+  background-size: 36px 36px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 75% at 45% 40%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse 80% 75% at 45% 40%, #000 0%, transparent 78%);
+}
+.paper-atmosphere {
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 0%, rgba(255, 255, 255, 0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, color-mix(in oklab, var(--act) 5%, transparent) 0%, transparent 70%);
+}
+
+/* Navy cards: a faint top-lit gradient, hairline highlight and soft drop. */
+.slide-root .bg-surface {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 55%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 24px 48px -28px rgba(4, 9, 22, 0.75);
+}
+/* Paper cards: layered, low-contrast elevation. */
+.slide-root.theme-paper .bg-surface {
+  background-image: none;
+  box-shadow:
+    0 1px 2px rgba(20, 22, 28, 0.05),
+    0 4px 10px -4px rgba(20, 22, 28, 0.06),
+    0 18px 40px -20px rgba(20, 22, 28, 0.2);
+}
+/* Code/terminal panels on paper keep their slate, lit like a screenshot. */
+.slide-root.theme-paper .theme-stage.bg-surface,
+.slide-root.theme-paper .theme-stage .bg-surface {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 40%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 28px 56px -24px rgba(15, 27, 51, 0.55);
+}
+
+/* Act ink: the act colour deepened for small text on paper (≥ 4.5:1). */
+.act-ink { color: color-mix(in oklab, var(--act) 72%, #14161c); }
+
+/* Even, keynote-style line breaks. */
+.slide-root h1,
+.slide-root h2,
+.slide-root .font-display:not(blockquote) { text-wrap-style: balance; }
+.slide-root p,
+.slide-root li { text-wrap-style: pretty; }
+
+/* Window controls on terminal / app panels. */
+.win-dot { display: inline-block; height: 12px; width: 12px; border-radius: 9999px; }
+.win-dot:nth-child(1) { background: #ff6b5e; }
+.win-dot:nth-child(2) { background: #f6c35c; }
+.win-dot:nth-child(3) { background: #3ddc97; }

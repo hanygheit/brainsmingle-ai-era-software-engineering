@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { CodeDiff, EASE, Eyebrow, QRTile } from "@/components/kit";
+import { CodeDiff, EASE, Eyebrow, QRTile, QuoteGlyph } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import { voteUrl } from "@/config";
 import iv from "@/content/interview.json";
@@ -104,11 +104,19 @@ function FundamentalsColumns({ step, keys }: { step: number; keys: string[] }) {
             const prove = c.key === "PROVE";
             return (
               <Reveal key={c.key} on={step >= 1} delay={i * 0.06}>
-                <div className="h-full rounded-[20px] border bg-surface p-[44px]" style={{ borderColor: prove ? "var(--own)" : "var(--line)" }}>
-                  <p className="font-display text-[56px] font-bold" style={{ color: prove ? "var(--own)" : "var(--text)" }}>{c.key}</p>
-                  <p className="text-[26px] text-muted">— {c.sub}</p>
-                  <ul className="mt-[24px] space-y-[8px] text-[28px] leading-[1.3] text-text">
-                    {c.items.map((it) => <li key={it}>{it}</li>)}
+                <div className="relative h-full overflow-hidden rounded-[20px] border bg-surface p-[44px]" style={{ borderColor: prove ? "var(--own)" : "var(--line)" }}>
+                  <div className="absolute inset-x-0 top-0 h-[6px]" style={{ background: prove ? "var(--own-fill)" : "var(--act)" }} />
+                  <div className="flex items-baseline gap-[20px] border-b border-line pb-[20px]">
+                    <p className="font-display text-[56px] leading-none font-bold" style={{ color: prove ? "var(--own)" : "var(--text)" }}>{c.key}</p>
+                    <p className="text-[26px] text-muted">— {c.sub}</p>
+                  </div>
+                  <ul className="mt-[24px] space-y-[10px] text-[28px] leading-[1.3] text-text">
+                    {c.items.map((it) => (
+                      <li key={it} className="flex items-baseline gap-[16px]">
+                        <span className="h-[8px] w-[8px] shrink-0 -translate-y-[4px] rounded-full" style={{ background: prove ? "var(--own-fill)" : "var(--act)" }} />
+                        {it}
+                      </li>
+                    ))}
                   </ul>
                   {"chip" in c && c.chip ? <p className="mt-[24px] rounded-[12px] border border-validate px-[18px] py-[12px] text-[24px] text-validate">{c.chip}</p> : null}
                 </div>
@@ -130,6 +138,7 @@ export function S14({ step }: ScreenProps) {
   return (
     <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
       <SrcTag items={["Thomas Dohmke, Aug 2025"]} />
+      <QuoteGlyph className="absolute top-[150px] left-[70px]" size={420} />
       <Reveal on={step >= 1}>
         <blockquote className="max-w-[1560px] border-l-[6px] border-own pl-[48px] font-display text-[60px] leading-[1.2] font-bold tracking-[-0.02em] text-text">
           “{s.quote}”<span className="mt-[28px] block font-sans text-[30px] font-normal tracking-normal text-muted">— {s.quoteBy}</span>

@@ -50,8 +50,33 @@ export function Chip({ children, on = true, color = "var(--line)" }: { children:
   return (
     <span
       className="inline-flex items-center rounded-full border px-[20px] py-[10px] font-mono text-[22px] transition-colors duration-300"
-      style={{ borderColor: on ? color : "var(--line)", color: on ? "var(--text)" : "var(--muted)" }}
+      style={{
+        borderColor: on ? color : "var(--line)",
+        color: on ? "var(--text)" : "var(--muted)",
+        background: on && color !== "var(--line)" ? `color-mix(in oklab, ${color} 8%, transparent)` : "transparent",
+      }}
     >
+      {children}
+    </span>
+  );
+}
+
+/** Signature rule: the four framework colours (delegate · direct · validate · own). */
+export function BrandBar({ width = 240, height = 4 }: { width?: number; height?: number }) {
+  return (
+    <div className="flex gap-[6px]" style={{ width }} aria-hidden>
+      {["var(--delegate-fill)", "var(--direct-fill)", "var(--validate-fill)", "var(--own-fill)"].map((c) => (
+        <span key={c} className="flex-1 rounded-full" style={{ height, background: c }} />
+      ))}
+    </div>
+  );
+}
+
+/** Pill-shaped eyebrow used for event / context labels on the stage. */
+export function Pill({ children }: { children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-[12px] rounded-full border border-line bg-surface/60 px-[22px] py-[10px] font-mono text-[17px] tracking-[0.14em] text-muted uppercase">
+      <span className="h-[8px] w-[8px] rounded-full bg-own-fill" />
       {children}
     </span>
   );

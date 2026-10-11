@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useRef, useState } from "react";
-import { ArcMotif, EASE, Eyebrow, QuoteCard } from "@/components/kit";
+import { ArcMotif, EASE, Eyebrow, QuoteCard, QuoteGlyph } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import { BLUEPRINT_PATH } from "@/config";
 import c from "@/content/act3.json";
@@ -192,7 +192,8 @@ export function S26({ step }: ScreenProps) {
   return (
     <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
       <SrcTag items={["Dario Amodei, Council on Foreign Relations, 10 Mar 2025"]} />
-      <div className="max-w-[1600px]">
+      <QuoteGlyph className="absolute top-[150px] left-[70px]" size={420} />
+      <div className="relative max-w-[1600px]">
         <Reveal on={step >= 1}><p className={`${H} text-[64px]`}>{s.q1}</p></Reveal>
         <Reveal on={step >= 2} className="mt-[40px]">
           <p className="min-h-[178px] text-[44px] leading-[1.35] text-text"><TypeIn text={s.q2} active={step === 2} /></p>
@@ -207,6 +208,7 @@ export function S27({ step }: ScreenProps) {
   return (
     <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
       <Reveal on={step >= 1}>
+        <div className="mb-[48px] h-[6px] w-[160px] rounded-full bg-[var(--act)]" />
         <p className={`${H} max-w-[1600px] text-[80px] leading-[1.12] !text-own`}>{s.last}</p>
       </Reveal>
     </div>
