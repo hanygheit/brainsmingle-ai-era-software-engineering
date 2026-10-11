@@ -3,6 +3,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Download,
+  Eraser,
+  Flashlight,
+  Highlighter,
   LayoutGrid,
   Loader2,
   Maximize,
@@ -17,6 +20,7 @@ import { ACTS, EVENT, SPEAKER, type Act } from "@/config";
 import { screens, slideLabel } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
 import separators from "@/content/separators.json";
+import { pointer, usePointer } from "@/deck/pointer";
 import { useDeck } from "@/deck/store";
 import { ACT_COLORS, ACT_COLORS_ON_NAVY, actInfo, isPaper, stopLabel } from "@/deck/theme";
 import { toggleFullscreen } from "@/deck/useFullscreen";
@@ -94,22 +98,30 @@ function Btn({
   onClick,
   children,
   className = "",
+  active,
 }: {
   label: string;
   onClick: () => void;
   children: React.ReactNode;
   className?: string;
+  /** Toggle buttons: pressed state is shown with a filled pill. */
+  active?: boolean;
 }) {
   return (
     <button
       type="button"
       aria-label={label}
       title={label}
+      aria-pressed={active}
       onClick={(e) => {
         e.stopPropagation();
         onClick();
       }}
-      className={`flex h-[36px] min-w-[36px] items-center justify-center rounded-full px-2 text-text transition-colors hover:bg-[color-mix(in_oklab,var(--text)_10%,transparent)] ${className}`}
+      className={`flex h-[36px] min-w-[36px] items-center justify-center rounded-full px-2 text-text transition-colors ${
+        active
+          ? "bg-[color-mix(in_oklab,var(--text)_18%,transparent)]"
+          : "hover:bg-[color-mix(in_oklab,var(--text)_10%,transparent)]"
+      } ${className}`}
     >
       {children}
     </button>
@@ -124,6 +136,7 @@ export function ControlBar({ docked = false }: { docked?: boolean }) {
   const deck = useDeck();
   const idleVisible = useIdle(2000);
   const visible = docked || idleVisible;
+  const { tool } = usePointer();
   const { download, busy } = useDownloadPdf();
 
   useEffect(() => {
@@ -149,6 +162,18 @@ export function ControlBar({ docked = false }: { docked?: boolean }) {
       <Btn label="Next" onClick={deck.next}>
         <ChevronRight className="h-4 w-4" />
       </Btn>
+      <span className={`mx-1 h-5 w-px bg-line ${secondary}`} />
+      <Btn label="Spotlight (L) · wheel or [ ] to resize" className={secondary} active={tool === "spotlight"} onClick={() => pointer.toggle("spotlight")}>
+        <Flashlight className="h-4 w-4" />
+      </Btn>
+      <Btn label="Highlighter (H)" className={secondary} active={tool === "highlight"} onClick={() => pointer.toggle("highlight")}>
+        <Highlighter className="h-4 w-4" style={tool === "highlight" ? { color: "#F2B33D" } : undefined} />
+      </Btn>
+      {tool === "highlight" ? (
+        <Btn label="Clear highlights (C)" className={secondary} onClick={pointer.clearInk}>
+          <Eraser className="h-4 w-4" />
+        </Btn>
+      ) : null}
       <span className={`mx-1 h-5 w-px bg-line ${secondary}`} />
       <Btn label="Overview (O)" className={secondary} onClick={() => deck.setOverlay(deck.overlay === "overview" ? null : "overview")}>
         <LayoutGrid className="h-4 w-4" />
@@ -241,8 +266,10 @@ export function RoomFooter() {
         <span className="mr-2">slides</span>
         <span className="kbd">F</span>
         <span className="mr-2">fullscreen</span>
-        <span className="kbd">O</span>
-        <span className="mr-2">overview</span>
+        <span className="kbd">L</span>
+        <span className="mr-2">spotlight</span>
+        <span className="kbd">H</span>
+        <span className="mr-2">highlight</span>
         <span className="kbd">S</span>
         <span>sources</span>
         </div>

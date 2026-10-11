@@ -14,6 +14,7 @@ import {
   RotateHint,
   SourceDrawer,
 } from "./Chrome";
+import { PointerInk, Spotlight } from "./Pointer";
 import { PresenterPanel } from "./PresenterPanel";
 import { ScreenRenderer } from "./ScreenRenderer";
 import { Stage } from "./Stage";
@@ -59,7 +60,12 @@ function DeckInner() {
           framed={!fullscreen}
           onClickHalf={(dir) => (dir === 1 ? deck.next() : deck.prev())}
           onSwipe={(dir) => (dir === 1 ? deck.next() : deck.prev())}
-          overlay={<ProgressBar height={fullscreen ? 3 : 4} />}
+          overlay={
+            <>
+              <ProgressBar height={fullscreen ? 3 : 4} />
+              <Spotlight />
+            </>
+          }
         >
           {paper ? null : <div className="vignette pointer-events-none absolute inset-0 z-0" aria-hidden />}
           <AnimatePresence mode="popLayout" initial={false}>
@@ -79,6 +85,7 @@ function DeckInner() {
               />
             </motion.div>
           </AnimatePresence>
+          <PointerInk />
         </Stage>
       </div>
 

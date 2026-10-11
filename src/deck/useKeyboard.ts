@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { pointer } from "./pointer";
 import { useDeck } from "./store";
 
 export const DOWNLOAD_EVENT = "deck-download";
@@ -64,7 +65,8 @@ export function useKeyboard({ presenterWindow = false }: { presenterWindow?: boo
           e.preventDefault();
           return;
         case "Escape":
-          if (d.overlay) d.setOverlay(null);
+          if (!presenterWindow && pointer.get().tool) pointer.off();
+          else if (d.overlay) d.setOverlay(null);
           else if (document.fullscreenElement) void document.exitFullscreen();
           return;
       }
@@ -106,6 +108,26 @@ export function useKeyboard({ presenterWindow = false }: { presenterWindow?: boo
           return;
         case "d":
           window.dispatchEvent(new Event(DOWNLOAD_EVENT));
+          return;
+      }
+
+      // Pointer tools live in the audience (screen-shared) window only.
+      if (presenterWindow) return;
+      switch (k.toLowerCase()) {
+        case "l":
+          pointer.toggle("spotlight");
+          return;
+        case "h":
+          pointer.toggle("highlight");
+          return;
+        case "c":
+          pointer.clearInk();
+          return;
+        case "[":
+          pointer.resize(-1);
+          return;
+        case "]":
+          pointer.resize(1);
           return;
       }
     };
