@@ -33,12 +33,12 @@ function useToggleT(step: number) {
   return on;
 }
 
-/* ---------- S19–S21 · The entry door is narrowing (4.5% / Stanford / Garman) ---------- */
-export function S19({ step }: ScreenProps) {
+/* ---------- S25–S27 · The entry door is narrowing (4.5% / Stanford / Garman) ---------- */
+export function S25({ step }: ScreenProps) {
   const s = c.s12;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[s.statSrc]} />
+      <SrcTag items={["Indeed Hiring Lab, Jul 2026", step >= 2 && "SignalFire, Jun 2026"]} />
       <p className={`${H} text-[72px]`}>{s.headline}</p>
       <div className="flex flex-1 items-center gap-[96px]">
         <Reveal on={step >= 1}>
@@ -53,54 +53,78 @@ export function S19({ step }: ScreenProps) {
         <Reveal on={step >= 1} delay={0.06} className="flex-1">
           <p className="font-display text-[56px] leading-[1.15] font-bold text-text">{s.stat}</p>
           <div className="mt-[16px]"><Tag>{s.statSrc}</Tag></div>
+          <Reveal on={step >= 2} className="mt-[56px] border-t border-line pt-[40px]">
+            <p className="font-display text-[44px] leading-[1.2] font-bold text-text">{s.stat2}</p>
+            <div className="mt-[14px]"><Tag>{s.stat2Src}</Tag></div>
+          </Reveal>
         </Reveal>
       </div>
     </div>
   );
 }
-export function S20({ step }: ScreenProps) {
+export function S26({ step }: ScreenProps) {
   const s = c.s12;
+  const ny = s.nyfed as [string, number][];
+  const max = 10;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[s.stanfordSrc]} />
+      <SrcTag items={["Stanford Digital Economy Lab, Aug 2026", step >= 2 && "Federal Reserve Bank of New York, Feb 2026"]} />
       <p className={`${H} text-[72px]`}>{s.headline}</p>
-      <div className="flex flex-1 items-center">
-        <Reveal on={step >= 1}>
-          <p className="max-w-[1500px] font-display text-[72px] leading-[1.1] font-bold tracking-[-0.02em] text-text">
-            {(() => {
-              // Same sentence; the figure after the colon is set as the hero.
-              const at = s.stanford.indexOf(": ");
-              if (at < 0) return <span className="text-validate">{s.stanford}</span>;
+      <div className="flex flex-1 items-center gap-[96px]">
+        <Reveal on={step >= 1} className="w-[880px] shrink-0">
+          <p className="font-display text-[220px] leading-[0.9] font-bold tracking-[-0.045em] text-validate">{s.stanfordHero}</p>
+          <p className="mt-[44px] font-display text-[44px] leading-[1.15] font-bold text-text">{s.stanford}</p>
+          <div className="mt-[16px]"><Tag>{s.stanfordSrc}</Tag></div>
+        </Reveal>
+        <Reveal on={step >= 2} className="flex-1">
+          <Eyebrow>{s.nyfedLabel}</Eyebrow>
+          <div className="mt-[28px] space-y-[26px]">
+            {ny.map(([label, v], i) => {
+              const hot = i < 2;
               return (
-                <>
-                  {s.stanford.slice(0, at + 1)}{" "}
-                  <span className="whitespace-nowrap text-validate underline decoration-[color-mix(in_oklab,var(--validate)_35%,transparent)] decoration-[10px] underline-offset-[14px]">
-                    {s.stanford.slice(at + 2)}
-                  </span>
-                </>
+                <div key={label}>
+                  <div className="mb-[10px] flex justify-between text-[28px]">
+                    <span className="text-text">{label}</span>
+                    <span className="font-mono tabular-nums" style={{ color: hot ? "var(--validate)" : "var(--muted)" }}>{v.toFixed(1)}%</span>
+                  </div>
+                  <div className="h-[20px] rounded-full bg-line">
+                    <div className="h-full rounded-full" style={{ width: `${(v / max) * 100}%`, background: hot ? "var(--validate-fill)" : "var(--delegate-fill)" }} />
+                  </div>
+                </div>
               );
-            })()}
-          </p>
-          <div className="mt-[20px]"><Tag>{s.stanfordSrc}</Tag></div>
+            })}
+          </div>
+          <div className="mt-[20px]"><Tag>{s.nyfedSrc}</Tag></div>
         </Reveal>
       </div>
     </div>
   );
 }
-export function S21({ step }: ScreenProps) {
+export function S27({ step }: ScreenProps) {
   const s = c.s12;
   return (
-    <div className="relative flex h-full w-full items-center justify-center p-[96px]">
-      <SrcTag items={["The Register, Aug 2025"]} />
+    <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
+      <SrcTag items={["The Register, Aug 2025", step >= 2 && "Fortune, Feb 2026", step >= 2 && "Platformer, Jun 2026"]} />
       <Reveal on={step >= 1}>
         <QuoteCard quote={s.quote} speaker={s.speaker} role={s.role} source={s.source} date={s.date} />
+      </Reveal>
+      <Reveal on={step >= 2} className="mt-[48px]">
+        <Eyebrow color="var(--own)">{s.openLabel}</Eyebrow>
+        <div className="mt-[16px] grid grid-cols-2 gap-[24px]">
+          {s.open.map(([q, by]) => (
+            <div key={by} className="rounded-[16px] border-l-[6px] border-own bg-surface p-[28px]">
+              <p className="text-[28px] leading-[1.3] text-text">{q}</p>
+              <p className="mt-[12px] font-mono text-[16px] text-muted">{by}</p>
+            </div>
+          ))}
+        </div>
       </Reveal>
     </div>
   );
 }
 
-/* ---------- S22 ---------- */
-export function S22({ step }: ScreenProps) {
+/* ---------- S29 ---------- */
+export function S29({ step }: ScreenProps) {
   const s = c.s13;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -124,8 +148,8 @@ export function S22({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S23 ---------- */
-export function S23({ step }: ScreenProps) {
+/* ---------- S30 ---------- */
+export function S30({ step }: ScreenProps) {
   const s = c.s14;
   const grown = step >= 1;
   const outer = grown ? 330 : 110;
@@ -177,8 +201,8 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
   }, [text, active, reduce]);
   return <>{text.slice(0, n)}</>;
 }
-/* ---------- S25–S27 · The job changed (effort bar / Amodei / staying narrow) ---------- */
-export function S25({ step }: ScreenProps) {
+/* ---------- S33–S35 · The job changed (effort bar / Amodei / staying narrow) ---------- */
+export function S33({ step }: ScreenProps) {
   const s = c.s15;
   const flipped = useToggleT(step);
   const y2026 = (step >= 1) !== flipped;
@@ -201,7 +225,7 @@ export function S25({ step }: ScreenProps) {
     </div>
   );
 }
-export function S26({ step }: ScreenProps) {
+export function S34({ step }: ScreenProps) {
   const s = c.s15;
   return (
     <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
@@ -217,7 +241,7 @@ export function S26({ step }: ScreenProps) {
     </div>
   );
 }
-export function S27({ step }: ScreenProps) {
+export function S35({ step }: ScreenProps) {
   const s = c.s15;
   return (
     <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
@@ -229,8 +253,8 @@ export function S27({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S28 ---------- */
-export function S28({ step }: ScreenProps) {
+/* ---------- S36 ---------- */
+export function S36({ step }: ScreenProps) {
   const s = c.s16;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -286,8 +310,8 @@ export function S28({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S29 ---------- */
-export function S29({ choice }: ScreenProps) {
+/* ---------- S37 ---------- */
+export function S37({ choice }: ScreenProps) {
   const print = usePrintMode();
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const [sel, setSel] = useState(idx);

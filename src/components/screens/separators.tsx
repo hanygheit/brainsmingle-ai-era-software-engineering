@@ -1,13 +1,15 @@
 import { ArcMotif } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
-import { ACT_COLORS, ACT_COLORS_ON_NAVY, NUMBERED_ACTS } from "@/deck/theme";
+import { ACT_COLORS, ACT_COLORS_ON_NAVY, stopColors } from "@/deck/theme";
 import c from "@/content/separators.json";
+import agenda from "@/content/agenda.json";
 import { Reveal } from "./shared";
 
 /* ---------- Act separators (navy) ---------- */
 export function ActSeparator({ screen, step }: ScreenProps) {
   const s = c[String(screen.separator) as keyof typeof c];
   const n = screen.separator ?? 1;
+  const stop = n + 1; // agenda numbering: the Opening is stop 01
   const fill = ACT_COLORS[screen.act] ?? "#4C8DFF";
   const ink = ACT_COLORS_ON_NAVY[screen.act] ?? "var(--text)";
   return (
@@ -33,7 +35,7 @@ export function ActSeparator({ screen, step }: ScreenProps) {
               backgroundClip: "text",
             }}
           >
-            {String(n).padStart(2, "0")}
+            {String(stop).padStart(2, "0")}
           </span>
         </Reveal>
       </div>
@@ -59,22 +61,23 @@ export function ActSeparator({ screen, step }: ScreenProps) {
         </Reveal>
       </div>
 
-      {/* Five-act roadmap: where we are in the talk */}
+      {/* Seven-stop roadmap (same as the agenda): where we are in the talk */}
       <Reveal on={step >= 2} y={8} className="absolute right-[160px] bottom-[88px] left-[160px]">
-        <ol className="grid grid-cols-5 gap-[20px]">
-          {NUMBERED_ACTS.map((a) => {
-            const cur = a.n === n;
-            const past = a.n < n;
-            const aInk = ACT_COLORS_ON_NAVY[a.act] ?? "var(--text)";
+        <ol className="grid grid-cols-7 gap-[20px]">
+          {agenda.stops.map((a, i) => {
+            const k = i + 1;
+            const cur = k === stop;
+            const past = k < stop;
+            const { fill: aFill, ink: aInk } = stopColors(k);
             return (
-              <li key={a.act} className="flex flex-col gap-[14px]">
+              <li key={a.n} className="flex flex-col gap-[14px]">
                 <span
                   className="h-[4px] rounded-full"
-                  style={{ background: cur ? `linear-gradient(90deg, ${aInk}, ${ACT_COLORS[a.act]})` : past ? `color-mix(in oklab, ${aInk} 40%, var(--line))` : "var(--line)" }}
+                  style={{ background: cur ? `linear-gradient(90deg, ${aInk}, ${aFill})` : past ? `color-mix(in oklab, ${aInk} 40%, var(--line))` : "var(--line)" }}
                 />
-                <span className="flex items-baseline gap-[12px] text-[20px]" style={{ color: cur ? "var(--text)" : "var(--muted)" }}>
-                  <span className="font-mono text-[16px] font-semibold tracking-[0.12em]" style={{ color: cur || past ? aInk : "var(--muted)" }}>
-                    {String(a.n).padStart(2, "0")}
+                <span className="flex items-baseline gap-[10px] text-[18px] leading-[1.25]" style={{ color: cur ? "var(--text)" : "var(--muted)" }}>
+                  <span className="font-mono text-[15px] font-semibold tracking-[0.12em]" style={{ color: cur || past ? aInk : "var(--muted)" }}>
+                    {a.n}
                   </span>
                   <span className={cur ? "font-semibold" : ""}>{a.name}</span>
                 </span>

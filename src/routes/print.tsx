@@ -13,8 +13,8 @@ declare global {
   }
 }
 
-/** Fixed per-screen choices for the PDF state (S10: question 2 revealed). */
-const PRINT_CHOICE: Record<string, number> = { S10: 2 };
+/** Fixed per-screen choices for the PDF state (S12: question 2 revealed). */
+const PRINT_CHOICE: Record<string, number> = { S12: 2 };
 
 export const Route = createFileRoute("/print")({
   head: () => ({

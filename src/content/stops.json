@@ -1,0 +1,168 @@
+{
+  "leaders": {
+    "eyebrow": "The shift, in their words",
+    "headline": "Developers increasingly direct, review and validate.",
+    "quotes": [
+      {
+        "quote": "…programming via LLM agents is increasingly becoming a default workflow for professionals, except with more oversight and scrutiny.",
+        "mark": "more oversight and scrutiny",
+        "speaker": "Andrej Karpathy",
+        "role": "OpenAI founding member",
+        "source": "X · 4 Feb 2026"
+      },
+      {
+        "quote": "Our engineers are orchestrating fully autonomous digital task forces, firing off agents and accomplishing incredible things.",
+        "mark": "orchestrating",
+        "speaker": "Sundar Pichai",
+        "role": "CEO, Google & Alphabet",
+        "source": "Cloud Next '26 · 22 Apr 2026"
+      },
+      {
+        "quote": "These developers moved from writing code to architecting and verifying the implementation work that is carried out by AI agents.",
+        "mark": "architecting and verifying",
+        "speaker": "Thomas Dohmke",
+        "role": "then CEO of GitHub, with Eirini Kalliamvakou",
+        "source": "Developers, Reinvented · 3 Aug 2025"
+      }
+    ],
+    "balanceLabel": "The trust gap",
+    "balance": "48% trust AI when they can easily verify its answers — only 7% trust it with important decisions."
+  },
+
+  "shiftAction": {
+    "eyebrow": "Your move · everyone, this week",
+    "headline": "Never delegate what you can't verify.",
+    "actions": [
+      ["Give an agent one real task", "Bounded, in a real repository — not a toy demo."],
+      ["Read every diff", "Run it. Try to break it. Ask why each change is there."],
+      ["Write the test it didn't", "The negative case: the token that should fail."],
+      ["Log what it got wrong", "That list is your learning plan."]
+    ],
+    "evidence": "66% of developers say their biggest frustration is AI output that is “almost right, but not quite.”",
+    "evidenceSrc": "Stack Overflow Developer Survey 2025",
+    "action": "This week: one real task, one agent — and proof before you ship."
+  },
+
+  "studentPlan": {
+    "eyebrow": "Your plan · students",
+    "headline": "Learn with AI. Prove it without AI.",
+    "columns": [
+      { "label": "Skills", "sub": "learn now", "items": ["Programming, data structures & algorithms", "HTTP, APIs & SQL", "Git & testing", "Auth & OWASP basics", "Reading code you didn't write"] },
+      { "label": "Habits", "sub": "every week", "items": ["First version by hand — AI explains, doesn't solve", "Then ask AI for an alternative; explain the trade-off", "A 30-minute AI-off kata", "Log what the AI got wrong", "Teach back one concept"] },
+      { "label": "Project", "sub": "one portfolio piece", "items": ["One small API, built twice", "v1 by hand · v2 extended with an agent", "README, AGENTS.md and a process log", "Negative tests · “3 AI mistakes I caught”", "A 5-minute walkthrough video"] }
+    ],
+    "tools": [
+      ["Learn", "ChatGPT study mode · Claude learning mode · Gemini Guided Learning · CS50.ai"],
+      ["Code", "GitHub Copilot (free for verified students) · Cursor"],
+      ["Agents", "Claude Code · OpenAI Codex · Gemini CLI"],
+      ["Test", "xUnit / pytest · Playwright"]
+    ],
+    "evidence": "Andrew Ng on “don't learn to code”: “This advice will be seen as some of the worst career advice ever given.” · Lee et al. (CHI 2025): the more people trust AI, the less critical thinking they report.",
+    "action": "This month: build one small API by hand, extend it with an agent — and explain both."
+  },
+
+  "educatorRollout": {
+    "eyebrow": "Your rollout · universities & educators",
+    "headline": "Change one assignment this term.",
+    "columns": [
+      { "label": "This month", "sub": "set the rule", "items": ["An AI rule for every assignment: secure lane (AI-off, oral) or open lane (AI scaffolded)", "— or the five-level AI Assessment Scale", "Every lecturer runs an agent on their own assignment"] },
+      { "label": "This term", "sub": "change the evidence", "items": ["One assignment per course adds a 5‑minute oral defence", "A planted-bug review and a live change request", "A process log", "One rubric, calibrated across staff"] },
+      { "label": "This year", "sub": "change the course", "items": ["AI-off checkpoints and an agentic capstone", "A monthly staff community of practice", "Compare grades with oral-defence results", "Update the syllabus: keep, shift, add, prove"] }
+    ],
+    "evidence": "95% of UK undergraduates use AI — only 48% feel their teaching staff help them build AI skills (HEPI 2026). Purdue rebuilt 22 courses and 300+ plans of study for its AI‑competency requirement.",
+    "action": "This term: change one assignment — AI allowed, explanation required."
+  },
+
+  "seniorSkills": {
+    "eyebrow": "The new baseline",
+    "headline": "Yesterday's senior skills are today's junior foundation.",
+    "from": "Was senior",
+    "to": "Now day one",
+    "rows": [
+      ["Reviewing other people's code", "Reviewing an agent's diff"],
+      ["Writing a spec for the team", "Writing context and acceptance criteria for an agent"],
+      ["Debugging unfamiliar code", "Debugging code nobody on the team typed"],
+      ["Thinking about failure modes", "A negative test with every change"],
+      ["Explaining trade-offs", "Defending every line of your PR"]
+    ],
+    "stat": "16%",
+    "statLabel": "of senior developers say juniors fully understand the AI code they submit",
+    "statSrc": "BairesDev Dev Barometer Q2 2026 · 510 senior developers · vendor survey"
+  },
+
+  "first90": {
+    "eyebrow": "Your plan · fresh graduates",
+    "headline": "Your first 90 days.",
+    "columns": [
+      { "label": "Stand out", "sub": "before day one", "items": ["A project with a process log", "One merged open-source PR", "An “AI mistakes I caught” write-up", "Explain every line"] },
+      { "label": "Days 1–30", "sub": "learn the system", "items": ["Set up the agent with the team's context files", "Read the codebase with AI as a guide", "Fix three small bugs — first attempt by hand"] },
+      { "label": "Days 31–60", "sub": "contribute", "items": ["Issue → plan → agent → verify → PR", "A negative test with every change", "Pair with a senior on one agent session"] },
+      { "label": "Days 61–90", "sub": "own", "items": ["One small feature, end to end", "A written design rationale", "Catch one bug before review"] }
+    ],
+    "tools": [
+      ["Understand", "Copilot Chat · Cursor · Claude Code"],
+      ["Verify", "your test framework · Playwright"],
+      ["Review", "the team's pull-request review"]
+    ],
+    "evidence": "Daily AI users reached their 10th pull request in 49 days, vs 91 days without AI (DX, six enterprises).",
+    "action": "Make it visible: every PR explained, every agent mistake logged."
+  },
+
+  "engineerLearning": {
+    "eyebrow": "Your learning system · current engineers",
+    "headline": "New ways to grow — at every level.",
+    "columns": [
+      { "label": "Pair", "sub": "with an agent", "items": ["State the intent, approve the plan", "Review every diff", "Use it as a tutor on unfamiliar code"] },
+      { "label": "Practise", "sub": "AI-off", "items": ["One kata or debugging session a week", "Keep the muscle you verify with"] },
+      { "label": "Review", "sub": "agent sessions", "items": ["Plans, prompts and diffs, reviewed as a team", "Seniors walk juniors through theirs"] },
+      { "label": "Write", "sub": "the context", "items": ["AGENTS.md, ADRs, guardrails", "What every agent on the team reads"] }
+    ],
+    "tools": [
+      ["Developer", "Master one agent end to end · verify before review"],
+      ["Senior", "Own the guardrails · threat-model AI changes · coach agent sessions"],
+      ["Lead", "Team AI standards · competency matrix · measure stability"]
+    ],
+    "toolsLabel": "By level",
+    "note": "Example tools, not endorsements: Claude Code · OpenAI Codex · Copilot coding agent · Gemini CLI · AI pull-request review",
+    "evidence": "Frontier professionals are more likely to do some work without AI to keep their skills sharp — 43% vs 30% (Microsoft Work Trend Index 2026).",
+    "action": "This sprint: review one agent session as a team — and do one task AI-off."
+  },
+
+  "noLongerOptional": {
+    "eyebrow": "Companies",
+    "headline": "AI adoption is no longer optional.",
+    "quotes": [
+      {
+        "quote": "Reflexive AI usage is now a baseline expectation at Shopify",
+        "mark": "baseline expectation",
+        "speaker": "Tobi Lütke",
+        "role": "CEO, Shopify",
+        "source": "Internal memo, published on X · 7 Apr 2025"
+      },
+      {
+        "quote": "…using AI is no longer optional — it's core to every role and every level.",
+        "mark": "no longer optional",
+        "speaker": "Julia Liuson",
+        "role": "Developer Division, Microsoft",
+        "source": "Internal memo, via Business Insider · 27 Jun 2025"
+      }
+    ],
+    "stats": [
+      ["90%", "of technology professionals already use AI at work", "DORA 2025"],
+      ["72%", "say the skills expected of them have shifted — only 36% feel adequately upskilled", "BCG 2026"]
+    ],
+    "bridge": "No longer optional — but a licence is not a strategy."
+  },
+
+  "roadmap": {
+    "eyebrow": "Your 90-day roadmap · companies",
+    "headline": "Adopt, train and measure — together.",
+    "columns": [
+      { "label": "Days 1–30", "sub": "foundations", "items": ["A clear AI stance and guardrails: data, security, review rules", "Two or three workflows, with pilot teams", "Baseline delivery and quality before rollout", "Context files in key repositories"] },
+      { "label": "Days 31–60", "sub": "capability", "items": ["Training by career stage — not one workshop", "Mentoring through agent-session reviews", "Update onboarding and one competency row"] },
+      { "label": "Days 61–90", "sub": "measure & scale", "items": ["Compare with the baseline: delivery, quality, capability — not seats", "Scale or stop each workflow", "Update development plans and promotion criteria"] }
+    ],
+    "evidence": "DORA's AI Capabilities Model: clear AI stance · healthy data ecosystems · AI-accessible internal data · strong version control · small batches · user-centric focus · quality internal platforms. BCG: regular use is sharply higher with at least five hours of training.",
+    "action": "Start Monday: baseline first — then adopt, train and measure together."
+  }
+}

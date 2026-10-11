@@ -13,12 +13,12 @@ import {
   Smartphone,
   X,
 } from "lucide-react";
-import { ACTS, EVENT, SPEAKER } from "@/config";
+import { ACTS, EVENT, SPEAKER, type Act } from "@/config";
 import { screens, slideLabel } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
 import separators from "@/content/separators.json";
 import { useDeck } from "@/deck/store";
-import { ACT_COLORS, ACT_COLORS_ON_NAVY, actInfo, isPaper } from "@/deck/theme";
+import { ACT_COLORS, ACT_COLORS_ON_NAVY, actInfo, isPaper, stopLabel } from "@/deck/theme";
 import { toggleFullscreen } from "@/deck/useFullscreen";
 import opening from "@/content/opening.json";
 import monogram from "@/assets/hs-monogram.png.asset.json";
@@ -29,6 +29,11 @@ import { ScreenRenderer } from "./ScreenRenderer";
 
 const TALK_TITLE = opening.s0.title;
 const actsInDeck = ACTS.filter((a) => screens.some((s) => s.act === a));
+/** "Stop 02 · The shift" for numbered acts; other sections keep their own name. */
+const actLabel = (act: Act) => {
+  const info = actInfo(act);
+  return info ? `${stopLabel(info.stop)} · ${info.name}` : act;
+};
 const sepQuestion = (n: number) => separators[String(n) as keyof typeof separators]?.question;
 
 /** Progress bar segmented by act, each segment filled in its act colour. */
@@ -59,7 +64,7 @@ export function ActLabel() {
   if (isPaper(screen.id)) return null;
   return (
     <p className="act-label pointer-events-none absolute bottom-[12px] left-[16px] z-30 font-mono text-[11px] tracking-[0.14em] text-muted uppercase">
-      {screen.act}
+      {actLabel(screen.act)}
     </p>
   );
 }
@@ -197,7 +202,7 @@ export function RoomHeader() {
           <span className="h-[7px] w-[7px] rounded-full transition-colors duration-500" style={{ background: dot }} />
           {info ? (
             <>
-              <span style={{ color: dot }}>Act {info.n}</span>
+              <span style={{ color: dot }}>{stopLabel(info.stop)}</span>
               <span className="text-text">{info.name}</span>
             </>
           ) : (
@@ -346,7 +351,7 @@ export function OverviewGrid() {
                 className={`mb-3 flex items-baseline gap-3 border-b-2 pb-1 text-left ${sep === deck.index ? "border-[var(--accent)]" : "border-transparent"}`}
               >
                 <span className="font-mono text-[12px] text-muted">{sep}</span>
-                <span className="font-display text-[18px] font-bold text-text">{act}</span>
+                <span className="font-display text-[18px] font-bold text-text">{actLabel(act)}</span>
                 <span className="text-[14px] text-muted">{sepQuestion(screens[sep]!.separator!)}</span>
               </button>
             ) : (

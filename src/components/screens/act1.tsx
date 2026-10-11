@@ -23,8 +23,8 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
   return <>{text.slice(0, n)}</>;
 }
 
-/* ---------- S4 · Everyone can build software now ---------- */
-export function S4({ step }: ScreenProps) {
+/* ---------- S5 · Everyone can build software now ---------- */
+export function S5({ step }: ScreenProps) {
   const s = c.s3;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -72,8 +72,8 @@ export function S4({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S5 · The unit of delegation changed ---------- */
-export function S5({ step }: ScreenProps) {
+/* ---------- S6 · The unit of delegation changed ---------- */
+export function S6({ step }: ScreenProps) {
   const [pop, setPop] = useState(false);
   const s = c.s3;
   const pct = step >= 1 ? 92 : 18;
@@ -122,8 +122,8 @@ export function S5({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S6 · Then / Now ---------- */
-export function S6({ step }: ScreenProps) {
+/* ---------- S7 · Then / Now ---------- */
+export function S7({ step }: ScreenProps) {
   const s = c.s3;
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center gap-[40px] p-[96px]">
@@ -145,8 +145,8 @@ export function S6({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S7 · AI is already inside the workflow ---------- */
-export function S7({ step }: ScreenProps) {
+/* ---------- S8 · AI is already inside the workflow ---------- */
+export function S8({ step }: ScreenProps) {
   const s = c.s4;
   const grown = step >= 1;
   const idx = grown ? 2 : 0;
@@ -161,7 +161,7 @@ export function S7({ step }: ScreenProps) {
   }
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={["Google Q3 2024 earnings, Oct 2024", "Google Cloud Next '26, Apr 2026", step >= 3 && "Stack Overflow, Oct 2026", step >= 3 && "JetBrains, Aug 2026"]} />
+      <SrcTag items={["Google, Oct 2024 · Apr 2026", step >= 3 && "Anthropic, Jun 2026", step >= 3 && "Coinbase, Sep 2025", step >= 3 && "JetBrains, Aug 2026", step >= 3 && "Stack Overflow, Oct 2026"]} />
       <div className="flex items-end gap-[80px]">
         <div>
           <StatNumber value={pts[idx]?.value ?? 0} suffix="%" color="var(--own)" label={`${s.statLabel} · ${pts[idx]?.label ?? ""}`} />
@@ -179,10 +179,10 @@ export function S7({ step }: ScreenProps) {
           })}
         </svg>
       </div>
-      <div className="mt-[56px]">
+      <div className="mt-[36px]">
         <Reveal on={step >= 2}>
-          <figure className="max-w-[1500px] rounded-[20px] border border-line bg-surface p-[40px]">
-            <blockquote className="text-[40px] leading-[1.25] text-text">
+          <figure className="max-w-[1500px] rounded-[20px] border border-line bg-surface px-[40px] py-[32px]">
+            <blockquote className="text-[36px] leading-[1.25] text-text">
               “{s.quoteBefore}<span className="underline decoration-own decoration-4 underline-offset-8">{s.quoteMark}</span>{s.quoteAfter}”
             </blockquote>
             <figcaption className="mt-[20px] text-[24px]">
@@ -191,9 +191,17 @@ export function S7({ step }: ScreenProps) {
             </figcaption>
           </figure>
         </Reveal>
-        <Reveal on={step >= 3} className="mt-[28px] flex gap-[16px]">
-          {s.tags.map((t) => <Chip key={t}>{t}</Chip>)}
-        </Reveal>
+        <div className="mt-[24px] grid grid-cols-4 gap-[20px]">
+          {s.tiles.map(([v, label, src], i) => (
+            <Reveal key={src} on={step >= 3} delay={i * 0.06} className="h-full">
+              <div className="h-full rounded-[16px] border border-line bg-surface px-[24px] py-[18px]">
+                <p className="font-display text-[44px] leading-[1] font-bold text-own tabular-nums">{v}</p>
+                <p className="mt-[10px] text-[19px] leading-[1.3] text-text">{label}</p>
+                <p className="mt-[8px] font-mono text-[14px] text-muted">{src}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
       <Reveal on={step >= 4} className="mt-auto">
         <p className={`${H} keyline text-[64px]`}>{s.last}</p>
@@ -202,8 +210,8 @@ export function S7({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S8 · When writing code is no longer the constraint ---------- */
-export function S8({ step }: ScreenProps) {
+/* ---------- S10 · When writing code is no longer the constraint ---------- */
+export function S10({ step }: ScreenProps) {
   const s = c.s5;
   const reduce = useReducedMotion();
   const ci = 3;
@@ -260,13 +268,13 @@ export function S8({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S9 · More code is not more engineering value ---------- */
-export function S9({ step }: ScreenProps) {
+/* ---------- S11 · More code is not more engineering value ---------- */
+export function S11({ step }: ScreenProps) {
   const s = c.s6;
   const max = 30;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={["METR, Jul 2025", step >= 1 && "Cui et al., Management Science", step >= 2 && "Faros AI, Apr 2026", step >= 2 && "DORA"]} />
+      <SrcTag items={["METR, Jul 2025 · Feb 2026", step >= 1 && "Cui et al., Management Science", step >= 2 && "Faros AI, Sep 2026", step >= 2 && "DORA, Mar 2026", step >= 2 && "Stack Overflow, 2025"]} />
       <Eyebrow>{s.label}</Eyebrow>
       <div className="mt-[32px] grid grid-cols-2 gap-[48px]">
         <div className="rounded-[20px] border border-line bg-surface p-[40px]">
@@ -287,7 +295,7 @@ export function S9({ step }: ScreenProps) {
                     transition={{ duration: 0.6, ease: EASE }}
                   />
                   <p className="absolute font-mono text-[26px] tabular-nums" style={{ color: neg ? "var(--fail)" : "var(--text)", [neg ? "top" : "bottom"]: `calc(50% + ${h + 8}px)`, opacity: step >= 1 || i < 2 ? 1 : 0 }}>
-                    {b.value > 0 ? "+" : "−"}{Math.abs(b.value)}%
+                    {"text" in b && b.text ? b.text : `${b.value > 0 ? "+" : "−"}${Math.abs(b.value)}%`}
                   </p>
                   <p className="absolute -bottom-[32px] text-[20px] text-muted">{b.label}</p>
                 </div>

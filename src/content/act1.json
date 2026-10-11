@@ -38,9 +38,12 @@
     "speaker": "Sundar Pichai",
     "role": "CEO, Google & Alphabet",
     "source": "Cloud Next '26 · 22 Apr 2026",
-    "tags": [
-      "73% use coding assistants or agents daily — Stack Overflow, Oct 2026",
-      "90% of professional developers use coding agents weekly at work — JetBrains, Aug 2026"
+    "tilesLabel": "Not only Google",
+    "tiles": [
+      ["> 80%", "of code merged at Anthropic was authored by Claude (May 2026)", "Anthropic, Jun 2026"],
+      ["~ 40%", "of daily code at Coinbase is AI-generated — and it “needs to be reviewed and understood”", "Coinbase CEO, Sep 2025"],
+      ["90%", "of professional developers use AI coding agents at work weekly · 68% daily", "JetBrains, Aug 2026"],
+      ["73%", "of developers who use AI coding assistants or agents use them daily", "Stack Overflow, Oct 2026"]
     ],
     "last": "75% of the code. 100% of the accountability."
   },
@@ -52,20 +55,20 @@
     "quote": "Writing code is no longer the constraint, and once PR review gets accelerated, CI starts feeling the pressure.",
     "speaker": "Sachin Malhotra",
     "role": "Anthropic",
-    "footer": "Claude Cowork: the team says Claude Code wrote essentially all of it — and that they ‘spent more time making product and architecture decisions than writing individual lines of code.’ (Axios, Jan 2026)",
+    "footer": "Claude Cowork: Boris Cherny says “all” of it was built with Claude Code — “We spent more time making product and architecture decisions than writing individual lines of code.” — Felix Rieseberg, Anthropic (Axios, Jan 2026)",
     "last": "A faster implementation workflow can expose a slower delivery system."
   },
   "s6": {
     "label": "Different studies, different measures — not one axis.",
     "metr": {
       "title": "METR",
-      "meta": "Jul 2025 · experienced OSS developers · early-2025 tools",
+      "meta": "Jul 2025 · 16 experienced OSS developers · early-2025 tools · METR now marks it out of date",
       "bars": [
         { "label": "Expected", "value": 24 },
         { "label": "Felt", "value": 20 },
-        { "label": "Measured", "value": -19 }
+        { "label": "Measured", "value": -19, "text": "19% slower" }
       ],
-      "unit": "task time"
+      "unit": "Effect on speed — measured: tasks took 19% longer with AI"
     },
     "cui": {
       "title": "Cui et al., Management Science",
@@ -75,8 +78,8 @@
       "note": "Biggest gains for less-experienced developers"
     },
     "band": [
-      "Faros AI, Apr 2026: bugs per developer +54% · time in review +441% (industry telemetry)",
-      "DORA: AI is an amplifier — time saved is often re-allocated to verification overhead."
+      "Faros AI, Sep 2026 (telemetry, 22,000 developers): PRs merged with no review +76% · time in QA +301%",
+      "DORA: “AI’s primary role in software development is that of an amplifier.” · Stack Overflow 2025: 66% say AI output is “almost right, but not quite.”"
     ],
     "last": "Code got cheaper. Being wrong didn't."
   }

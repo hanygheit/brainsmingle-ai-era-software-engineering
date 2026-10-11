@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AudienceCards, DownloadPdfButton, EASE, Eyebrow, QRTile } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import { BRAINSMINGLE_URL, LINKEDIN_URL, PRESENTATION_URL } from "@/config";
+import { stopColors } from "@/deck/theme";
 import tl from "@/content/talentLevers.json";
 import sc from "@/content/scorecard.json";
 import dd from "@/content/ddvo.json";
@@ -37,8 +38,8 @@ function useKey(keys: string[], fn: (k: string) => void) {
   });
 }
 
-/* ---------- S31–S33 · An AI subscription is not a development strategy (tool vs capability / levers / evidence) ---------- */
-export function S31({ step }: ScreenProps) {
+/* ---------- S41–S43 · An AI subscription is not a development strategy (tool vs capability / levers / evidence) ---------- */
+export function S41({ step }: ScreenProps) {
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <p className={`${H} text-[72px]`}>{tl.headline}</p>
@@ -65,7 +66,7 @@ export function S31({ step }: ScreenProps) {
     </div>
   );
 }
-export function S32({ step }: ScreenProps) {
+export function S42({ step }: ScreenProps) {
   const print = usePrintMode();
   const [zoom, setZoom] = useState(false);
   useKey(["z", "Z"], () => setZoom((z) => !z));
@@ -111,7 +112,7 @@ export function S32({ step }: ScreenProps) {
     </div>
   );
 }
-export function S33({ step }: ScreenProps) {
+export function S43({ step }: ScreenProps) {
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <SrcTag items={["DX", "Anthropic, Dec 2025", "Kent Beck"]} />
@@ -131,12 +132,12 @@ export function S33({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S34 ---------- */
-export function S34({ step }: ScreenProps) {
+/* ---------- S44 ---------- */
+export function S44({ step }: ScreenProps) {
   const layers = [...sc.layers].reverse();
   return (
     <div className="relative flex h-full w-full gap-[64px] p-[96px]">
-      <SrcTag items={[step >= 1 && "Faros AI, Apr 2026", step >= 1 && "DORA"]} />
+      <SrcTag items={[step >= 1 && "Faros AI, Sep 2026", step >= 1 && "DORA, Mar 2026", step >= 1 && "McKinsey, Aug 2026"]} />
       <div className="flex w-[1000px] flex-col justify-center gap-[12px]">
         {layers.map(([name, desc, label], ri) => {
           const i = layers.length - 1 - ri; // bottom-up index
@@ -166,8 +167,8 @@ export function S34({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S35 ---------- */
-export function S35({ step, choice }: ScreenProps) {
+/* ---------- S46 ---------- */
+export function S46({ step, choice }: ScreenProps) {
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const row = dd.rows[idx]!;
   return (
@@ -214,7 +215,7 @@ export function S35({ step, choice }: ScreenProps) {
   );
 }
 
-/* ---------- S36 ---------- */
+/* ---------- S47 ---------- */
 function FrameworkWords() {
   return (
     <div className="flex gap-[28px] font-display text-[28px] font-bold">
@@ -222,7 +223,7 @@ function FrameworkWords() {
     </div>
   );
 }
-export function S36(_: ScreenProps) {
+export function S47(_: ScreenProps) {
   const { counts, total } = usePollCounts("s2-challenge", { live: false });
   const print = usePrintMode();
   const lead = total ? counts.indexOf(Math.max(...counts)) + 1 : null;
@@ -244,61 +245,51 @@ export function S36(_: ScreenProps) {
   );
 }
 
-/* ---------- S37 ---------- */
-export function S37({ step, screen }: ScreenProps) {
+/* ---------- S48 · The code is ready. Are we? Yes — we can be. ---------- */
+export function S48({ step, screen }: ScreenProps) {
   const s = rv.s22;
   return (
-    <div className="relative h-full w-full overflow-hidden p-[96px]">
-      <div className="flex gap-[48px]">
+    <div className="relative flex h-full w-full flex-col overflow-hidden p-[96px]">
+      <div className="flex items-center gap-[64px]">
         <div className="relative h-[349px] w-[620px] shrink-0 overflow-hidden rounded-[16px] border border-line">
           <div style={{ width: 1920, height: 1080, transform: `scale(${620 / 1920})`, transformOrigin: "top left" }}>
             <S1 screen={screen} step={3} choice={null} />
           </div>
         </div>
-        <div className="grid flex-1 grid-cols-2 gap-[20px]">
-          <div className="flex flex-col gap-[10px]">
-            {op.s1.chips.map((c) => (
-              <div key={c} className="flex items-center justify-between gap-[12px] rounded-[12px] border border-line bg-surface px-[18px] py-[14px]">
-                <span className="text-[20px] text-muted">✓ {c}</span>
-                <span className="font-mono text-[14px] tracking-[0.15em] text-delegate">{s.tag}</span>
-              </div>
-            ))}
-          </div>
-          <div className="flex flex-col gap-[10px]">
-            {s.evidence.map(([t, col], i) => (
-              <Reveal key={t} on={step >= 1} delay={i * 0.06}>
-                <div className="rounded-[12px] border-l-[6px] bg-surface px-[18px] py-[14px] text-[20px] leading-[1.3] text-text" style={{ borderColor: COL[col!] }}>{t}</div>
-              </Reveal>
-            ))}
-          </div>
+        <div>
+          <p className="font-display text-[56px] leading-[1.1] font-bold tracking-[-0.03em] text-muted">{s.q}</p>
+          <Reveal on={step >= 1}>
+            <p className="mt-[16px] pb-[0.08em] font-display text-[120px] leading-[1] font-bold tracking-[-0.045em]">
+              <span className="text-gradient-signature">{s.a}</span>
+            </p>
+          </Reveal>
         </div>
       </div>
-      <Reveal on={step >= 2} className="mt-[40px]">
-        <p className={`${H} text-[56px]`}>{s.line}</p>
+      <Reveal on={step >= 2} className="mt-[52px]">
+        <Eyebrow>{s.rolesLabel}</Eyebrow>
+        <div className="mt-[16px] grid grid-cols-3 gap-[20px]">
+          {s.roles.map(([who, what, stop], i) => {
+            const { ink } = stopColors(Number(stop));
+            return (
+              <Reveal key={String(who)} on={step >= 2} delay={i * 0.06} className="h-full">
+                <div className="h-full rounded-[18px] border border-line bg-surface px-[26px] py-[22px]" style={{ borderTop: `4px solid ${ink}` }}>
+                  <p className="font-mono text-[16px] font-semibold tracking-[0.16em] uppercase" style={{ color: ink }}>{who}</p>
+                  <p className="mt-[10px] text-[26px] leading-[1.3] text-text">{what}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
       </Reveal>
-      <Reveal on={step >= 3} className="mt-[36px] grid grid-cols-3 gap-[32px]">
-        {s.actions.map((a, i) => {
-          const [who, rest] = a.split(" — ");
-          const [what, how] = (rest ?? "").split(" · ");
-          return (
-            <div key={a} className="rounded-[20px] border border-line bg-surface p-[28px]">
-              <p className="font-display text-[40px] font-bold text-muted">{i + 1}</p>
-              <p className="text-[20px] text-muted">{who}</p>
-              <p className="mt-[6px] text-[28px] font-semibold text-text">{what}</p>
-              <p className="mt-[6px] text-[20px] text-muted">{how}</p>
-            </div>
-          );
-        })}
-      </Reveal>
-      <Reveal on={step >= 4} className="mt-[28px]">
-        <p className="font-display text-[36px] font-bold text-own">{s.prompt}</p>
+      <Reveal on={step >= 3} className="mt-auto">
+        <p className={`${H} keyline text-[48px]`}>{s.line}</p>
       </Reveal>
     </div>
   );
 }
 
-/* ---------- S38 ---------- */
-export function S38(_: ScreenProps) {
+/* ---------- S49 ---------- */
+export function S49(_: ScreenProps) {
   const s = rv.s23;
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -310,15 +301,7 @@ export function S38(_: ScreenProps) {
       </div>
       <Reveal on delay={0.12} className="absolute top-[330px] right-[96px] left-[96px]">
         <Eyebrow>{s.eyebrow}</Eyebrow>
-        <div className="mt-[16px] grid grid-cols-3 gap-[32px]">
-          {s.cards.map(([who, what], i) => (
-            <div key={who} className="rounded-[20px] border border-line bg-surface p-[28px]">
-              <p className="font-display text-[40px] font-bold text-muted">{i + 1}</p>
-              <p className="text-[22px] text-muted">{who}</p>
-              <p className="mt-[6px] text-[30px] italic text-text">{what}</p>
-            </div>
-          ))}
-        </div>
+        <p className="mt-[20px] font-display text-[68px] leading-[1.1] font-bold tracking-[-0.035em] text-own">{s.prompt}</p>
       </Reveal>
       <Reveal on delay={0.18} className="absolute top-[622px] right-[96px] left-[96px]">
         <div className="flex justify-between border-y border-line py-[16px] text-[22px]">

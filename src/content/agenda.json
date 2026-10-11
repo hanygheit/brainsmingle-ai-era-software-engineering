@@ -1,0 +1,17 @@
+{
+  "eyebrow": "The route",
+  "headline": "Seven stops. One question.",
+  "question": "The code is ready. Are we?",
+  "footer": "Every stop ends with one action you can start this week.",
+  "closing": "Closing",
+  "closingSub": "our answer",
+  "stops": [
+    { "n": "01", "name": "Opening", "promise": "The code is ready. Are we?", "icon": "terminal" },
+    { "n": "02", "name": "The shift", "promise": "From typing every line to directing, reviewing and validating", "icon": "workflow" },
+    { "n": "03", "name": "Students", "promise": "Learn with AI without skipping the learning", "icon": "book" },
+    { "n": "04", "name": "Universities & educators", "promise": "What to keep, shift and add — and how to assess", "icon": "school" },
+    { "n": "05", "name": "Fresh graduates", "promise": "The new entry bar and your first 90 days", "icon": "cap" },
+    { "n": "06", "name": "Current engineers", "promise": "Grow judgment as fast as AI grows your reach", "icon": "layers" },
+    { "n": "07", "name": "Companies", "promise": "Adopt, train, measure: a 90-day roadmap", "icon": "building" }
+  ]
+}

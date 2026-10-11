@@ -2,14 +2,25 @@
   "s12": {
     "headline": "The entry door is narrowing.",
     "stat": "4.5% of software-development postings are entry-level · 69.3% are senior",
-    "statSrc": "Indeed Hiring Lab, Q1 2026",
-    "stanford": "Employment of 22–25-year-olds in AI-exposed jobs: 19% below trend",
-    "stanfordSrc": "Stanford Digital Economy Lab, Aug 2026",
+    "statSrc": "Indeed Hiring Lab · US postings · Q1 2026",
+    "stat2": "New-grad hiring at the largest tech companies: about 65% below 2019",
+    "stat2Src": "SignalFire State of Talent · Jun 2026",
+    "stanfordHero": "19%",
+    "stanford": "below the path of less-exposed peers — employment of 22–25-year-olds in AI-exposed jobs",
+    "stanfordSrc": "Stanford Digital Economy Lab · ADP payroll data to Jun 2026 · Aug 2026",
+    "nyfedLabel": "Recent-graduate unemployment (ages 22–27)",
+    "nyfed": [["Computer engineering", 7.8], ["Computer science", 7.0], ["All majors", 4.2]],
+    "nyfedSrc": "Federal Reserve Bank of New York · 2024 data, published Feb 2026",
     "quote": "How's that going to work when ten years in the future you have no one that has learned anything",
     "speaker": "Matt Garman",
     "role": "CEO, AWS",
-    "source": "The Register",
-    "date": "Aug 2025"
+    "source": "via The Register",
+    "date": "Aug 2025",
+    "openLabel": "Narrower — not closed",
+    "open": [
+      ["“We are tripling our entry-level hiring, and yes, that is for software developers”", "Nickle LaMoreaux, CHRO, IBM · via Fortune, Feb 2026"],
+      ["“This is the reason we're hiring 11,000 interns and new college grads this year at Amazon.”", "Matt Garman, CEO, AWS · Platformer, Jun 2026"]
+    ]
   },
   "s13": {
     "headline": "The new entry-level bar.",
@@ -106,7 +117,7 @@
     "tag": "Conceptual — not measured data",
     "q1": "“…AI is writing 90 percent of the code.”",
     "q2": "“But the programmer still needs to specify… what is the overall app you're trying to make, what's the overall design decision?”",
-    "by": "Dario Amodei, CEO, Anthropic · Council on Foreign Relations · 10 Mar 2025",
+    "by": "Dario Amodei, CEO, Anthropic · Council on Foreign Relations · 10 Mar 2025 · a forecast: “in three to six months”",
     "last": "AI lowers the cost of learning a new technology — and raises the cost of staying narrow."
   },
   "s16": {

@@ -11,8 +11,8 @@ import { Chip, Reveal, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
 
-/* ---------- S10 · Two graduates ---------- */
-export function S10({ step, choice }: ScreenProps) {
+/* ---------- S12 · Two graduates ---------- */
+export function S12({ step, choice }: ScreenProps) {
   const s = iv.s7;
   const { counts, total } = usePollCounts("s7-interview");
   const url = voteUrl("s7-interview");
@@ -91,7 +91,7 @@ export function S10({ step, choice }: ScreenProps) {
   );
 }
 
-/* ---------- S12–S14 · AI-native is not fundamentals-free (Keep · Shift / Add · Prove / Dohmke) ---------- */
+/* ---------- S19–S21 · AI-native is not fundamentals-free (Keep · Shift / Add · Prove / Dohmke) ---------- */
 function FundamentalsColumns({ step, keys }: { step: number; keys: string[] }) {
   const s = a2.s8;
   return (
@@ -127,13 +127,13 @@ function FundamentalsColumns({ step, keys }: { step: number; keys: string[] }) {
     </div>
   );
 }
-export function S12({ step }: ScreenProps) {
+export function S19({ step }: ScreenProps) {
   return <FundamentalsColumns step={step} keys={["KEEP", "SHIFT"]} />;
 }
-export function S13({ step }: ScreenProps) {
+export function S20({ step }: ScreenProps) {
   return <FundamentalsColumns step={step} keys={["ADD", "PROVE"]} />;
 }
-export function S14({ step }: ScreenProps) {
+export function S21({ step }: ScreenProps) {
   const s = a2.s8;
   return (
     <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
@@ -191,7 +191,7 @@ export function S16({ step }: ScreenProps) {
   const s = a2.s10;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={["Anthropic, Jan 2026", step >= 2 && "DORA, Mar 2026", step >= 2 && "Stanford Daily, Mar 2026"]} />
+      <SrcTag items={["Anthropic, 29 Jan 2026", step >= 2 && "DORA, Mar 2026", step >= 2 && "Stanford Daily, Mar 2026"]} />
       <p className={`${H} text-[64px]`}>{s.headline}</p>
       <div className="mt-[40px] grid grid-cols-2 gap-[72px]">
         <div>
@@ -231,12 +231,12 @@ export function S16({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S17 · If AI can build it, what are we assessing? ---------- */
-export function S17({ step }: ScreenProps) {
+/* ---------- S22 · If AI can build it, what are we assessing? ---------- */
+export function S22({ step }: ScreenProps) {
   const [open, setOpen] = useState<number | null>(null);
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[step >= 3 && "Anthropic, 21 Jan 2026"]} />
+      <SrcTag items={[step >= 3 && "Anthropic, 21 Jan 2026", step >= 3 && "Digital Education Council, Jan 2025"]} />
       <p className={`${H} text-[52px]`}>{asm.title}</p>
       <div className="relative mt-[28px] grid grid-cols-[560px_1fr] gap-[32px]">
         <div className="relative rounded-[20px] border border-line bg-surface p-[28px] opacity-70">
@@ -280,6 +280,7 @@ export function S17({ step }: ScreenProps) {
         <blockquote className="mt-[10px] border-l-4 border-own pl-[24px] text-[24px] text-text">
           “{asm.quote}”<span className="ml-[12px] text-[18px] text-muted">— {asm.quoteBy}</span>
         </blockquote>
+        <p className="mt-[10px] font-mono text-[18px] text-muted">{asm.faculty}</p>
       </Reveal>
       <Reveal on={step >= 4} className="mt-auto">
         <p className={`${H} keyline text-[44px] leading-[1.15]`}>{asm.headline}</p>

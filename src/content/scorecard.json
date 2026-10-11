@@ -27,8 +27,9 @@
     ]
   ],
   "tags": [
-    "Faros: bugs per developer +54%, review time +441%",
-    "DORA: throughput up, stability down"
+    "Faros, Sep 2026: PRs merged with no review +76%",
+    "DORA: throughput up — and instability up",
+    "McKinsey: 80% report gains · only 37% see EBIT"
   ],
   "last": "Don't measure how much AI they use. Measure what they can safely own.",
   "small": "AI scales execution. Our job is to scale engineering capability."

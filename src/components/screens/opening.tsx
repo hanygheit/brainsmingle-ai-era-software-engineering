@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { ArcMotif, AudienceCards, EASE, Eyebrow, QRTile, Terminal, type TermStatus } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import { BRAINSMINGLE_URL, EVENT, LINKEDIN_URL, voteUrl } from "@/config";
-import { ACT_COLORS_ON_NAVY, NUMBERED_ACTS } from "@/deck/theme";
 import c from "@/content/opening.json";
 import { usePollCounts } from "@/lib/poll";
 import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
@@ -58,31 +57,6 @@ function SignatureTitle({ text }: { text: string }) {
     <>
       <span className="text-gradient-signature">{first}</span> {rest.join(" ")}
     </>
-  );
-}
-
-/** The talk's route as act-coloured chips (one per act, in order). */
-function Journey({ text }: { text: string }) {
-  const parts = text.split(" → ");
-  return (
-    <div className="flex items-center justify-center gap-[14px] font-mono text-[24px]">
-      {parts.map((p, i) => {
-        const act = NUMBERED_ACTS[i];
-        const ink = (act && ACT_COLORS_ON_NAVY[act.act]) ?? "var(--own)";
-        return (
-          <span key={p} className="flex items-center gap-[14px]">
-            <span
-              className="inline-flex items-center gap-[12px] rounded-full border px-[20px] py-[8px] text-text"
-              style={{ borderColor: `color-mix(in oklab, ${ink} 50%, transparent)`, background: `color-mix(in oklab, ${ink} 12%, transparent)` }}
-            >
-              <span className="h-[9px] w-[9px] rounded-full" style={{ background: ink }} />
-              {p}
-            </span>
-            {i < parts.length - 1 ? <span className="text-muted">→</span> : null}
-          </span>
-        );
-      })}
-    </div>
   );
 }
 
@@ -219,9 +193,6 @@ export function S2({ step, choice }: ScreenProps) {
         <div className="absolute inset-0" style={{ transform: "translateY(-250px)" }}>
           <AudienceCards labels={c.s2.cards} tally={print ? undefined : counts} active={choice} />
         </div>
-      </Reveal>
-      <Reveal on={step >= 3} className="absolute inset-x-0 top-[696px] text-center">
-        <Journey text={c.s2.journey} />
       </Reveal>
       <Reveal on={step >= 2} className="absolute bottom-[80px] left-[96px]">
         <SpeakerBlock compact />

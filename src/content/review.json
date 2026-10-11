@@ -8,32 +8,18 @@
     ]
   },
   "s22": {
-    "tag": "DELEGATE",
-    "evidence": [
-      [
-        "A problem the engineer understands",
-        "direct"
-      ],
-      [
-        "Decisions they can explain",
-        "direct"
-      ],
-      [
-        "Behaviour they have verified — including the token that should fail",
-        "validate"
-      ],
-      [
-        "A change they can maintain",
-        "own"
-      ]
-    ],
+    "q": "The code is ready. Are we?",
+    "a": "Yes — we can be.",
     "line": "AI can write the code. Engineers still own the outcome.",
-    "actions": [
-      "Students and educators — Change one learning task · add explanation, debugging or a changed requirement",
-      "Graduates and developers — Choose one capability to demonstrate · produce evidence beyond a working demo",
-      "Engineering leaders — Update one development plan · specify practice, feedback and proof of progress"
-    ],
-    "prompt": "Write down one change you'll make in the next seven days."
+    "rolesLabel": "One line for each of us",
+    "roles": [
+      ["Students", "Learn it by hand, then with AI — and explain both.", 3],
+      ["Educators", "Change one assignment: AI allowed, explanation required.", 4],
+      ["Graduates", "Show evidence, not demos: every PR explained, every agent mistake caught.", 5],
+      ["Engineers", "Grow your delegation radius — and review one agent session a week.", 6],
+      ["Leaders", "Rewrite one development plan around what people can safely own.", 1],
+      ["Companies", "Start the 90 days: baseline, train by stage, measure outcomes — not usage.", 7]
+    ]
   },
   "s23": {
     "l1": "AI is changing how we build software.",
@@ -41,20 +27,7 @@
     "l2b": "develop software engineers",
     "l2c": ".",
     "eyebrow": "ONE CHANGE · NEXT 7 DAYS",
-    "cards": [
-      [
-        "Students and educators",
-        "Change one learning task"
-      ],
-      [
-        "Graduates and developers",
-        "Choose one capability to demonstrate"
-      ],
-      [
-        "Engineering leaders",
-        "Update one development plan"
-      ]
-    ],
+    "prompt": "Write down one change you'll make in the next seven days.",
     "band": [
       [
         "DELEGATE",

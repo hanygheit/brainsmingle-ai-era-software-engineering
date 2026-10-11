@@ -4,13 +4,14 @@ import { screens, type Screen } from "@/content/screens";
 import { ArcMotif, Eyebrow, Headline } from "@/components/kit";
 import { SPEAKER } from "@/config";
 import opening from "@/content/opening.json";
-import { ACT_COLORS, actInfo, isPaper } from "@/deck/theme";
+import { ACT_COLORS, actInfo, isPaper, stopLabel } from "@/deck/theme";
 import { S0, S1, S2 } from "@/components/screens/opening";
-import { S4, S5, S6, S7, S8, S9 } from "@/components/screens/act1";
-import { S10, S12, S13, S14, S15, S16, S17 } from "@/components/screens/act2";
-import { S19, S20, S21, S22, S23, S25, S26, S27, S28, S29 } from "@/components/screens/act3";
-import { S31, S32, S33, S34, S35, S36, S37, S38 } from "@/components/screens/act5";
+import { S5, S6, S7, S8, S10, S11 } from "@/components/screens/act1";
+import { S12, S19, S20, S21, S15, S16, S22 } from "@/components/screens/act2";
+import { S25, S26, S27, S29, S30, S33, S34, S35, S36, S37 } from "@/components/screens/act3";
+import { S41, S42, S43, S44, S46, S47, S48, S49 } from "@/components/screens/act5";
 import { ActSeparator } from "@/components/screens/separators";
+import { S3, S9, S13, S17, S23, S28, S31, S38, S40, S45 } from "@/components/screens/stops";
 
 const TALK_TITLE = opening.s0.title;
 
@@ -23,7 +24,8 @@ export interface ScreenProps {
 }
 
 const REGISTRY: Partial<Record<string, ComponentType<ScreenProps>>> = {
-  S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S12, S13, S14, S15, S16, S17, S19, S20, S21, S22, S23, S25, S26, S27, S28, S29, S31, S32, S33, S34, S35, S36, S37, S38,
+  S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12, S13, S15, S16, S17, S19, S20, S21, S22, S23, S25, S26, S27, S28, S29, S30, S31,
+  S33, S34, S35, S36, S37, S38, S40, S41, S42, S43, S44, S45, S46, S47, S48, S49,
 };
 
 /** Milliseconds at which phase k (1-based) starts. */
@@ -97,7 +99,7 @@ function PaperFrame({ screen }: { screen: Screen }) {
       {info ? (
         <div className="absolute top-[30px] left-[96px] flex items-center gap-[14px]">
           <span className="h-[8px] w-[8px] rounded-full" style={{ background: "var(--act)" }} />
-          <span className="act-ink font-semibold">Act {info.n}</span>
+          <span className="act-ink font-semibold">{stopLabel(info.stop)}</span>
           <span className="h-[14px] w-px bg-[var(--rule)]" />
           <span className="text-muted">{info.name}</span>
         </div>
