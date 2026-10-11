@@ -5,9 +5,9 @@ import { ArcMotif, Eyebrow, Headline } from "@/components/kit";
 import { ACT_COLORS, isPaper } from "@/deck/theme";
 import { S0, S1, S2 } from "@/components/screens/opening";
 import { S4, S5, S6, S7, S8, S9 } from "@/components/screens/act1";
-import { S10, S12, S13, S14, S15 } from "@/components/screens/act2";
-import { S17, S18, S19, S21, S22, S23 } from "@/components/screens/act3";
-import { S25, S26, S27, S28, S29, S30 } from "@/components/screens/act5";
+import { S10, S12, S13, S14, S15, S16, S17 } from "@/components/screens/act2";
+import { S19, S20, S21, S22, S23, S25, S26, S27, S28, S29 } from "@/components/screens/act3";
+import { S31, S32, S33, S34, S35, S36, S37, S38 } from "@/components/screens/act5";
 import { ActSeparator } from "@/components/screens/separators";
 
 export interface ScreenProps {
@@ -19,7 +19,7 @@ export interface ScreenProps {
 }
 
 const REGISTRY: Partial<Record<string, ComponentType<ScreenProps>>> = {
-  S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S12, S13, S14, S15, S17, S18, S19, S21, S22, S23, S25, S26, S27, S28, S29, S30,
+  S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S12, S13, S14, S15, S16, S17, S19, S20, S21, S22, S23, S25, S26, S27, S28, S29, S31, S32, S33, S34, S35, S36, S37, S38,
 };
 
 /** Milliseconds at which phase k (1-based) starts. */

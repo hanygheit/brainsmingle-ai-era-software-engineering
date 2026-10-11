@@ -91,41 +91,56 @@ export function S10({ step, choice }: ScreenProps) {
   );
 }
 
-/* ---------- S12 · AI-native is not fundamentals-free ---------- */
-export function S12({ step }: ScreenProps) {
+/* ---------- S12–S14 · AI-native is not fundamentals-free (Keep · Shift / Add · Prove / Dohmke) ---------- */
+function FundamentalsColumns({ step, keys }: { step: number; keys: string[] }) {
   const s = a2.s8;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[step >= 5 && "Thomas Dohmke, Aug 2025"]} />
       <p className={`${H} text-[72px]`}>{s.headline}</p>
-      <div className="mt-[36px] grid grid-cols-4 gap-[28px]">
-        {s.columns.map((c, i) => {
-          const prove = c.key === "PROVE";
-          return (
-            <Reveal key={c.key} on={step >= i + 1}>
-              <div className="h-full rounded-[20px] border bg-surface p-[32px]" style={{ borderColor: prove ? "var(--own)" : "var(--line)" }}>
-                <p className="font-display text-[40px] font-bold" style={{ color: prove ? "var(--own)" : "var(--text)" }}>{c.key}</p>
-                <p className="text-[20px] text-muted">— {c.sub}</p>
-                <ul className="mt-[20px] space-y-[8px] text-[22px] text-text">
-                  {c.items.map((it) => <li key={it}>{it}</li>)}
-                </ul>
-                {"chip" in c && c.chip ? <p className="mt-[20px] rounded-[12px] border border-validate px-[14px] py-[10px] text-[18px] text-validate">{c.chip}</p> : null}
-              </div>
-            </Reveal>
-          );
-        })}
+      <div className="mt-[48px] grid grid-cols-2 gap-[40px]">
+        {s.columns
+          .filter((c) => keys.includes(c.key))
+          .map((c, i) => {
+            const prove = c.key === "PROVE";
+            return (
+              <Reveal key={c.key} on={step >= 1} delay={i * 0.06}>
+                <div className="h-full rounded-[20px] border bg-surface p-[44px]" style={{ borderColor: prove ? "var(--own)" : "var(--line)" }}>
+                  <p className="font-display text-[56px] font-bold" style={{ color: prove ? "var(--own)" : "var(--text)" }}>{c.key}</p>
+                  <p className="text-[26px] text-muted">— {c.sub}</p>
+                  <ul className="mt-[24px] space-y-[8px] text-[28px] leading-[1.3] text-text">
+                    {c.items.map((it) => <li key={it}>{it}</li>)}
+                  </ul>
+                  {"chip" in c && c.chip ? <p className="mt-[24px] rounded-[12px] border border-validate px-[18px] py-[12px] text-[24px] text-validate">{c.chip}</p> : null}
+                </div>
+              </Reveal>
+            );
+          })}
       </div>
-      <Reveal on={step >= 5} className="mt-auto pt-[24px]">
-        <blockquote className="max-w-[1500px] border-l-4 border-own pl-[32px] text-[32px] leading-[1.3] text-text">
-          “{s.quote}”<span className="mt-[10px] block text-[22px] text-muted">— {s.quoteBy}</span>
+    </div>
+  );
+}
+export function S12({ step }: ScreenProps) {
+  return <FundamentalsColumns step={step} keys={["KEEP", "SHIFT"]} />;
+}
+export function S13({ step }: ScreenProps) {
+  return <FundamentalsColumns step={step} keys={["ADD", "PROVE"]} />;
+}
+export function S14({ step }: ScreenProps) {
+  const s = a2.s8;
+  return (
+    <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
+      <SrcTag items={["Thomas Dohmke, Aug 2025"]} />
+      <Reveal on={step >= 1}>
+        <blockquote className="max-w-[1560px] border-l-[6px] border-own pl-[48px] font-display text-[60px] leading-[1.2] font-bold tracking-[-0.02em] text-text">
+          “{s.quote}”<span className="mt-[28px] block font-sans text-[30px] font-normal tracking-normal text-muted">— {s.quoteBy}</span>
         </blockquote>
       </Reveal>
     </div>
   );
 }
 
-/* ---------- S13 · Concepts outlive tools ---------- */
-export function S13({ step }: ScreenProps) {
+/* ---------- S15 · Concepts outlive tools ---------- */
+export function S15({ step }: ScreenProps) {
   const s = a2.s9;
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
@@ -162,8 +177,8 @@ export function S13({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S14 · Learn with AI — and without it ---------- */
-export function S14({ step }: ScreenProps) {
+/* ---------- S16 · Learn with AI — and without it ---------- */
+export function S16({ step }: ScreenProps) {
   const s = a2.s10;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -207,8 +222,8 @@ export function S14({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S15 · If AI can build it, what are we assessing? ---------- */
-export function S15({ step }: ScreenProps) {
+/* ---------- S17 · If AI can build it, what are we assessing? ---------- */
+export function S17({ step }: ScreenProps) {
   const [open, setOpen] = useState<number | null>(null);
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">

@@ -33,41 +33,60 @@ function useToggleT(step: number) {
   return on;
 }
 
-/* ---------- S17 ---------- */
-export function S17({ step }: ScreenProps) {
+/* ---------- S19–S21 · The entry door is narrowing (4.5% / Stanford / Garman) ---------- */
+export function S19({ step }: ScreenProps) {
   const s = c.s12;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[s.statSrc, step >= 1 && s.stanfordSrc, step >= 2 && "The Register, Aug 2025"]} />
+      <SrcTag items={[s.statSrc]} />
       <p className={`${H} text-[72px]`}>{s.headline}</p>
-      <div className="mt-[48px] flex gap-[72px]">
-        <div className="grid grid-cols-10 gap-[6px] self-start">
-          {Array.from({ length: 100 }, (_, i) => (
-            <div key={i} className="relative h-[28px] w-[28px] overflow-hidden rounded-[5px] bg-line">
-              {i < 5 ? <div className="absolute inset-y-0 left-0 bg-own-fill" style={{ width: i === 4 ? "50%" : "100%" }} /> : null}
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-1 flex-col gap-[36px]">
-          <div>
-            <p className="font-display text-[44px] leading-[1.15] font-bold text-text">{s.stat}</p>
-            <div className="mt-[10px]"><Tag>{s.statSrc}</Tag></div>
+      <div className="flex flex-1 items-center gap-[96px]">
+        <Reveal on={step >= 1}>
+          <div className="grid grid-cols-10 gap-[8px]">
+            {Array.from({ length: 100 }, (_, i) => (
+              <div key={i} className="relative h-[40px] w-[40px] overflow-hidden rounded-[6px] bg-line">
+                {i < 5 ? <div className="absolute inset-y-0 left-0 bg-own-fill" style={{ width: i === 4 ? "50%" : "100%" }} /> : null}
+              </div>
+            ))}
           </div>
-          <Reveal on={step >= 1}>
-            <p className="font-display text-[36px] leading-[1.2] font-bold text-validate">{s.stanford}</p>
-            <div className="mt-[10px]"><Tag>{s.stanfordSrc}</Tag></div>
-          </Reveal>
-        </div>
+        </Reveal>
+        <Reveal on={step >= 1} delay={0.06} className="flex-1">
+          <p className="font-display text-[56px] leading-[1.15] font-bold text-text">{s.stat}</p>
+          <div className="mt-[16px]"><Tag>{s.statSrc}</Tag></div>
+        </Reveal>
       </div>
-      <Reveal on={step >= 2} className="mt-auto">
+    </div>
+  );
+}
+export function S20({ step }: ScreenProps) {
+  const s = c.s12;
+  return (
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <SrcTag items={[s.stanfordSrc]} />
+      <p className={`${H} text-[72px]`}>{s.headline}</p>
+      <div className="flex flex-1 items-center">
+        <Reveal on={step >= 1}>
+          <p className="max-w-[1500px] font-display text-[72px] leading-[1.1] font-bold tracking-[-0.02em] text-validate">{s.stanford}</p>
+          <div className="mt-[20px]"><Tag>{s.stanfordSrc}</Tag></div>
+        </Reveal>
+      </div>
+    </div>
+  );
+}
+export function S21({ step }: ScreenProps) {
+  const s = c.s12;
+  return (
+    <div className="relative flex h-full w-full items-center justify-center p-[96px]">
+      <SrcTag items={["The Register, Aug 2025"]} />
+      <Reveal on={step >= 1}>
         <QuoteCard quote={s.quote} speaker={s.speaker} role={s.role} source={s.source} date={s.date} />
       </Reveal>
     </div>
   );
 }
 
-/* ---------- S18 ---------- */
-export function S18({ step }: ScreenProps) {
+/* ---------- S22 ---------- */
+export function S22({ step }: ScreenProps) {
   const s = c.s13;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -91,8 +110,8 @@ export function S18({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S19 ---------- */
-export function S19({ step }: ScreenProps) {
+/* ---------- S23 ---------- */
+export function S23({ step }: ScreenProps) {
   const s = c.s14;
   const grown = step >= 1;
   const outer = grown ? 330 : 110;
@@ -130,7 +149,7 @@ export function S19({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S21 ---------- */
+/** Types `text` in ~0.5 s once `active` turns on. */
 function TypeIn({ text, active }: { text: string; active: boolean }) {
   const reduce = useReducedMotion();
   // Already active on mount = opened in its final state (back / print): show full text.
@@ -144,41 +163,58 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
   }, [text, active, reduce]);
   return <>{text.slice(0, n)}</>;
 }
-export function S21({ step }: ScreenProps) {
+/* ---------- S25–S27 · The job changed (effort bar / Amodei / staying narrow) ---------- */
+export function S25({ step }: ScreenProps) {
   const s = c.s15;
   const flipped = useToggleT(step);
   const y2026 = (step >= 1) !== flipped;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[step >= 1 && "Dario Amodei, Council on Foreign Relations, 10 Mar 2025"]} />
-      <p className={`${H} text-[60px]`}>{s.headline}</p>
-      <div className="mt-[48px] flex items-center justify-between">
-        <span className="font-mono text-[28px] text-muted">{y2026 ? "2026" : "2022"}</span>
-        <Tag>{s.tag}</Tag>
+      <p className={`${H} text-[72px]`}>{s.headline}</p>
+      <div className="flex flex-1 flex-col justify-center">
+        <div className="flex items-center justify-between">
+          <span className="font-mono text-[36px] text-muted">{y2026 ? "2026" : "2022"}</span>
+          <Tag>{s.tag}</Tag>
+        </div>
+        <div className="mt-[20px] flex h-[180px] w-full overflow-hidden rounded-[20px]">
+          {s.segments.map(([name, col, a, b]) => (
+            <motion.div key={name as string} className="flex items-center justify-center overflow-hidden text-[30px] font-semibold whitespace-nowrap" initial={false} animate={{ width: `${y2026 ? b : a}%` }} transition={{ duration: 0.6, ease: EASE }} style={{ background: FILL[col as string], color: "#14161C" }}>
+              {name as string} {(y2026 ? b : a) as number}%
+            </motion.div>
+          ))}
+        </div>
       </div>
-      <div className="mt-[14px] flex h-[120px] w-full overflow-hidden rounded-[16px]">
-        {s.segments.map(([name, col, a, b]) => (
-          <motion.div key={name as string} className="flex items-center justify-center overflow-hidden text-[24px] font-semibold" initial={false} animate={{ width: `${y2026 ? b : a}%` }} transition={{ duration: 0.6, ease: EASE }} style={{ background: FILL[col as string], color: "#14161C" }}>
-            {name as string} {(y2026 ? b : a) as number}%
-          </motion.div>
-        ))}
-      </div>
-      <div className="mt-[56px] max-w-[1600px]">
-        <Reveal on={step >= 1}><p className={`${H} text-[48px]`}>{s.q1}</p></Reveal>
-        <Reveal on={step >= 2} className="mt-[24px]">
-          <p className="text-[34px] leading-[1.35] text-text"><TypeIn text={s.q2} active={step === 2} /></p>
-          <p className="mt-[12px] text-[22px] text-muted">— {s.by}</p>
+    </div>
+  );
+}
+export function S26({ step }: ScreenProps) {
+  const s = c.s15;
+  return (
+    <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
+      <SrcTag items={["Dario Amodei, Council on Foreign Relations, 10 Mar 2025"]} />
+      <div className="max-w-[1600px]">
+        <Reveal on={step >= 1}><p className={`${H} text-[64px]`}>{s.q1}</p></Reveal>
+        <Reveal on={step >= 2} className="mt-[40px]">
+          <p className="min-h-[178px] text-[44px] leading-[1.35] text-text"><TypeIn text={s.q2} active={step === 2} /></p>
+          <p className="mt-[20px] text-[28px] text-muted">— {s.by}</p>
         </Reveal>
       </div>
-      <Reveal on={step >= 3} className="mt-auto">
-        <p className={`${H} text-[48px] !text-own`}>{s.last}</p>
+    </div>
+  );
+}
+export function S27({ step }: ScreenProps) {
+  const s = c.s15;
+  return (
+    <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
+      <Reveal on={step >= 1}>
+        <p className={`${H} max-w-[1600px] text-[80px] leading-[1.12] !text-own`}>{s.last}</p>
       </Reveal>
     </div>
   );
 }
 
-/* ---------- S22 ---------- */
-export function S22({ step }: ScreenProps) {
+/* ---------- S28 ---------- */
+export function S28({ step }: ScreenProps) {
   const s = c.s16;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -229,8 +265,8 @@ export function S22({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S23 ---------- */
-export function S23({ choice }: ScreenProps) {
+/* ---------- S29 ---------- */
+export function S29({ choice }: ScreenProps) {
   const print = usePrintMode();
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const [sel, setSel] = useState(idx);

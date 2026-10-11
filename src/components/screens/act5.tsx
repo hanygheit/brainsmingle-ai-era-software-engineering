@@ -37,8 +37,27 @@ function useKey(keys: string[], fn: (k: string) => void) {
   });
 }
 
-/* ---------- S25 ---------- */
-export function S25({ step }: ScreenProps) {
+/* ---------- S31–S33 · An AI subscription is not a development strategy (tool vs capability / levers / evidence) ---------- */
+export function S31({ step }: ScreenProps) {
+  return (
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <p className={`${H} text-[72px]`}>{tl.headline}</p>
+      <div className="mt-[64px] grid grid-cols-2 gap-[40px]">
+        {[tl.toolFirst, tl.capFirst].map((c, i) => (
+          <Reveal key={c.label} on={step >= i + 1}>
+            <div className="h-full rounded-[20px] border bg-surface p-[48px]" style={{ borderColor: i ? "var(--own)" : "var(--line)" }}>
+              <p className="font-display text-[48px] font-bold" style={{ color: i ? "var(--own)" : "var(--muted)" }}>{c.label}</p>
+              <ul className="mt-[28px] space-y-[18px] text-[34px] leading-[1.3]" style={{ color: i ? "var(--text)" : "var(--muted)" }}>
+                {c.items.map((it) => <li key={it}>{it}</li>)}
+              </ul>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  );
+}
+export function S32({ step }: ScreenProps) {
   const print = usePrintMode();
   const [zoom, setZoom] = useState(false);
   useKey(["z", "Z"], () => setZoom((z) => !z));
@@ -49,56 +68,59 @@ export function S25({ step }: ScreenProps) {
   const [p3, rest3] = (rest2 ?? "").split("flags");
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[step >= 5 && "DX", step >= 5 && "Anthropic, Dec 2025", step >= 5 && "Kent Beck"]} />
       <p className={`${H} text-[56px]`}>{tl.headline}</p>
-      <div className="mt-[24px] flex flex-col gap-[10px]">
-        {[tl.toolFirst, tl.capFirst].map((c, i) => (
-          <div key={c.label} className="flex items-baseline gap-[20px] rounded-[14px] border bg-surface px-[24px] py-[12px]" style={{ borderColor: i ? "var(--own)" : "var(--line)" }}>
-            <span className="w-[220px] shrink-0 font-display text-[24px] font-bold" style={{ color: i ? "var(--own)" : "var(--muted)" }}>{c.label}</span>
-            <span className="text-[22px]" style={{ color: i ? "var(--text)" : "var(--muted)" }}>{c.items.join(" · ")}</span>
-          </div>
-        ))}
-      </div>
       {zoom || print ? (
-        <div className={print ? "mt-[16px] grid grid-cols-2 gap-[20px]" : "mt-[28px] grid grid-cols-2 gap-[32px]"}>
+        <div className={print ? "mt-[24px] grid grid-cols-2 gap-[20px]" : "mt-[40px] grid grid-cols-2 gap-[32px]"}>
           <div className="col-span-2"><Eyebrow>{tl.zoomLabel}</Eyebrow></div>
-          <div className={`rounded-[20px] border border-line bg-surface ${print ? "p-[18px]" : "p-[32px]"}`}>
+          <div className={`rounded-[20px] border border-line bg-surface ${print ? "p-[20px]" : "p-[36px]"}`}>
             <p className="t-tag text-muted">BEFORE</p>
-            <p className={`mt-[8px] leading-[1.35] text-muted ${print ? "text-[20px]" : "text-[28px]"}`}>{tl.zoomBefore}</p>
+            <p className={`mt-[8px] leading-[1.35] text-muted ${print ? "text-[22px]" : "text-[30px]"}`}>{tl.zoomBefore}</p>
           </div>
-          <div className={`rounded-[20px] border border-own bg-surface ${print ? "p-[18px]" : "p-[32px]"}`}>
+          <div className={`rounded-[20px] border border-own bg-surface ${print ? "p-[20px]" : "p-[36px]"}`}>
             <p className="t-tag text-own">AFTER</p>
-            <p className={`mt-[8px] leading-[1.35] text-text ${print ? "text-[20px]" : "text-[28px]"}`}>
+            <p className={`mt-[8px] leading-[1.35] text-text ${print ? "text-[22px]" : "text-[30px]"}`}>
               {p1}{mark("explain", "var(--direct)")}{p2}{mark("test", "var(--validate)")}{p3}{mark("flags", "var(--own)")}{rest3}
             </p>
           </div>
         </div>
       ) : null}
       {!zoom || print ? (
-        <div className={`${print ? "mt-[12px] gap-[6px]" : "mt-[24px] gap-[10px]"} flex flex-col`}>
-          <div className="grid grid-cols-[240px_1fr_1.6fr] gap-[24px] px-[24px] t-tag text-muted"><span /><span>BEFORE</span><span>AFTER</span></div>
+        <div className={`${print ? "mt-[20px] gap-[8px]" : "mt-[40px] gap-[14px]"} flex flex-col`}>
+          <div className="grid grid-cols-[280px_1fr_1.6fr] gap-[28px] px-[28px] t-tag text-muted"><span /><span>BEFORE</span><span>AFTER</span></div>
           {tl.levers.map(([name, before, aft], i) => (
             <Reveal key={name} on={step >= i + 1} y={10}>
-              <div className={`grid grid-cols-[240px_1fr_1.6fr] items-start gap-[24px] rounded-[14px] border border-line bg-surface px-[24px] ${print ? "py-[8px]" : "py-[14px]"}`}>
-                <span className="font-display text-[26px] font-bold text-text">{name}</span>
-                <span className="text-[21px] text-muted">{before}</span>
+              <div className={`grid grid-cols-[280px_1fr_1.6fr] items-start gap-[28px] rounded-[14px] border border-line bg-surface px-[28px] ${print ? "py-[12px]" : "py-[22px]"}`}>
+                <span className="font-display text-[30px] font-bold text-text">{name}</span>
+                <span className="text-[24px] text-muted">{before}</span>
                 <Reveal on={step >= i + 1} delay={0.06} y={0}>
-                  <span className="text-[21px] text-text">{aft}</span>
+                  <span className="text-[24px] text-text">{aft}</span>
                 </Reveal>
               </div>
             </Reveal>
           ))}
         </div>
       ) : null}
-      <Reveal on={step >= 5} className={`mt-auto flex flex-wrap gap-[12px] ${print ? "pb-[20px]" : ""}`}>
-        {tl.chips.map((c) => <Chip key={c}>{c}</Chip>)}
-      </Reveal>
+    </div>
+  );
+}
+export function S33({ step }: ScreenProps) {
+  return (
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <SrcTag items={["DX", "Anthropic, Dec 2025", "Kent Beck"]} />
+      <p className={`${H} text-[72px]`}>{tl.headline}</p>
+      <div className="flex flex-1 flex-col justify-center gap-[28px]">
+        {tl.chips.map((t, i) => (
+          <Reveal key={t} on={step >= 1} delay={i * 0.06}>
+            <p className="rounded-[20px] border border-line bg-surface px-[40px] py-[32px] font-mono text-[32px] leading-[1.35] text-text">{t}</p>
+          </Reveal>
+        ))}
+      </div>
     </div>
   );
 }
 
-/* ---------- S26 ---------- */
-export function S26({ step }: ScreenProps) {
+/* ---------- S34 ---------- */
+export function S34({ step }: ScreenProps) {
   const layers = [...sc.layers].reverse();
   return (
     <div className="relative flex h-full w-full gap-[64px] p-[96px]">
@@ -132,8 +154,8 @@ export function S26({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S27 ---------- */
-export function S27({ step, choice }: ScreenProps) {
+/* ---------- S35 ---------- */
+export function S35({ step, choice }: ScreenProps) {
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const row = dd.rows[idx]!;
   return (
@@ -180,7 +202,7 @@ export function S27({ step, choice }: ScreenProps) {
   );
 }
 
-/* ---------- S28 ---------- */
+/* ---------- S36 ---------- */
 function FrameworkWords() {
   return (
     <div className="flex gap-[28px] font-display text-[28px] font-bold">
@@ -188,7 +210,7 @@ function FrameworkWords() {
     </div>
   );
 }
-export function S28(_: ScreenProps) {
+export function S36(_: ScreenProps) {
   const { counts, total } = usePollCounts("s2-challenge", { live: false });
   const print = usePrintMode();
   const lead = total ? counts.indexOf(Math.max(...counts)) + 1 : null;
@@ -210,8 +232,8 @@ export function S28(_: ScreenProps) {
   );
 }
 
-/* ---------- S29 ---------- */
-export function S29({ step, screen }: ScreenProps) {
+/* ---------- S37 ---------- */
+export function S37({ step, screen }: ScreenProps) {
   const s = rv.s22;
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
@@ -263,8 +285,8 @@ export function S29({ step, screen }: ScreenProps) {
   );
 }
 
-/* ---------- S30 ---------- */
-export function S30(_: ScreenProps) {
+/* ---------- S38 ---------- */
+export function S38(_: ScreenProps) {
   const s = rv.s23;
   return (
     <div className="relative h-full w-full overflow-hidden">
