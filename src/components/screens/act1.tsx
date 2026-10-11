@@ -16,123 +16,126 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
   useEffect(() => {
     if (!active || reduce || activeAtMount.current) return setN(text.length);
     setN(0);
-    const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + 2)), 20);
+    const per = Math.max(1, Math.ceil(text.length / 45));
+    const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + per)), 20);
     return () => clearInterval(id);
   }, [text, active, reduce]);
   return <>{text.slice(0, n)}</>;
 }
 
 export function S3({ step }: ScreenProps) {
-  const [pop, setPop] = useState(false);
   const s = c.s3;
-  if (step >= 5) {
-    const shown = step >= 6 ? 6 : 3;
-    const pct = 18 + ((92 - 18) * (shown - 1)) / 5;
-    return (
-      <div className="relative h-full w-full overflow-hidden p-[96px]">
-        <SrcTag items={["Fortune, Nov 2025", "Stack Overflow 2026", "GitHub, Apr 2026"]} />
-        <div className="flex gap-[24px] border-b border-line pb-[18px] font-mono text-[18px] text-muted">
-          <span className="truncate">{s.left}: {[...s.appBuilders.items, ...s.workflow.items].join(" · ")}</span>
-          <span>|</span>
-          <span className="truncate">{s.right}: {[...s.assist.items, ...s.agents.items].join(" · ")}</span>
-        </div>
-        <p className={`${H} mt-[32px] text-[64px]`}>{s.ladderHeadline}</p>
-        <div className="pointer-events-none absolute -bottom-[420px] -left-[300px] opacity-70">
-          <motion.div initial={false} animate={{ scale: pct / 100 }} transition={{ duration: 0.7, ease: EASE }}>
-            <ArcMotif count={6} radius={640} />
-          </motion.div>
-        </div>
-        <div className="mt-[36px] grid grid-cols-[1fr_780px] gap-[64px]">
-          <div className="relative flex flex-col gap-[12px]">
-            {s.rungs.map(([name, hand], i) => {
-              const last = i === 5;
-              return (
-                <Reveal key={name} on={i < shown} delay={(i % 3) * 0.12} y={10}>
-                  <button
-                    type="button"
-                    disabled={!last}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPop((p) => !p);
-                    }}
-                    className="flex items-baseline gap-[20px] text-left"
-                    style={{ marginLeft: i * 40 }}
-                  >
-                    <span className="font-mono text-[20px] text-muted">{i + 1}</span>
-                    <span className={`${H} text-[34px] ${last ? "underline decoration-own decoration-2 underline-offset-8" : ""}`}>{name}</span>
-                    <span className="text-[24px] text-muted">— {hand}</span>
-                  </button>
-                </Reveal>
-              );
-            })}
-            {pop ? (
-              <div className="absolute top-full left-[200px] mt-[16px] max-w-[640px] rounded-[16px] border border-own bg-surface p-[24px] text-[22px] text-text">
-                {s.popover}
-              </div>
-            ) : null}
-          </div>
-          <div className="flex flex-col gap-[24px]">
-            <Reveal on={step >= 7}>
-              <div className="theme-stage rounded-[20px] border border-line bg-surface p-[32px]">
-                <p className="t-tag text-muted">Then</p>
-                <p className="mt-[10px] font-mono text-[26px] text-muted">{s.then}</p>
-              </div>
-            </Reveal>
-            <Reveal on={step >= 8}>
-              <div className="theme-stage rounded-[20px] border border-own bg-surface p-[32px]">
-                <p className="t-tag text-own">Now</p>
-                <p className="mt-[10px] min-h-[180px] font-mono text-[26px] leading-[1.4] text-text">
-                  <TypeIn text={s.now} active={step === 8} />
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <p className={`${H} text-[72px]`}>{s.headline}</p>
-      <div className="mt-[48px] grid flex-1 grid-cols-[1fr_1px_1fr] gap-[56px]">
-        <div className="flex flex-col gap-[24px]">
+      <div className="mt-[56px] grid flex-1 grid-cols-[1fr_1px_1fr] gap-[64px] pb-[48px]">
+        <div className="flex flex-col gap-[28px]">
           <Eyebrow>{s.left}</Eyebrow>
           <Reveal on={step >= 1}>
             {[s.appBuilders, s.workflow].map((g) => (
-              <div key={g.label} className="mb-[22px]">
-                <p className="mb-[12px] text-[22px] text-muted">{g.label}</p>
-                <div className="flex flex-wrap gap-[12px]">
+              <div key={g.label} className="mb-[28px]">
+                <p className="mb-[14px] text-[26px] text-muted">{g.label}</p>
+                <div className="flex flex-wrap gap-[14px]">
                   {g.items.map((t) => <Chip key={t} color="var(--direct)">{t}</Chip>)}
                 </div>
               </div>
             ))}
-            <p className="text-[26px] text-text">{s.caption}</p>
+            <p className="text-[30px] leading-[1.3] text-text">{s.caption}</p>
           </Reveal>
-          <Reveal on={step >= 2} className="mt-auto flex flex-col gap-[14px]">
+          <Reveal on={step >= 2} className="mt-auto flex flex-col gap-[16px]">
             <Chip color="var(--validate)">{s.evidence1}</Chip>
-            <p className="text-[24px] text-text">{s.evidence2}</p>
-            <span className="self-start rounded-full bg-own-fill/15 px-[18px] py-[8px] font-mono text-[18px] text-own">{s.badge}</span>
+            <p className="text-[28px] text-text">{s.evidence2}</p>
+            <span className="self-start rounded-full bg-own-fill/15 px-[20px] py-[10px] font-mono text-[20px] text-own">{s.badge}</span>
           </Reveal>
         </div>
         <div className="bg-line" />
-        <div className="flex flex-col gap-[24px]">
+        <div className="flex flex-col gap-[28px]">
           <Eyebrow>{s.right}</Eyebrow>
           <Reveal on={step >= 3}>
-            <p className="mb-[12px] text-[22px] text-muted">{s.assist.label}</p>
-            <div className="flex flex-wrap gap-[12px]">
+            <p className="mb-[14px] text-[26px] text-muted">{s.assist.label}</p>
+            <div className="flex flex-wrap gap-[14px]">
               {s.assist.items.map((t) => <Chip key={t} color="var(--direct)">{t}</Chip>)}
             </div>
           </Reveal>
-          <Reveal on={step >= 4} className="mt-[24px]">
-            <p className="mb-[12px] text-[22px] text-muted">{s.agents.label}</p>
-            <div className="flex flex-wrap gap-[12px]">
+          <Reveal on={step >= 4} className="mt-[28px]">
+            <p className="mb-[14px] text-[26px] text-muted">{s.agents.label}</p>
+            <div className="flex flex-wrap gap-[14px]">
               {s.agents.items.map((t) => <Chip key={t} color="var(--own)">{t}</Chip>)}
             </div>
-            <div className="mt-[20px]"><Tag>{s.agentsTag}</Tag></div>
+            <div className="mt-[24px]"><Tag>{s.agentsTag}</Tag></div>
           </Reveal>
         </div>
       </div>
       <SrcTag items={[step >= 2 && "Fortune, Nov 2025", step >= 4 && "Stack Overflow 2026"]} />
+    </div>
+  );
+}
+
+/* ---------- S3b · The unit of delegation changed ---------- */
+export function S3b({ step }: ScreenProps) {
+  const [pop, setPop] = useState(false);
+  const s = c.s3;
+  const pct = step >= 1 ? 92 : 18;
+  return (
+    <div className="relative h-full w-full overflow-hidden p-[96px]">
+      <SrcTag items={["GitHub, Apr 2026"]} />
+      <p className={`${H} text-[72px]`}>{s.ladderHeadline}</p>
+      <div className="pointer-events-none absolute -bottom-[420px] -left-[300px] opacity-70">
+        <motion.div initial={false} animate={{ scale: pct / 100 }} transition={{ duration: 0.6, ease: EASE }}>
+          <ArcMotif count={6} radius={640} />
+        </motion.div>
+      </div>
+      <div className="relative mt-[64px] flex flex-col gap-[22px]">
+        {s.rungs.map(([name, hand], i) => {
+          const last = i === 5;
+          return (
+            <Reveal key={name} on={step >= 1} delay={i * 0.06} y={10}>
+              <button
+                type="button"
+                disabled={!last}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPop((p) => !p);
+                }}
+                className="flex items-baseline gap-[24px] text-left"
+                style={{ marginLeft: i * 72 }}
+              >
+                <span className="font-mono text-[24px] text-muted">{i + 1}</span>
+                <span className={`${H} text-[44px] ${last ? "underline decoration-own decoration-2 underline-offset-8" : ""}`}>{name}</span>
+                <span className="text-[30px] text-muted">— {hand}</span>
+              </button>
+            </Reveal>
+          );
+        })}
+        {pop ? (
+          <div className="absolute top-full left-[420px] mt-[20px] max-w-[760px] rounded-[16px] border border-own bg-surface p-[28px] text-[26px] text-text">
+            {s.popover}
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- S3c · Then / Now ---------- */
+export function S3c({ step }: ScreenProps) {
+  const s = c.s3;
+  return (
+    <div className="relative flex h-full w-full flex-col items-center justify-center gap-[40px] p-[96px]">
+      <Reveal on={step >= 1} className="w-[1400px]">
+        <div className="theme-stage rounded-[24px] border border-line bg-surface p-[44px]">
+          <p className="t-tag text-muted">Then</p>
+          <p className="mt-[14px] font-mono text-[36px] text-muted">{s.then}</p>
+        </div>
+      </Reveal>
+      <Reveal on={step >= 2} className="w-[1400px]">
+        <div className="theme-stage rounded-[24px] border border-own bg-surface p-[44px]">
+          <p className="t-tag text-own">Now</p>
+          <p className="mt-[14px] min-h-[200px] font-mono text-[36px] leading-[1.4] text-text">
+            <TypeIn text={s.now} active={step === 2} />
+          </p>
+        </div>
+      </Reveal>
     </div>
   );
 }
@@ -221,7 +224,7 @@ export function S5({ step }: ScreenProps) {
           style={{ background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--validate) 25%, transparent), transparent)" }}
           initial={false}
           animate={{ left: reduce ? "50%" : ["0%", "50%"] }}
-          transition={{ duration: reduce ? 0 : 1.6, ease: EASE }}
+          transition={{ duration: reduce ? 0 : 0.6, ease: EASE }}
         />
       </div>
       <div className="mt-[56px]">

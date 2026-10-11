@@ -80,7 +80,7 @@ export function S0(_: ScreenProps) {
 export function S1({ step }: ScreenProps) {
   const reduce = useReducedMotion();
   const lines = c.s1.terminal as { text: string; status?: TermStatus }[];
-  const visible = useTicker(lines.length, 350, step === 1, step >= 2);
+  const visible = useTicker(lines.length, 120, step === 1, step >= 2);
   const dim = step >= 3;
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -88,7 +88,7 @@ export function S1({ step }: ScreenProps) {
         className="absolute inset-0 flex gap-[64px] p-[96px]"
         initial={false}
         animate={{ opacity: dim ? 0.25 : 1 }}
-        transition={{ duration: reduce ? 0.15 : 0.8, ease: EASE }}
+        transition={{ duration: reduce ? 0.15 : 0.3, ease: EASE }}
       >
         {/* App preview */}
         <div className="flex w-[620px] shrink-0 flex-col overflow-hidden rounded-[20px] border border-line bg-surface">
@@ -123,7 +123,7 @@ export function S1({ step }: ScreenProps) {
           </div>
           <div className="mt-auto flex flex-wrap gap-[16px]">
             {c.s1.chips.map((chip, i) => (
-              <Reveal key={chip} on={step >= 2} delay={i * 0.15} y={8}>
+              <Reveal key={chip} on={step >= 2} delay={i * 0.06} y={8}>
                 <Chip color="var(--own)">✓ {chip}</Chip>
               </Reveal>
             ))}
@@ -137,7 +137,7 @@ export function S1({ step }: ScreenProps) {
         <Reveal on={dim}>
           <p className="font-display text-[96px] leading-[1] font-bold tracking-[-0.035em] text-text">{c.s1.line1}</p>
         </Reveal>
-        <Reveal on={dim} delay={1.2}>
+        <Reveal on={dim} delay={0.3}>
           <p className="mt-[32px] font-display text-[96px] leading-[1] font-bold tracking-[-0.035em] text-own">{c.s1.line2}</p>
         </Reveal>
       </div>

@@ -101,19 +101,19 @@ export function S14({ step }: ScreenProps) {
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <div className="absolute top-[96px] right-[96px] font-mono text-[28px] text-muted">{grown ? "2026" : "2022"}</div>
       <div className="absolute top-[440px] left-[640px]">
-        <motion.div className="absolute rounded-full border-[3px] border-direct" initial={false} animate={{ width: outer * 2, height: outer * 2, x: -outer, y: -outer }} transition={{ duration: 1.5, ease: EASE }} style={{ background: "color-mix(in oklab, var(--direct) 6%, transparent)" }} />
-        <motion.div className="absolute rounded-full border-[3px] border-own" initial={false} animate={{ width: inner * 2, height: inner * 2, x: -inner, y: -inner }} transition={{ duration: 1.5, ease: EASE }} style={{ background: "color-mix(in oklab, var(--own) 18%, var(--bg))" }} />
+        <motion.div className="absolute rounded-full border-[3px] border-direct" initial={false} animate={{ width: outer * 2, height: outer * 2, x: -outer, y: -outer }} transition={{ duration: 0.6, ease: EASE }} style={{ background: "color-mix(in oklab, var(--direct) 6%, transparent)" }} />
+        <motion.div className="absolute rounded-full border-[3px] border-own" initial={false} animate={{ width: inner * 2, height: inner * 2, x: -inner, y: -inner }} transition={{ duration: 0.6, ease: EASE }} style={{ background: "color-mix(in oklab, var(--own) 18%, var(--bg))" }} />
         <p className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-own">{s.judgment}<span className="block text-[16px] font-normal text-muted">{s.judgmentSub}</span></p>
-        <motion.p className="absolute -translate-x-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-direct" initial={false} animate={{ y: -outer - 70 }} transition={{ duration: 1.5, ease: EASE }}>
+        <motion.p className="absolute -translate-x-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-direct" initial={false} animate={{ y: -outer - 70 }} transition={{ duration: 0.6, ease: EASE }}>
           {s.reach}<span className="block text-[16px] font-normal text-muted">{s.reachSub}</span>
         </motion.p>
-        <Reveal on={grown} delay={0.6} className="absolute -translate-x-1/2" >
+        <Reveal on={grown} delay={0.18} className="absolute -translate-x-1/2" >
           <p className="-translate-y-[220px] whitespace-nowrap font-mono text-[20px] text-muted">{s.zone}</p>
         </Reveal>
         {s.examples.map((ex, i) => {
           const a = (-50 + i * 25) * (Math.PI / 180);
           return (
-            <Reveal key={ex} on={grown} delay={0.3 + i * 0.1} className="absolute">
+            <Reveal key={ex} on={grown} delay={0.06 + i * 0.06} className="absolute">
               <span className="block whitespace-nowrap rounded-full border border-direct bg-surface px-[16px] py-[6px] text-[20px] text-text" style={{ transform: `translate(${Math.cos(a) * 350}px, ${Math.sin(a) * 350 - 18}px)` }}>{ex}</span>
             </Reveal>
           );
@@ -136,7 +136,7 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
   useEffect(() => {
     if (!active || reduce || activeAtMount.current) return setN(text.length);
     setN(0);
-    const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + 2)), 22);
+    const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + Math.max(1, Math.ceil(text.length / 45)))), 20);
     return () => clearInterval(id);
   }, [text, active, reduce]);
   return <>{text.slice(0, n)}</>;
