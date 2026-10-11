@@ -7,7 +7,7 @@ import { Chip, Reveal, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
 
-/* ---------- S3 · Everyone can build software now ---------- */
+/** Types `text` in ~720 ms once `active` turns on. */
 function TypeIn({ text, active }: { text: string; active: boolean }) {
   const reduce = useReducedMotion();
   // Already active on mount = opened in its final state (back / print): show full text.
@@ -16,14 +16,15 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
   useEffect(() => {
     if (!active || reduce || activeAtMount.current) return setN(text.length);
     setN(0);
-    const per = Math.max(1, Math.ceil(text.length / 45));
+    const per = Math.max(1, Math.ceil(text.length / 36));
     const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + per)), 20);
     return () => clearInterval(id);
   }, [text, active, reduce]);
   return <>{text.slice(0, n)}</>;
 }
 
-export function S3({ step }: ScreenProps) {
+/* ---------- S4 · Everyone can build software now ---------- */
+export function S4({ step }: ScreenProps) {
   const s = c.s3;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -71,8 +72,8 @@ export function S3({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S3b · The unit of delegation changed ---------- */
-export function S3b({ step }: ScreenProps) {
+/* ---------- S5 · The unit of delegation changed ---------- */
+export function S5({ step }: ScreenProps) {
   const [pop, setPop] = useState(false);
   const s = c.s3;
   const pct = step >= 1 ? 92 : 18;
@@ -117,21 +118,21 @@ export function S3b({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S3c · Then / Now ---------- */
-export function S3c({ step }: ScreenProps) {
+/* ---------- S6 · Then / Now ---------- */
+export function S6({ step }: ScreenProps) {
   const s = c.s3;
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center gap-[40px] p-[96px]">
-      <Reveal on={step >= 1} className="w-[1400px]">
-        <div className="theme-stage rounded-[24px] border border-line bg-surface p-[44px]">
+      <Reveal on={step >= 1} className="w-[1500px]">
+        <div className="theme-stage rounded-[24px] border border-line bg-surface p-[48px]">
           <p className="t-tag text-muted">Then</p>
-          <p className="mt-[14px] font-mono text-[36px] text-muted">{s.then}</p>
+          <p className="mt-[16px] font-mono text-[44px] text-muted">{s.then}</p>
         </div>
       </Reveal>
-      <Reveal on={step >= 2} className="w-[1400px]">
-        <div className="theme-stage rounded-[24px] border border-own bg-surface p-[44px]">
+      <Reveal on={step >= 2} className="w-[1500px]">
+        <div className="theme-stage rounded-[24px] border border-own bg-surface p-[48px]">
           <p className="t-tag text-own">Now</p>
-          <p className="mt-[14px] min-h-[200px] font-mono text-[36px] leading-[1.4] text-text">
+          <p className="mt-[16px] min-h-[248px] font-mono text-[44px] leading-[1.4] text-text">
             <TypeIn text={s.now} active={step === 2} />
           </p>
         </div>
@@ -140,41 +141,42 @@ export function S3c({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S4 · AI is already inside the workflow ---------- */
-export function S4({ step }: ScreenProps) {
+/* ---------- S7 · AI is already inside the workflow ---------- */
+export function S7({ step }: ScreenProps) {
   const s = c.s4;
-  const idx = Math.min(step, 2);
+  const grown = step >= 1;
+  const idx = grown ? 2 : 0;
   const pts = s.points;
   const W = 760, Hh = 300;
   const xy = (i: number) => [80 + (i * (W - 160)) / 2, Hh - 30 - ((pts[i]?.value ?? 0) / 100) * (Hh - 60)] as const;
   let d = "";
-  for (let i = 0; i <= idx; i++) {
+  for (let i = 0; i < pts.length; i++) {
     const [x, y] = xy(i);
     if (i === 0) d = `M${x},${y}`;
     else d += ` H${x} V${y}`;
   }
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={["Google Q3 2024 earnings, Oct 2024", "Google Cloud Next '26, Apr 2026", step >= 4 && "Stack Overflow, Oct 2026", step >= 4 && "JetBrains, Aug 2026"]} />
+      <SrcTag items={["Google Q3 2024 earnings, Oct 2024", "Google Cloud Next '26, Apr 2026", step >= 3 && "Stack Overflow, Oct 2026", step >= 3 && "JetBrains, Aug 2026"]} />
       <div className="flex items-end gap-[80px]">
         <div>
           <StatNumber value={pts[idx]?.value ?? 0} suffix="%" color="var(--own)" label={`${s.statLabel} · ${pts[idx]?.label ?? ""}`} />
         </div>
         <svg width={W} height={Hh} aria-hidden>
-          <path d={d} fill="none" stroke="var(--own-fill)" strokeWidth={4} />
+          <motion.path d={d} fill="none" stroke="var(--own-fill)" strokeWidth={4} initial={false} animate={{ pathLength: grown ? 1 : 0 }} transition={{ duration: 0.6, ease: "linear" }} />
           {pts.map((p, i) => {
             const [x, y] = xy(i);
             return (
-              <g key={p.label} opacity={i <= idx ? 1 : 0.2}>
+              <motion.g key={p.label} initial={false} animate={{ opacity: i <= idx ? 1 : 0.2 }} transition={{ duration: 0.15, delay: grown ? i * 0.28 : 0 }}>
                 <circle cx={x} cy={y} r={9} fill="var(--own-fill)" />
                 <text x={x} y={Hh - 2} textAnchor="middle" fill="var(--muted)" fontSize={20} fontFamily="JetBrains Mono">{p.label}</text>
-              </g>
+              </motion.g>
             );
           })}
         </svg>
       </div>
       <div className="mt-[56px]">
-        <Reveal on={step >= 3}>
+        <Reveal on={step >= 2}>
           <figure className="max-w-[1500px] rounded-[20px] border border-line bg-surface p-[40px]">
             <blockquote className="text-[40px] leading-[1.25] text-text">
               “{s.quoteBefore}<span className="underline decoration-own decoration-4 underline-offset-8">{s.quoteMark}</span>{s.quoteAfter}”
@@ -185,19 +187,19 @@ export function S4({ step }: ScreenProps) {
             </figcaption>
           </figure>
         </Reveal>
-        <Reveal on={step >= 4} className="mt-[28px] flex gap-[16px]">
+        <Reveal on={step >= 3} className="mt-[28px] flex gap-[16px]">
           {s.tags.map((t) => <Chip key={t}>{t}</Chip>)}
         </Reveal>
       </div>
-      <Reveal on={step >= 5} className="mt-auto">
+      <Reveal on={step >= 4} className="mt-auto">
         <p className={`${H} text-[64px]`}>{s.last}</p>
       </Reveal>
     </div>
   );
 }
 
-/* ---------- S5 · When writing code is no longer the constraint ---------- */
-export function S5({ step }: ScreenProps) {
+/* ---------- S8 · When writing code is no longer the constraint ---------- */
+export function S8({ step }: ScreenProps) {
   const s = c.s5;
   const reduce = useReducedMotion();
   const ci = 3;
@@ -249,8 +251,8 @@ export function S5({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S6 · More code is not more engineering value ---------- */
-export function S6({ step }: ScreenProps) {
+/* ---------- S9 · More code is not more engineering value ---------- */
+export function S9({ step }: ScreenProps) {
   const s = c.s6;
   const max = 30;
   return (
@@ -278,12 +280,12 @@ export function S6({ step }: ScreenProps) {
                   <p className="absolute font-mono text-[26px] tabular-nums" style={{ color: neg ? "var(--fail)" : "var(--text)", [neg ? "top" : "bottom"]: `calc(50% + ${h + 8}px)`, opacity: step >= 1 || i < 2 ? 1 : 0 }}>
                     {b.value > 0 ? "+" : "−"}{Math.abs(b.value)}%
                   </p>
-                  <p className="absolute -bottom-[8px] text-[20px] text-muted">{b.label}</p>
+                  <p className="absolute -bottom-[32px] text-[20px] text-muted">{b.label}</p>
                 </div>
               );
             })}
           </div>
-          <p className="mt-[24px] text-[20px] text-muted">{s.metr.unit}</p>
+          <p className="mt-[48px] text-[20px] text-muted">{s.metr.unit}</p>
         </div>
         <Reveal on={step >= 1}>
           <div className="h-full rounded-[20px] border border-line bg-surface p-[40px]">

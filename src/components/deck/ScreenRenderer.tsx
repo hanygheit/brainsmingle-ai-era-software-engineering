@@ -4,10 +4,11 @@ import type { Screen } from "@/content/screens";
 import { ArcMotif, Eyebrow, Headline } from "@/components/kit";
 import { ACT_COLORS, isPaper } from "@/deck/theme";
 import { S0, S1, S2 } from "@/components/screens/opening";
-import { S3, S4, S5, S6 } from "@/components/screens/act1";
-import { S7, S8, S9, S10, S11 } from "@/components/screens/act2";
-import { S12, S13, S14, S15, S16, S17 } from "@/components/screens/act3";
-import { S18, S19, S20, S21, S22, S23 } from "@/components/screens/act5";
+import { S4, S5, S6, S7, S8, S9 } from "@/components/screens/act1";
+import { S10, S12, S13, S14, S15 } from "@/components/screens/act2";
+import { S17, S18, S19, S21, S22, S23 } from "@/components/screens/act3";
+import { S25, S26, S27, S28, S29, S30 } from "@/components/screens/act5";
+import { ActSeparator } from "@/components/screens/separators";
 
 export interface ScreenProps {
   screen: Screen;
@@ -18,12 +19,12 @@ export interface ScreenProps {
 }
 
 const REGISTRY: Partial<Record<string, ComponentType<ScreenProps>>> = {
-  S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23,
+  S0, S1, S2, S4, S5, S6, S7, S8, S9, S10, S12, S13, S14, S15, S17, S18, S19, S21, S22, S23, S25, S26, S27, S28, S29, S30,
 };
 
 /** Milliseconds at which phase k (1-based) starts. */
 export function phaseTimes(screen: Screen): number[] {
-  return Array.from({ length: screen.steps }, (_, i) => screen.timeline?.[i] ?? (i + 1) * 450);
+  return Array.from({ length: screen.steps }, (_, i) => screen.timeline?.[i] ?? (i + 1) * 60);
 }
 
 /** Plays phases 0→steps on mount when `play`; otherwise (back, print, thumbnails) shows the final state. */
@@ -56,7 +57,7 @@ export function ScreenRenderer({
 
 function Auto({ screen, choice, play }: { screen: Screen; choice: number | null; play: boolean }) {
   const step = useAutoPhase(screen, play);
-  const C = REGISTRY[screen.id] ?? PlaceholderScreen;
+  const C = screen.separator ? ActSeparator : (REGISTRY[screen.id] ?? PlaceholderScreen);
   if (!isPaper(screen.id)) return <C screen={screen} step={step} choice={choice} />;
   const act = ACT_COLORS[screen.act] ?? "var(--ink)";
   return (

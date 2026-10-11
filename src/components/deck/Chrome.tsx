@@ -13,8 +13,9 @@ import {
   X,
 } from "lucide-react";
 import { ACTS } from "@/config";
-import { screens } from "@/content/screens";
+import { screens, slideLabel } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
+import separators from "@/content/separators.json";
 import { useDeck } from "@/deck/store";
 import { DOWNLOAD_EVENT } from "@/deck/useKeyboard";
 import { useDownloadPdf } from "@/components/kit";
@@ -22,6 +23,7 @@ import { MiniStage } from "./Stage";
 import { ScreenRenderer } from "./ScreenRenderer";
 
 const actsInDeck = ACTS.filter((a) => screens.some((s) => s.act === a));
+const sepQuestion = (n: number) => separators[String(n) as keyof typeof separators]?.question;
 
 /** 3 px progress bar segmented by act. */
 export function ProgressBar() {
@@ -112,7 +114,7 @@ export function ControlBar() {
         <ChevronLeft className="h-4 w-4" />
       </Btn>
       <span className="max-w-[420px] min-w-[88px] truncate px-1 text-center font-mono text-[13px] text-muted tabular-nums">
-        {deck.index} / {deck.total} · {deck.screen.title}
+        {slideLabel(deck.index)}
       </span>
       <Btn label="Next" onClick={deck.next}>
         <ChevronRight className="h-4 w-4" />
@@ -206,30 +208,50 @@ export function OverviewGrid() {
           <X className="h-5 w-5" />
         </button>
       </div>
-      {actsInDeck.map((act) => (
-        <section key={act} className="mb-8">
-          <h3 className="mb-3 font-display text-[18px] font-bold text-text">{act}</h3>
-          <div className="flex flex-wrap gap-4">
-            {screens.map((s, i) =>
-              s.act !== act ? null : (
-                <button
-                  key={s.id}
-                  onClick={() => {
-                    deck.goto(i);
-                    deck.setOverlay(null);
-                  }}
-                  className={`overflow-hidden rounded-md border text-left ${i === deck.index ? "border-[var(--accent)]" : "border-line"}`}
-                >
-                  <MiniStage width={240}>
-                    <ScreenRenderer screen={s} choice={null} />
-                  </MiniStage>
-                  <p className="px-2 py-1 font-mono text-[12px] text-muted">{s.id}</p>
-                </button>
-              ),
+      {actsInDeck.map((act) => {
+        // Act separator slides become the section header (click to jump to them).
+        const sep = screens.findIndex((s) => s.act === act && s.separator);
+        return (
+          <section key={act} className="mb-8">
+            {sep >= 0 ? (
+              <button
+                onClick={() => {
+                  deck.goto(sep);
+                  deck.setOverlay(null);
+                }}
+                className={`mb-3 flex items-baseline gap-3 border-b-2 pb-1 text-left ${sep === deck.index ? "border-[var(--accent)]" : "border-transparent"}`}
+              >
+                <span className="font-mono text-[12px] text-muted">{sep}</span>
+                <span className="font-display text-[18px] font-bold text-text">{act}</span>
+                <span className="text-[14px] text-muted">{sepQuestion(screens[sep]!.separator!)}</span>
+              </button>
+            ) : (
+              <h3 className="mb-3 font-display text-[18px] font-bold text-text">{act}</h3>
             )}
-          </div>
-        </section>
-      ))}
+            <div className="flex flex-wrap gap-4">
+              {screens.map((s, i) =>
+                s.act !== act || s.separator ? null : (
+                  <button
+                    key={s.id}
+                    onClick={() => {
+                      deck.goto(i);
+                      deck.setOverlay(null);
+                    }}
+                    className={`overflow-hidden rounded-md border text-left ${i === deck.index ? "border-[var(--accent)]" : "border-line"}`}
+                  >
+                    <MiniStage width={240}>
+                      <ScreenRenderer screen={s} choice={null} />
+                    </MiniStage>
+                    <p className="w-[240px] truncate px-2 py-1 font-mono text-[12px] text-muted">
+                      {i} · {s.title}
+                    </p>
+                  </button>
+                ),
+              )}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }

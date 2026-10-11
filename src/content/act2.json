@@ -2,7 +2,7 @@
   "s8": {
     "headline": "AI-native ≠ fundamentals-free.",
     "columns": [
-      { "key": "KEEP", "sub": "the core", "items": ["programming", "data structures & algorithms", "databases", "networking", "operating systems", "security", "testing", "debugging", "design"], "chip": "The S7 bug was a fundamentals bug: token audience." },
+      { "key": "KEEP", "sub": "the core", "items": ["programming", "data structures & algorithms", "databases", "networking", "operating systems", "security", "testing", "debugging", "design"], "chip": "The S10 bug was a fundamentals bug: token audience." },
       { "key": "SHIFT", "sub": "the weight", "items": ["syntax → concepts", "APIs → systems", "writing → reading & evaluating", "small tasks → end-to-end problems", "one right answer → defended trade-offs", "given specs → ambiguous requirements"] },
       { "key": "ADD", "sub": "the new", "items": ["agentic workflows", "context engineering", "AI code review & validation", "AI-aware security", "specification writing"] },
       { "key": "PROVE", "sub": "the evidence", "items": ["oral defence", "live modification", "planted-bug review", "design rationale", "process logs", "AI-off checkpoints"] }

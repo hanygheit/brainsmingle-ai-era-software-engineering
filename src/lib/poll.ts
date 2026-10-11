@@ -9,7 +9,7 @@ import { CHOICE_EVENT, type ChoiceDetail } from "@/deck/useKeyboard";
 export type Counts = [number, number, number];
 const zero = (): Counts => [0, 0, 0];
 
-export const POLL_SCREEN: Record<PollId, string> = { "s2-challenge": "S2", "s7-interview": "S7" };
+export const POLL_SCREEN: Record<PollId, string> = { "s2-challenge": "S2", "s7-interview": "S10" };
 export const POLL_CONTENT: Record<PollId, { question: string; options: string[] }> = {
   "s2-challenge": opening.poll,
   "s7-interview": interview.poll,
@@ -113,7 +113,7 @@ export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } 
     sync();
     const onChoice = (e: Event) => {
       const d = (e as CustomEvent<ChoiceDetail>).detail;
-      // Keys 1/2/3 add manual votes on S2 only; on S7 they reveal the answers instead.
+      // Keys 1/2/3 add manual votes on S2 only; on S10 they reveal the answers instead.
       if (poll === "s2-challenge" && d.screenId === POLL_SCREEN[poll] && d.n <= 3) addManual(poll, d.n);
     };
     window.addEventListener(MANUAL_EVENT, sync);

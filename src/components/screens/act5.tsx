@@ -37,8 +37,8 @@ function useKey(keys: string[], fn: (k: string) => void) {
   });
 }
 
-/* ---------- S18 ---------- */
-export function S18({ step }: ScreenProps) {
+/* ---------- S25 ---------- */
+export function S25({ step }: ScreenProps) {
   const print = usePrintMode();
   const [zoom, setZoom] = useState(false);
   useKey(["z", "Z"], () => setZoom((z) => !z));
@@ -97,8 +97,8 @@ export function S18({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S19 ---------- */
-export function S19({ step }: ScreenProps) {
+/* ---------- S26 ---------- */
+export function S26({ step }: ScreenProps) {
   const layers = [...sc.layers].reverse();
   return (
     <div className="relative flex h-full w-full gap-[64px] p-[96px]">
@@ -132,8 +132,8 @@ export function S19({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S20 ---------- */
-export function S20({ step, choice }: ScreenProps) {
+/* ---------- S27 ---------- */
+export function S27({ step, choice }: ScreenProps) {
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const row = dd.rows[idx]!;
   return (
@@ -180,7 +180,7 @@ export function S20({ step, choice }: ScreenProps) {
   );
 }
 
-/* ---------- S21 ---------- */
+/* ---------- S28 ---------- */
 function FrameworkWords() {
   return (
     <div className="flex gap-[28px] font-display text-[28px] font-bold">
@@ -188,7 +188,7 @@ function FrameworkWords() {
     </div>
   );
 }
-export function S21(_: ScreenProps) {
+export function S28(_: ScreenProps) {
   const { counts, total } = usePollCounts("s2-challenge", { live: false });
   const print = usePrintMode();
   const lead = total ? counts.indexOf(Math.max(...counts)) + 1 : null;
@@ -210,8 +210,8 @@ export function S21(_: ScreenProps) {
   );
 }
 
-/* ---------- S22 ---------- */
-export function S22({ step, screen }: ScreenProps) {
+/* ---------- S29 ---------- */
+export function S29({ step, screen }: ScreenProps) {
   const s = rv.s22;
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
@@ -263,8 +263,8 @@ export function S22({ step, screen }: ScreenProps) {
   );
 }
 
-/* ---------- S23 ---------- */
-export function S23(_: ScreenProps) {
+/* ---------- S30 ---------- */
+export function S30(_: ScreenProps) {
   const s = rv.s23;
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -286,7 +286,7 @@ export function S23(_: ScreenProps) {
           ))}
         </div>
       </Reveal>
-      <Reveal on delay={0.18} className="absolute top-[650px] right-[96px] left-[96px]">
+      <Reveal on delay={0.18} className="absolute top-[622px] right-[96px] left-[96px]">
         <div className="flex justify-between border-y border-line py-[16px] text-[22px]">
           {s.band.map(([k, w, col]) => (
             <span key={k}><span className="font-display font-bold" style={{ color: COL[col!] }}>{k}</span> <span className="text-muted">{w}</span></span>

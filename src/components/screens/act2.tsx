@@ -11,8 +11,8 @@ import { Chip, Reveal, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
 
-/* ---------- S7 · Two graduates ---------- */
-export function S7({ step, choice }: ScreenProps) {
+/* ---------- S10 · Two graduates ---------- */
+export function S10({ step, choice }: ScreenProps) {
   const s = iv.s7;
   const { counts, total } = usePollCounts("s7-interview");
   const url = voteUrl("s7-interview");
@@ -91,14 +91,14 @@ export function S7({ step, choice }: ScreenProps) {
   );
 }
 
-/* ---------- S8 · AI-native is not fundamentals-free ---------- */
-export function S8({ step }: ScreenProps) {
+/* ---------- S12 · AI-native is not fundamentals-free ---------- */
+export function S12({ step }: ScreenProps) {
   const s = a2.s8;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <SrcTag items={[step >= 5 && "Thomas Dohmke, Aug 2025"]} />
       <p className={`${H} text-[72px]`}>{s.headline}</p>
-      <div className="mt-[48px] grid grid-cols-4 gap-[28px]">
+      <div className="mt-[36px] grid grid-cols-4 gap-[28px]">
         {s.columns.map((c, i) => {
           const prove = c.key === "PROVE";
           return (
@@ -115,7 +115,7 @@ export function S8({ step }: ScreenProps) {
           );
         })}
       </div>
-      <Reveal on={step >= 5} className="mt-auto">
+      <Reveal on={step >= 5} className="mt-auto pt-[24px]">
         <blockquote className="max-w-[1500px] border-l-4 border-own pl-[32px] text-[32px] leading-[1.3] text-text">
           “{s.quote}”<span className="mt-[10px] block text-[22px] text-muted">— {s.quoteBy}</span>
         </blockquote>
@@ -124,8 +124,8 @@ export function S8({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S9 · Concepts outlive tools ---------- */
-export function S9({ step }: ScreenProps) {
+/* ---------- S13 · Concepts outlive tools ---------- */
+export function S13({ step }: ScreenProps) {
   const s = a2.s9;
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
@@ -162,8 +162,8 @@ export function S9({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S10 · Learn with AI — and without it ---------- */
-export function S10({ step }: ScreenProps) {
+/* ---------- S14 · Learn with AI — and without it ---------- */
+export function S14({ step }: ScreenProps) {
   const s = a2.s10;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -207,8 +207,8 @@ export function S10({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S11 · If AI can build it, what are we assessing? ---------- */
-export function S11({ step }: ScreenProps) {
+/* ---------- S15 · If AI can build it, what are we assessing? ---------- */
+export function S15({ step }: ScreenProps) {
   const [open, setOpen] = useState<number | null>(null);
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -246,7 +246,7 @@ export function S11({ step }: ScreenProps) {
           className="absolute -top-[96px] right-[0px] w-[420px] rotate-[2deg] rounded-[8px] bg-validate-fill p-[22px] text-[24px] font-semibold text-background shadow-2xl"
           initial={false}
           animate={step >= 2 ? { opacity: 1, x: 0 } : { opacity: 0, x: 200 }}
-          transition={{ duration: 0.5, ease: EASE }}
+          transition={{ duration: 0.2, ease: EASE }}
         >
           {asm.sticky}
         </motion.div>

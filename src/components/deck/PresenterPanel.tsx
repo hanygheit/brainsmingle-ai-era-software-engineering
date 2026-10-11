@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { ACT_STARTS } from "@/deck/theme";
 import { useServerFn } from "@tanstack/react-start";
 import { ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { POLL_IDS, TARGET_TOTAL_SEC, type PollId } from "@/config";
-import { closeTotalSec, screens, talkTotalSec } from "@/content/screens";
+import { closeTotalSec, QA_INDEX, screens, slideLabel, talkTotalSec, TOTAL_SCREENS } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
 import { useDeck } from "@/deck/store";
-import { addManual, clearManual, POLL_CONTENT, usePollCounts } from "@/lib/poll";
+import { addManual, clearManual, POLL_CONTENT, POLL_SCREEN, usePollCounts } from "@/lib/poll";
 import { resetPoll } from "@/lib/presenter.functions";
 import { pdfInfo, uploadPdf } from "@/lib/export-pdf.functions";
 import { readPin, savePin } from "@/lib/presenter-pin";
@@ -27,7 +26,7 @@ export function paceColor(remaining: number) {
   return "var(--text)";
 }
 
-/** Talk timer (S1–S21 only), separate close timer (S22–S23), per-screen timer. Starts when you leave S0. */
+/** Talk timer (slides 1..Q&A), separate close timer (after Q&A), per-screen timer. Starts when you leave the lobby. */
 function useTimers(index: number) {
   const [running, setRunning] = useState(false);
   const [total, setTotal] = useState(0);
@@ -36,11 +35,8 @@ function useTimers(index: number) {
   const prevIndex = useRef(index);
   const idx = useRef(index);
   idx.current = index;
-  const hold = useRef(0);
   useEffect(() => {
     if (prevIndex.current !== index) {
-      // forward into an act start: the 1.2 s act card plays first; the slide countdown starts after it
-      hold.current = index === prevIndex.current + 1 && screens[index] && ACT_STARTS[screens[index]!.id] ? 1 : 0;
       if (prevIndex.current === 0 && index > 0) setRunning(true);
       prevIndex.current = index;
       setOnScreen(0);
@@ -50,10 +46,9 @@ function useTimers(index: number) {
     if (!running) return;
     const id = setInterval(() => {
       const i = idx.current;
-      if (i >= 1 && i <= 21) setTotal((t) => t + 1);
-      if (i >= 22) setClose((t) => t + 1);
-      if (hold.current > 0) hold.current -= 1;
-      else if (i >= 1) setOnScreen((t) => t + 1);
+      if (i >= 1 && i <= QA_INDEX) setTotal((t) => t + 1);
+      if (i > QA_INDEX) setClose((t) => t + 1);
+      if (i >= 1) setOnScreen((t) => t + 1);
     }, 1000);
     return () => clearInterval(id);
   }, [running]);
@@ -140,7 +135,7 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
   const deck = useDeck();
   const t = useTimers(deck.index);
   const nextScreen = screens[deck.index + 1];
-  const holds = deck.screen.id === "S21";
+  const holds = deck.index === QA_INDEX;
   const rawRemaining = deck.screen.durationSec - t.onScreen;
   const remaining = holds ? Math.max(0, rawRemaining) : rawRemaining;
   const untimed = deck.index === 0;
@@ -152,7 +147,7 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
         <div className="flex items-center gap-3">
           <p className="font-mono text-[13px] tracking-[0.12em] text-muted uppercase">{deck.screen.act}</p>
           <p className="ml-auto font-mono text-[14px] tabular-nums">
-            {deck.index} / {deck.total} · {deck.screen.title}
+            {slideLabel(deck.index)}
           </p>
         </div>
         {!compact ? (
@@ -163,7 +158,7 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
           </div>
         ) : null}
         <div className="min-h-0 flex-1 overflow-y-auto rounded-lg border border-line p-4 text-[22px] leading-[1.5] whitespace-pre-wrap">
-          {deck.screen.id === "S7" ? <p className="mb-3 font-mono text-[18px] text-validate">Press 1/2/3 to reveal answers</p> : null}
+          {deck.screen.id === POLL_SCREEN["s7-interview"] ? <p className="mb-3 font-mono text-[18px] text-validate">Press 1/2/3 to reveal answers</p> : null}
           <Notes text={deck.screen.notes} />
         </div>
       </div>
@@ -184,10 +179,10 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
             >
               {fmt(t.total)}
             </p>
-            <p className="font-mono text-[11px] text-muted">S1–S21 plan: {fmt(talkTotalSec())}</p>
+            <p className="font-mono text-[11px] text-muted">Slides 1–{QA_INDEX} plan: {fmt(talkTotalSec())}</p>
           </div>
           <div className="col-span-2 rounded-lg border border-line p-3">
-            <p className="font-mono text-[11px] text-muted">CLOSE / {fmt(closeTotalSec())} (S22–S23)</p>
+            <p className="font-mono text-[11px] text-muted">CLOSE / {fmt(closeTotalSec())} (slides {QA_INDEX + 1}–{TOTAL_SCREENS - 1})</p>
             <p className="font-display text-[28px] font-bold tabular-nums" style={{ color: t.close > closeTotalSec() ? "var(--fail)" : "var(--text)" }}>
               {fmt(t.close)}
             </p>
@@ -217,7 +212,7 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
                 <ScreenRenderer screen={nextScreen} choice={null} />
               </MiniStage>
               <p className="px-2 py-1 font-mono text-[12px] text-muted">
-                {nextScreen.id} · {nextScreen.act}
+                {deck.index + 1} · {nextScreen.title}
               </p>
             </div>
           ) : (

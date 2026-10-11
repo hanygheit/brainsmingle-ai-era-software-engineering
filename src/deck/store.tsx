@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { BROADCAST_CHANNEL } from "@/config";
-import { screens, TOTAL_SCREENS, type Screen } from "@/content/screens";
+import { screens, slideLabel, TOTAL_SCREENS, type Screen } from "@/content/screens";
 
 export type OverlayKey = "overview" | "sources" | "black" | "presenter";
 
@@ -159,8 +159,7 @@ export function DeckProvider({
         window.history.replaceState(window.history.state, "", url);
       }
     }
-    const s = screens[state.index]!;
-    document.title = `${s.id} · ${state.index + 1}/${TOTAL_SCREENS} — ${s.title}`;
+    document.title = slideLabel(state.index);
   }, [state, ready, syncUrl]);
 
   const next = useCallback(() => setState(stepForward), []);

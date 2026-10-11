@@ -33,8 +33,8 @@ function useToggleT(step: number) {
   return on;
 }
 
-/* ---------- S12 ---------- */
-export function S12({ step }: ScreenProps) {
+/* ---------- S17 ---------- */
+export function S17({ step }: ScreenProps) {
   const s = c.s12;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -66,8 +66,8 @@ export function S12({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S13 ---------- */
-export function S13({ step }: ScreenProps) {
+/* ---------- S18 ---------- */
+export function S18({ step }: ScreenProps) {
   const s = c.s13;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -91,8 +91,8 @@ export function S13({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S14 ---------- */
-export function S14({ step }: ScreenProps) {
+/* ---------- S19 ---------- */
+export function S19({ step }: ScreenProps) {
   const s = c.s14;
   const grown = step >= 1;
   const outer = grown ? 330 : 110;
@@ -101,8 +101,11 @@ export function S14({ step }: ScreenProps) {
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <div className="absolute top-[96px] right-[96px] font-mono text-[28px] text-muted">{grown ? "2026" : "2022"}</div>
       <div className="absolute top-[440px] left-[640px]">
-        <motion.div className="absolute rounded-full border-[3px] border-direct" initial={false} animate={{ width: outer * 2, height: outer * 2, x: -outer, y: -outer }} transition={{ duration: 0.6, ease: EASE }} style={{ background: "color-mix(in oklab, var(--direct) 6%, transparent)" }} />
-        <motion.div className="absolute rounded-full border-[3px] border-own" initial={false} animate={{ width: inner * 2, height: inner * 2, x: -inner, y: -inner }} transition={{ duration: 0.6, ease: EASE }} style={{ background: "color-mix(in oklab, var(--own) 18%, var(--bg))" }} />
+        {/* SVG circles: large rounded divs print with a flattened bottom in Chromium's PDF output */}
+        <svg className="absolute overflow-visible" width={1} height={1} aria-hidden>
+          <motion.circle cx={0} cy={0} strokeWidth={3} initial={false} animate={{ r: outer - 1.5 }} transition={{ duration: 0.6, ease: EASE }} style={{ stroke: "var(--direct)", fill: "color-mix(in oklab, var(--direct) 6%, transparent)" }} />
+          <motion.circle cx={0} cy={0} strokeWidth={3} initial={false} animate={{ r: inner - 1.5 }} transition={{ duration: 0.6, ease: EASE }} style={{ stroke: "var(--own)", fill: "color-mix(in oklab, var(--own) 18%, var(--bg))" }} />
+        </svg>
         <p className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-own">{s.judgment}<span className="block text-[16px] font-normal text-muted">{s.judgmentSub}</span></p>
         <motion.p className="absolute -translate-x-1/2 whitespace-nowrap text-center font-display text-[26px] font-bold text-direct" initial={false} animate={{ y: -outer - 70 }} transition={{ duration: 0.6, ease: EASE }}>
           {s.reach}<span className="block text-[16px] font-normal text-muted">{s.reachSub}</span>
@@ -127,7 +130,7 @@ export function S14({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S15 ---------- */
+/* ---------- S21 ---------- */
 function TypeIn({ text, active }: { text: string; active: boolean }) {
   const reduce = useReducedMotion();
   // Already active on mount = opened in its final state (back / print): show full text.
@@ -136,12 +139,12 @@ function TypeIn({ text, active }: { text: string; active: boolean }) {
   useEffect(() => {
     if (!active || reduce || activeAtMount.current) return setN(text.length);
     setN(0);
-    const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + Math.max(1, Math.ceil(text.length / 45)))), 20);
+    const id = setInterval(() => setN((v) => (v >= text.length ? (clearInterval(id), v) : v + Math.max(1, Math.ceil(text.length / 25)))), 20);
     return () => clearInterval(id);
   }, [text, active, reduce]);
   return <>{text.slice(0, n)}</>;
 }
-export function S15({ step }: ScreenProps) {
+export function S21({ step }: ScreenProps) {
   const s = c.s15;
   const flipped = useToggleT(step);
   const y2026 = (step >= 1) !== flipped;
@@ -174,8 +177,8 @@ export function S15({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S16 ---------- */
-export function S16({ step }: ScreenProps) {
+/* ---------- S22 ---------- */
+export function S22({ step }: ScreenProps) {
   const s = c.s16;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -226,8 +229,8 @@ export function S16({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S17 ---------- */
-export function S17({ choice }: ScreenProps) {
+/* ---------- S23 ---------- */
+export function S23({ choice }: ScreenProps) {
   const print = usePrintMode();
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const [sel, setSel] = useState(idx);
