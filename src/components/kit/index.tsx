@@ -107,7 +107,7 @@ export function StatNumber({
     const from = prev.current;
     prev.current = value;
     if (reduce || from === value) return setShown(value);
-    const c = animate(from, value, { duration: 0.7, ease: EASE, onUpdate: setShown, onComplete: () => setShown(value) });
+    const c = animate(from, value, { duration: 0.6, ease: EASE, onUpdate: setShown, onComplete: () => setShown(value) });
     const t = setTimeout(() => setShown(value), 1000);
     return () => {
       c.stop();
@@ -155,7 +155,7 @@ export function ArcMotif({
             strokeWidth={1.5}
             initial={reduce ? { r, opacity: 0 } : { r: r * 0.6, opacity: 0 }}
             animate={{ r, opacity: 1 }}
-            transition={reduce ? { duration: 0.15 } : { duration: 0.7, ease: EASE, delay: i * 0.06 }}
+            transition={reduce ? { duration: 0.15 } : { duration: 0.2, ease: EASE, delay: i * 0.06 }}
           />
         );
       })}
@@ -314,7 +314,7 @@ export function AudienceCards({
                     <motion.div
                       className="h-full rounded-full bg-[var(--accent-fill,var(--accent))]"
                       animate={{ width: `${pct}%` }}
-                      transition={{ duration: 0.5, ease: EASE }}
+                      transition={{ duration: 0.2, ease: EASE }}
                     />
                   </div>
                   <p className="mt-[10px] t-small font-mono text-muted tabular-nums">

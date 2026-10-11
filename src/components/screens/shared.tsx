@@ -24,7 +24,7 @@ export function Reveal({
       className={className}
       initial={false}
       animate={on ? { opacity: 1, y: 0 } : { opacity: 0, y: reduce ? 0 : y }}
-      transition={{ duration: reduce ? 0.15 : 0.5, ease: EASE, delay: on && !reduce ? delay : 0 }}
+      transition={{ duration: reduce ? 0.15 : 0.2, ease: EASE, delay: on && !reduce ? delay : 0 }}
       aria-hidden={!on}
     >
       {children}

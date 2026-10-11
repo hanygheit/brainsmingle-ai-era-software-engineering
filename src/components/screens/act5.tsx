@@ -82,7 +82,7 @@ export function S18({ step }: ScreenProps) {
               <div className={`grid grid-cols-[240px_1fr_1.6fr] items-start gap-[24px] rounded-[14px] border border-line bg-surface px-[24px] ${print ? "py-[8px]" : "py-[14px]"}`}>
                 <span className="font-display text-[26px] font-bold text-text">{name}</span>
                 <span className="text-[21px] text-muted">{before}</span>
-                <Reveal on={step >= i + 1} delay={0.3} y={0}>
+                <Reveal on={step >= i + 1} delay={0.06} y={0}>
                   <span className="text-[21px] text-text">{aft}</span>
                 </Reveal>
               </div>
@@ -109,7 +109,7 @@ export function S19({ step }: ScreenProps) {
           const out = label === "OUTCOMES";
           const act = label === "ACTIVITY";
           return (
-            <Reveal key={name} on delay={i * 0.25} y={-16}>
+            <Reveal key={name} on delay={i * 0.06} y={-16}>
               <div className="flex items-center gap-[28px] rounded-[14px] border bg-surface px-[28px] py-[22px]" style={{ borderColor: out ? "var(--own)" : "var(--line)", opacity: act ? 0.6 : 1 }}>
                 <span className="w-[260px] font-display text-[32px] font-bold" style={{ color: out ? "var(--own)" : act ? "var(--muted)" : "var(--text)" }}>{name}</span>
                 <span className="flex-1 text-[22px] text-muted">{desc}</span>
@@ -232,7 +232,7 @@ export function S22({ step, screen }: ScreenProps) {
           </div>
           <div className="flex flex-col gap-[10px]">
             {s.evidence.map(([t, col], i) => (
-              <Reveal key={t} on={step >= 1} delay={i * 0.15}>
+              <Reveal key={t} on={step >= 1} delay={i * 0.06}>
                 <div className="rounded-[12px] border-l-[6px] bg-surface px-[18px] py-[14px] text-[20px] leading-[1.3] text-text" style={{ borderColor: COL[col!] }}>{t}</div>
               </Reveal>
             ))}
@@ -270,11 +270,11 @@ export function S23(_: ScreenProps) {
     <div className="relative h-full w-full overflow-hidden">
       <div className="absolute top-[96px] left-[96px] max-w-[1700px]">
         <Reveal on><p className={`${H} text-[60px] leading-[1.15]`}>{s.l1}</p></Reveal>
-        <Reveal on delay={0.4}>
+        <Reveal on delay={0.06}>
           <p className={`${H} text-[60px] leading-[1.15]`}>{s.l2a}<span className="text-own">{s.l2b}</span>{s.l2c}</p>
         </Reveal>
       </div>
-      <Reveal on delay={0.9} className="absolute top-[330px] right-[96px] left-[96px]">
+      <Reveal on delay={0.12} className="absolute top-[330px] right-[96px] left-[96px]">
         <Eyebrow>{s.eyebrow}</Eyebrow>
         <div className="mt-[16px] grid grid-cols-3 gap-[32px]">
           {s.cards.map(([who, what], i) => (
@@ -286,18 +286,18 @@ export function S23(_: ScreenProps) {
           ))}
         </div>
       </Reveal>
-      <Reveal on delay={1.3} className="absolute top-[650px] right-[96px] left-[96px]">
+      <Reveal on delay={0.18} className="absolute top-[650px] right-[96px] left-[96px]">
         <div className="flex justify-between border-y border-line py-[16px] text-[22px]">
           {s.band.map(([k, w, col]) => (
             <span key={k}><span className="font-display font-bold" style={{ color: COL[col!] }}>{k}</span> <span className="text-muted">{w}</span></span>
           ))}
         </div>
       </Reveal>
-      <Reveal on delay={1.6} className="absolute bottom-[96px] left-[96px]">
+      <Reveal on delay={0.24} className="absolute bottom-[96px] left-[96px]">
         <SpeakerBlock compact />
         <DownloadPdfButton className="mt-[24px] rounded-full border-2 border-own px-[28px] py-[12px] text-[22px] text-own" />
       </Reveal>
-      <Reveal on delay={1.8} className="absolute right-[96px] bottom-[60px] flex gap-[40px]">
+      <Reveal on delay={0.3} className="absolute right-[96px] bottom-[60px] flex gap-[40px]">
         <QRTile url={LINKEDIN_URL} label={s.qr[0]!} image={qrLinkedin.url} size={260} />
         <QRTile url={BRAINSMINGLE_URL} label={s.qr[1]!} image={qrBrains.url} size={260} />
         <QRTile url={PRESENTATION_URL} label={s.qr[2]!} image={qrPres.url} size={260} />

@@ -37,7 +37,7 @@ export function S7({ step, choice }: ScreenProps) {
                 const pct = total ? Math.round((counts[i]! / total) * 100) : 0;
                 return (
                   <div key={o} className="relative overflow-hidden rounded-[14px] border border-line bg-surface px-[28px] py-[20px]">
-                    <motion.div className="absolute inset-y-0 left-0 bg-own-fill/15" animate={{ width: `${pct}%` }} transition={{ duration: 0.5, ease: EASE }} />
+                    <motion.div className="absolute inset-y-0 left-0 bg-own-fill/15" animate={{ width: `${pct}%` }} transition={{ duration: 0.2, ease: EASE }} />
                     <p className="relative flex justify-between gap-[24px] text-[30px] text-text">
                       <span><span className="font-display font-bold text-muted">{i + 1}</span> · {o}</span>
                       <span className="font-mono text-[22px] text-muted tabular-nums">{counts[i]} · {pct}%</span>
@@ -65,24 +65,24 @@ export function S7({ step, choice }: ScreenProps) {
           <p className="font-display text-[30px] font-bold text-own">Graduate A</p>
           <p className="mt-[10px] text-[23px] leading-[1.4] text-text">{ans.a}</p>
         </Reveal>
-        <Reveal on delay={0.3} className="rounded-[20px] border border-line bg-surface p-[28px]">
+        <Reveal on delay={0.06} className="rounded-[20px] border border-line bg-surface p-[28px]">
           <p className="font-display text-[30px] font-bold text-muted">Graduate B</p>
           <p className="mt-[10px] text-[23px] leading-[1.4] text-muted">{ans.b}</p>
         </Reveal>
       </div>
       <div className="mt-[28px] flex gap-[48px]">
-        <Reveal on delay={0.7} className="origin-top-left" >
+        <Reveal on delay={0.12} className="origin-top-left" >
           <div style={{ transform: "scale(0.86)", transformOrigin: "top left", width: 946 }}>
             <CodeDiff code={s.code} highlightLines={[8]} title="Program.cs" />
           </div>
         </Reveal>
         <div className="flex flex-1 flex-col gap-[20px]">
           {s.lines.map((l, i) => (
-            <Reveal key={l} on delay={1.1 + i * 0.3}>
+            <Reveal key={l} on delay={0.18 + i * 0.06}>
               <p className={`${H} text-[36px] leading-[1.15] ${i === 2 ? "!text-own" : ""}`}>{l}</p>
             </Reveal>
           ))}
-          <Reveal on delay={2.1} className="mt-[8px] flex flex-col gap-[8px]">
+          <Reveal on delay={0.42} className="mt-[8px] flex flex-col gap-[8px]">
             {s.tags.map((t) => <Tag key={t}>{t}</Tag>)}
           </Reveal>
         </div>
@@ -177,7 +177,7 @@ export function S10({ step }: ScreenProps) {
               <div key={b.label}>
                 <div className="mb-[8px] flex justify-between text-[28px]"><span className="text-text">{b.label}</span><span className="font-mono tabular-nums" style={{ color: i ? "var(--own)" : "var(--text)" }}>{b.value}%</span></div>
                 <div className="h-[22px] rounded-full bg-line">
-                  <motion.div className="h-full rounded-full" style={{ background: i ? "var(--own-fill)" : "var(--direct-fill)" }} initial={{ width: 0 }} animate={{ width: `${b.value}%` }} transition={{ duration: 0.7, ease: EASE }} />
+                  <motion.div className="h-full rounded-full" style={{ background: i ? "var(--own-fill)" : "var(--direct-fill)" }} initial={{ width: 0 }} animate={{ width: `${b.value}%` }} transition={{ duration: 0.2, ease: EASE }} />
                 </div>
               </div>
             ))}
