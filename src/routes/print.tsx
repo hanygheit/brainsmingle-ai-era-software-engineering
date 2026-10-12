@@ -90,7 +90,7 @@ function PrintRoute() {
         <div className="print-page theme-paper bg-bg font-sans text-text flex flex-col justify-center px-[160px]">
           <p className="t-tag text-muted">Resources</p>
           <h1 className="mt-[24px] t-display-l">{BLUEPRINT_TITLE}</h1>
-          <p className="mt-[24px] t-body text-muted">{SPEAKER.name} · {SPEAKER.roles.join(" · ")}</p>
+          <p className="mt-[24px] t-body text-muted">{SPEAKER.name} · {SPEAKER.role}</p>
         </div>
         <div className="theme-paper bg-bg font-sans text-text">
           <div className="print-bp px-[64px]">

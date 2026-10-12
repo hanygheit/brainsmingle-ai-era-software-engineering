@@ -50,7 +50,7 @@ function Blueprint() {
         </div>
         <p className="mt-6 max-w-3xl text-[18px] text-muted sm:text-[20px]">{DESC}</p>
         <p className="mt-4 text-[15px] text-text">
-          {SPEAKER.name} · {SPEAKER.roles.join(" · ")}
+          {SPEAKER.name} · {SPEAKER.role}
         </p>
         <div className="bp-noprint mt-6">
           <DownloadPdfButton />

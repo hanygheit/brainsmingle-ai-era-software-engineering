@@ -1,0 +1,30 @@
+{
+  "title": "Thank you for joining!",
+  "talk": "AI-Era Software Engineering: From Graduate Readiness to Talent Development",
+  "byline": "BrainsMingle AI Summit 2026 · Hany Saad",
+  "feedback": {
+    "title": "Share your feedback — 60 seconds",
+    "sub": "What worked, what to change. I read every response."
+  },
+  "present": {
+    "title": "Open the presentation",
+    "sub": "All slides, with every source"
+  },
+  "pdf": {
+    "title": "Download the PDF",
+    "sub": "Slides plus the full Blueprint",
+    "busy": "Preparing the PDF…"
+  },
+  "code": {
+    "title": "Get the code on GitHub",
+    "sub": "The source of this presentation"
+  },
+  "connect": {
+    "title": "Connect",
+    "linkedin": "LinkedIn",
+    "brainsmingle": "BrainsMingle"
+  },
+  "locked": "Opens at 21:00 Cairo",
+  "lockedIn": "in",
+  "scan": "Scan"
+}

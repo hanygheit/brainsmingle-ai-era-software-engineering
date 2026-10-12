@@ -84,17 +84,17 @@ export function Pill({ children, size = "stage" }: { children: ReactNode; size?:
   );
 }
 
-export function SpeakerBlock({ compact = false }: { compact?: boolean }) {
+/** Monogram, name and role; `bio` adds short muted lines under them (lobby). */
+export function SpeakerBlock({ compact = false, bio }: { compact?: boolean; bio?: readonly string[] }) {
   return (
-    <div className="flex items-center gap-[24px]">
+    <div className={`flex gap-[24px] ${bio ? "items-start" : "items-center"}`}>
       <img src={monogram.url} alt={SPEAKER.monogram} className={compact ? "h-[64px] w-[64px]" : "h-[96px] w-[96px]"} />
       <div>
         <p className={`font-display font-bold text-text ${compact ? "text-[28px]" : "text-[36px]"}`}>{SPEAKER.name}</p>
-        {SPEAKER.roles.map((r) => (
-          <p key={r} className={`text-muted ${compact ? "text-[18px]" : "text-[22px]"}`}>
-            {r}
-          </p>
-        ))}
+        <p className={`text-muted ${compact ? "text-[18px]" : "text-[22px]"}`}>{SPEAKER.role}</p>
+        {bio ? (
+          <p className="mt-[10px] max-w-[740px] text-[18px] leading-[1.45] text-muted">{bio.join(" ")}</p>
+        ) : null}
       </div>
     </div>
   );

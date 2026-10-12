@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { MessageCircleQuestionMark } from "lucide-react";
 import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useState } from "react";
-import { DownloadPdfButton, EASE, Eyebrow, QRTile } from "@/components/kit";
+import { EASE, Eyebrow, QRTile } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
-import { BRAINSMINGLE_URL, FEEDBACK_URL, LINKEDIN_URL, PRESENTATION_URL } from "@/config";
+import { HUB_LINK_TEXT, HUB_URL } from "@/config";
 import { stopColors } from "@/deck/theme";
 import tl from "@/content/talentLevers.json";
 import sc from "@/content/scorecard.json";
@@ -11,9 +12,6 @@ import dd from "@/content/ddvo.json";
 import rv from "@/content/review.json";
 import { usePollState } from "@/lib/poll";
 import { VoteBars } from "./live-vote";
-import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
-import qrBrains from "@/assets/qr-brainsmingle-hanysaad.svg.asset.json";
-import qrPres from "@/assets/qr-presentation-ai-era-software-engineering.svg.asset.json";
 import { ColdOpen } from "./opening";
 import { Chip, Reveal, SpeakerBlock, SrcTag, Tag } from "./shared";
 
@@ -240,12 +238,7 @@ export function S49(_: ScreenProps) {
       </div>
       <div className="absolute right-[96px] bottom-[60px] left-[96px] flex items-end justify-between">
         <FrameworkWords />
-        <div className="flex gap-[44px]">
-          <QRTile url={LINKEDIN_URL} label={rv.s21.qr[0]!} image={qrLinkedin.url} size={180} />
-          <QRTile url={BRAINSMINGLE_URL} label={rv.s21.qr[1]!} image={qrBrains.url} size={180} />
-          <QRTile url={PRESENTATION_URL} label={rv.s21.qr[2]!} image={qrPres.url} size={180} />
-          <QRTile url={FEEDBACK_URL} label={rv.s21.qr[3]!} size={180} />
-        </div>
+        <HubQR size={200} row />
       </div>
     </div>
   );
@@ -295,37 +288,74 @@ export function S50({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S51 ---------- */
+/** The one QR code at the end: the audience hub (/thanks) — feedback, slides, PDF, code. */
+function HubQR({ size, row = false }: { size: 300 | 200; row?: boolean }) {
+  const [host, ...rest] = HUB_LINK_TEXT.split(".");
+  const [what, where] = rv.hub.split(" — ");
+  const text = (
+    <div className={row ? "w-[460px] text-right" : "mt-[20px]"}>
+      <p className="text-[22px] leading-[1.3] font-semibold text-text">
+        {what} —<br />
+        {where}
+      </p>
+      <p className="mt-[8px] font-mono text-[18px] leading-[1.4] text-muted">
+        <span className="whitespace-nowrap">{host}</span>
+        <wbr />
+        <span className="whitespace-nowrap">.{rest.join(".")}</span>
+      </p>
+    </div>
+  );
+  return row ? (
+    <div className="flex items-center gap-[28px]">
+      {text}
+      <QRTile url={HUB_URL} size={size} />
+    </div>
+  ) : (
+    <div className="flex w-[460px] flex-col items-center text-center">
+      <QRTile url={HUB_URL} size={size} />
+      {text}
+    </div>
+  );
+}
+
+/* ---------- S51 · The final line (holds during Q&A) ---------- */
 export function S51(_: ScreenProps) {
   const s = rv.s23;
   return (
     <div className="relative h-full w-full overflow-hidden">
-      <div className="absolute top-[96px] left-[96px] max-w-[1700px]">
-        <Reveal on><p className={`${H} text-[60px] leading-[1.15]`}>{s.l1}</p></Reveal>
+      <div className="absolute top-[88px] right-[96px] left-[96px]">
+        <Reveal on><p className={`${H} text-[68px] leading-[1.12]`}>{s.l1}</p></Reveal>
         <Reveal on delay={0.06}>
-          <p className={`${H} text-[60px] leading-[1.15]`}>{s.l2a}<span className="text-gradient-signature">{s.l2b}</span>{s.l2c}</p>
+          <p className={`${H} text-[68px] leading-[1.12]`}>{s.l2a}<span className="text-gradient-signature">{s.l2b}</span>{s.l2c}</p>
         </Reveal>
       </div>
-      <Reveal on delay={0.12} className="absolute top-[330px] right-[96px] left-[96px]">
-        <Eyebrow>{s.eyebrow}</Eyebrow>
-        <p className="mt-[20px] font-display text-[68px] leading-[1.1] font-bold tracking-[-0.035em] text-own">{s.prompt}</p>
-      </Reveal>
-      <Reveal on delay={0.18} className="absolute top-[622px] right-[96px] left-[96px]">
-        <div className="flex justify-between border-y border-line py-[16px] text-[22px]">
-          {s.band.map(([k, w, col]) => (
-            <span key={k}><span className="font-display font-bold" style={{ color: COL[col!] }}>{k}</span> <span className="text-muted">{w}</span></span>
-          ))}
-        </div>
-      </Reveal>
-      <Reveal on delay={0.24} className="absolute bottom-[96px] left-[96px]">
+      <div className="absolute top-[330px] left-[96px] w-[1176px]">
+        <Reveal on delay={0.12}>
+          <Eyebrow>{s.eyebrow}</Eyebrow>
+          <p className="mt-[14px] font-display text-[48px] leading-[1.12] font-bold tracking-[-0.03em] text-own">{s.prompt}</p>
+        </Reveal>
+        <Reveal on delay={0.18} className="mt-[48px]">
+          <div className="grid grid-cols-4 gap-[24px] border-y border-line py-[18px]">
+            {s.band.map(([k, w, col]) => (
+              <p key={k} className="leading-[1.3]">
+                <span className="block font-display text-[26px] font-bold" style={{ color: COL[col!] }}>{k}</span>
+                <span className="block text-[20px] text-muted">{w}</span>
+              </p>
+            ))}
+          </div>
+        </Reveal>
+        <Reveal on delay={0.24} className="mt-[48px]">
+          <p className="flex items-center gap-[20px] rounded-[20px] border-2 border-own bg-surface px-[32px] py-[20px] font-display text-[36px] leading-[1.15] font-bold tracking-[-0.02em] text-text">
+            <MessageCircleQuestionMark size={40} strokeWidth={2} className="shrink-0 text-own" aria-hidden />
+            {s.qa}
+          </p>
+        </Reveal>
+      </div>
+      <Reveal on delay={0.24} className="absolute bottom-[88px] left-[96px]">
         <SpeakerBlock compact />
-        <DownloadPdfButton className="mt-[24px] rounded-full border-2 border-own px-[28px] py-[12px] text-[22px] text-own" />
       </Reveal>
-      <Reveal on delay={0.3} className="absolute right-[96px] bottom-[60px] flex gap-[56px]">
-        <QRTile url={LINKEDIN_URL} label={s.qr[0]!} image={qrLinkedin.url} size={220} />
-        <QRTile url={BRAINSMINGLE_URL} label={s.qr[1]!} image={qrBrains.url} size={220} />
-        <QRTile url={PRESENTATION_URL} label={s.qr[2]!} image={qrPres.url} size={220} />
-        <QRTile url={FEEDBACK_URL} label={s.qr[3]!} size={220} />
+      <Reveal on delay={0.3} className="absolute top-[330px] right-[96px]">
+        <HubQR size={300} />
       </Reveal>
     </div>
   );

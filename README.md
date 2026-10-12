@@ -62,13 +62,24 @@ Until `DECK_UNLOCK_AT` in `src/config.ts` (2026-10-12T18:00:00Z = 21:00 Cairo), 
 - After the unlock time everything is open to everyone with no PIN. `/results` stays PIN-protected.
 - Tests: `scripts/test-gate.mjs` (Playwright) — run it against a dev server started with `DECK_UNLOCK_AT_OVERRIDE` (and `DEV_PRESENTER_PIN` for the PIN steps); both work in local dev only.
 
+## Audience hub (`/thanks`)
+
+`HUB_URL` (`/thanks`) is the one QR code on slide 49 (200 px) and the final slide (300 px): "Feedback · slides · PDF · code — all in one place". It is always open (outside the time gate), mobile-first, navy:
+
+- **Share your feedback — 60 seconds** → `/feedback` (first and largest).
+- **Open the presentation** → `/present/0` and **Download the PDF** (the stored PDF). Before `DECK_UNLOCK_AT` both are disabled with "Opens at 21:00 Cairo" and a countdown; afterwards they work.
+- **Get the code on GitHub** → `REPO_URL`; **Connect** → LinkedIn and BrainsMingle.
+- On screens ≥ 900 px a small QR code sits beside each link (for laptop viewers); phones get buttons only.
+
+Text lives in `src/content/thanks.json`; URLs in `src/config.ts`.
+
 ## Live polls, feedback and results
 
 No database migration is needed: everything uses the existing `poll_votes` table and the private `exports` storage bucket.
 
 - **Polls** — slide 2 "Who's in the room?" (`s2-challenge`, four options: learning / building / teaching / leading) (the only live poll; the old slide-12 `s7-interview` poll is retired, its `poll_votes` rows left as they are). Phones open the QR link (`/vote?poll=…`; slide 2 prints the full URL under its QR).
   - `s2-challenge` needs option 4, which the table's check constraint rejects (schema changes only apply via Lovable), so its votes go through server functions (`src/lib/votes.functions.ts`) into the bucket: one file per voter, `votes/s2-challenge/<voter_id>.<option>.json`, replaced when the voter changes their answer, option validated 1–4 on the server, rejected while the poll is closed. The tally is a folder listing (newest file per voter wins); slide 2, slide 47, the presenter console, `/vote` and `/results` read it every 2 s. `STORED_POLLS` in `src/config.ts` lists the bucket-stored polls.
-  - Keys 1–4 on slide 2 add chat votes by hand. Slide 49 (Q&A) shows the slide-2 audience mix.
+  - Keys 1–4 on slide 2 add chat votes by hand. Slide 49 shows the slide-2 audience mix ("Hold your questions — Q&A right after the close"); Q&A happens on the final slide, which holds while the presenter window counts down Q&A 10:00.
 - **Bare `/vote`** opens whichever poll is open (the most recently opened), or shows "No poll is open right now".
 - **Presenter window → Polls**: `OPEN · close` / `CLOSED · open` per poll. A closed poll's vote page says "Voting closed — watch the screen". The state is stored as `state/polls.json` in the bucket and needs the PIN. Both polls are open until you close one. **RESET** deletes a poll's votes (PIN, with a confirmation): the `poll_votes` rows and, for `s2-challenge`, its bucket files. Reset both polls before the talk.
 - **`/feedback`** — a one-minute form (rating, most valuable part, one change, comments, optional contact). A server function validates each response and stores it as `feedback/<device-id>.json` in the private bucket: one per device. Nothing is readable anonymously.

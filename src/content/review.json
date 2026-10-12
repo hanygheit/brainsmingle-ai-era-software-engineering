@@ -1,14 +1,9 @@
 {
+  "hub": "Feedback · slides · PDF · code — all in one place",
   "s21": {
     "headline": "Where should we raise the engineering bar first?",
     "mix": "Who's in the room",
-    "line": "Let's take your questions — and I'll answer for each of you.",
-    "qr": [
-      "LinkedIn",
-      "BrainsMingle",
-      "This presentation + PDF",
-      "Session feedback"
-    ]
+    "line": "Hold your questions — Q&A right after the close."
   },
   "s22": {
     "q": "The code is ready. Are we?",
@@ -54,11 +49,6 @@
         "own"
       ]
     ],
-    "qr": [
-      "Connect on LinkedIn",
-      "Follow on BrainsMingle",
-      "Presentation + PDF",
-      "Session feedback"
-    ]
+    "qa": "Q&A · next 10 minutes — ask in the chat"
   }
 }

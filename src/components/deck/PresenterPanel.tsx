@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
-import { POLL_IDS, TARGET_TOTAL_SEC, type PollId } from "@/config";
-import { closeTotalSec, QA_INDEX, screens, slideLabel, talkTotalSec, TOTAL_SCREENS } from "@/content/screens";
+import { POLL_IDS, QA_SEC, TARGET_TOTAL_SEC, type PollId } from "@/config";
+import { CLOSE_INDEX, closeTotalSec, QA_INDEX, screens, slideLabel, talkTotalSec, TOTAL_SCREENS } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
 import { useDeck } from "@/deck/store";
 import { addManual, clearManual, POLL_CONTENT, usePollCounts, usePollState } from "@/lib/poll";
@@ -27,19 +27,26 @@ export function paceColor(remaining: number) {
   return "var(--text)";
 }
 
-/** Talk timer (slides 1..Q&A), separate close timer (after Q&A), per-screen timer. Starts when you leave the lobby. */
+/**
+ * Talk timer (slides 1..CLOSE_INDEX − 1), close timer (the closing slides), per-screen timer, and the
+ * Q&A timer: once the final slide's own time is up, its seconds count as Q&A instead of close.
+ * Starts when you leave the lobby.
+ */
 function useTimers(index: number) {
   const [running, setRunning] = useState(false);
   const [total, setTotal] = useState(0);
   const [close, setClose] = useState(0);
+  const [qa, setQa] = useState(0);
   const [onScreen, setOnScreen] = useState(0);
   const prevIndex = useRef(index);
   const idx = useRef(index);
+  const onScreenRef = useRef(0);
   idx.current = index;
   useEffect(() => {
     if (prevIndex.current !== index) {
       if (prevIndex.current === 0 && index > 0) setRunning(true);
       prevIndex.current = index;
+      onScreenRef.current = 0;
       setOnScreen(0);
     }
   }, [index]);
@@ -47,9 +54,13 @@ function useTimers(index: number) {
     if (!running) return;
     const id = setInterval(() => {
       const i = idx.current;
-      if (i >= 1 && i <= QA_INDEX) setTotal((t) => t + 1);
-      if (i > QA_INDEX) setClose((t) => t + 1);
-      if (i >= 1) setOnScreen((t) => t + 1);
+      if (i < 1) return;
+      const inQa = i === QA_INDEX && onScreenRef.current >= screens[i]!.durationSec;
+      if (i < CLOSE_INDEX) setTotal((t) => t + 1);
+      else if (inQa) setQa((t) => t + 1);
+      else setClose((t) => t + 1);
+      onScreenRef.current += 1;
+      setOnScreen(onScreenRef.current);
     }, 1000);
     return () => clearInterval(id);
   }, [running]);
@@ -57,12 +68,15 @@ function useTimers(index: number) {
     running,
     total,
     close,
+    qa,
     onScreen,
     toggle: () => setRunning((r) => !r),
     reset: () => {
       setRunning(false);
       setTotal(0);
       setClose(0);
+      setQa(0);
+      onScreenRef.current = 0;
       setOnScreen(0);
     },
   };
@@ -176,9 +190,12 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
   const deck = useDeck();
   const t = useTimers(deck.index);
   const nextScreen = screens[deck.index + 1];
+  // The final slide holds for Q&A: its countdown stops at 0 (no red), then the Q&A countdown runs.
   const holds = deck.index === QA_INDEX;
   const rawRemaining = deck.screen.durationSec - t.onScreen;
   const remaining = holds ? Math.max(0, rawRemaining) : rawRemaining;
+  const qaShown = t.qa > 0 || (holds && rawRemaining <= 0);
+  const qaLeft = Math.max(0, QA_SEC - t.qa);
   const untimed = deck.index === 0;
   const srcs = sourcesFor(deck.screen.id);
 
@@ -219,14 +236,22 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
             >
               {fmt(t.total)}
             </p>
-            <p className="font-mono text-[11px] text-muted">Slides 1–{QA_INDEX} plan: {fmt(talkTotalSec())}</p>
+            <p className="font-mono text-[11px] text-muted">Slides 1–{CLOSE_INDEX - 1} plan: {fmt(talkTotalSec())}</p>
           </div>
-          <div className="col-span-2 rounded-xl border border-line bg-surface/70 p-3">
-            <p className="font-mono text-[11px] text-muted">CLOSE / {fmt(closeTotalSec())} (slides {QA_INDEX + 1}–{TOTAL_SCREENS - 1})</p>
+          <div className={`rounded-xl border border-line bg-surface/70 p-3 ${qaShown ? "" : "col-span-2"}`}>
+            <p className="font-mono text-[11px] text-muted">CLOSE / {fmt(closeTotalSec())} (slides {CLOSE_INDEX}–{TOTAL_SCREENS - 1})</p>
             <p className="font-display text-[28px] font-bold tabular-nums" style={{ color: t.close > closeTotalSec() ? "var(--fail)" : "var(--text)" }}>
               {fmt(t.close)}
             </p>
           </div>
+          {qaShown ? (
+            <div className="rounded-xl border border-[var(--own)] bg-surface/70 p-3">
+              <p className="font-mono text-[11px] text-muted">Q&amp;A {fmt(QA_SEC)}</p>
+              <p className="font-display text-[28px] font-bold tabular-nums" style={{ color: qaLeft === 0 ? "var(--validate)" : "var(--text)" }}>
+                {fmt(qaLeft)}
+              </p>
+            </div>
+          ) : null}
         </div>
         <div className="flex gap-2">
           <button onClick={t.toggle} className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] py-2 font-mono text-[13px]">

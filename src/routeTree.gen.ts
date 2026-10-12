@@ -16,6 +16,7 @@ import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as PresenterRouteImport } from './routes/presenter'
 import { Route as PrintRouteImport } from './routes/print'
 import { Route as ResultsRouteImport } from './routes/results'
+import { Route as ThanksRouteImport } from './routes/thanks'
 import { Route as VoteRouteImport } from './routes/vote'
 import { Route as PresentNRouteImport } from './routes/present.$n'
 
@@ -54,6 +55,11 @@ const ResultsRoute = ResultsRouteImport.update({
   path: '/results',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ThanksRoute = ThanksRouteImport.update({
+  id: '/thanks',
+  path: '/thanks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VoteRoute = VoteRouteImport.update({
   id: '/vote',
   path: '/vote',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/results': typeof ResultsRoute
+  '/thanks': typeof ThanksRoute
   '/vote': typeof VoteRoute
   '/present/$n': typeof PresentNRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/results': typeof ResultsRoute
+  '/thanks': typeof ThanksRoute
   '/vote': typeof VoteRoute
   '/present/$n': typeof PresentNRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
   '/results': typeof ResultsRoute
+  '/thanks': typeof ThanksRoute
   '/vote': typeof VoteRoute
   '/present/$n': typeof PresentNRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/presenter'
     | '/print'
     | '/results'
+    | '/thanks'
     | '/vote'
     | '/present/$n'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/presenter'
     | '/print'
     | '/results'
+    | '/thanks'
     | '/vote'
     | '/present/$n'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/presenter'
     | '/print'
     | '/results'
+    | '/thanks'
     | '/vote'
     | '/present/$n'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   PresenterRoute: typeof PresenterRoute
   PrintRoute: typeof PrintRoute
   ResultsRoute: typeof ResultsRoute
+  ThanksRoute: typeof ThanksRoute
   VoteRoute: typeof VoteRoute
   PresentNRoute: typeof PresentNRoute
 }
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResultsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/thanks': {
+      id: '/thanks'
+      path: '/thanks'
+      fullPath: '/thanks'
+      preLoaderRoute: typeof ThanksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vote': {
       id: '/vote'
       path: '/vote'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   PresenterRoute: PresenterRoute,
   PrintRoute: PrintRoute,
   ResultsRoute: ResultsRoute,
+  ThanksRoute: ThanksRoute,
   VoteRoute: VoteRoute,
   PresentNRoute: PresentNRoute,
 }

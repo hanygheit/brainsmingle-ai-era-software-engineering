@@ -126,7 +126,7 @@ export function S0(_: ScreenProps) {
         <Journey />
       </div>
       <div className="absolute bottom-[72px] left-[96px]">
-        <SpeakerBlock />
+        <SpeakerBlock bio={c.s0.bio} />
       </div>
       <div className="absolute right-[96px] bottom-[60px] flex gap-[32px]">
         <QRTile url={LINKEDIN_URL} label={c.s0.linkedin} image={qrLinkedin.url} size={180} />

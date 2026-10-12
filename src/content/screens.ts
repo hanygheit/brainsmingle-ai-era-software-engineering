@@ -79,19 +79,21 @@ export const screens: Screen[] = [
   sep("S46", 7, "Act 7 · Customers & clients"),
   { id: "S47", act: "Act 7 · Customers & clients", title: "Faster — not free, and not instant", durationSec: 50, steps: 2, timeline: [60, 240], notes: "A word for customers and clients. Yes, you can build simple apps yourself now. And yes, teams using agents can deliver faster and cheaper. But production software is still engineering: security, integration, data, scale, support. **AI makes software faster — not free, and not instant.** Ask your vendor how they use AI, and how they verify it.", sourceIds: [] },
   { id: "S48", act: "Synthesis", title: "The new engineering contract", durationSec: 65, steps: 1, timeline: [60], notes: "A responsibility framework, not a sequence. Engineer of record. Keys 1–6 change stage. Teach · Prepare · Develop · Enable. Keep it to one minute.", sourceIds: [] },
-  { id: "S49", act: "Q&A", title: "Where should we raise the engineering bar first?", durationSec: 60, steps: 0, timeline: [], notes: 'The room, from the opening poll: "[W]% of you are learning, [X]% building, [Y]% teaching, [Z]% leading." **"Let\'s take your questions — and I\'ll answer for each of you."** Where should we raise the bar first? Take questions; frame each answer for the asker\'s role. Point at the feedback QR: under a minute.', sourceIds: [] },
+  { id: "S49", act: "Q&A", title: "Where should we raise the engineering bar first?", durationSec: 60, steps: 0, timeline: [], notes: 'The room, from the opening poll: "[W]% of you are learning, [X]% building, [Y]% teaching, [Z]% leading." **"Hold your questions — Q&A right after the close."** Where should we raise the bar first? One minute, then move on; in Q&A, frame each answer for the asker\'s role. The QR opens the hub: feedback, slides, PDF, code.', sourceIds: [] },
   { id: "S50", act: "Closing", title: "The code is ready. Are we? Yes — we can be.", durationSec: 90, steps: 3, timeline: [60, 120, 180], notes: 'Back to the cold open. "The code is ready. Are we?" **"Yes — we can be."** One line per role. **"AI can write the code. Engineers still own the outcome."**', sourceIds: [] },
-  { id: "S51", act: "Closing", title: "The final line", durationSec: 30, steps: 0, timeline: [], notes: '**"AI is changing how we build software. We must change how we develop software engineers."** Then: "The four QR codes take you to my LinkedIn, my BrainsMingle profile, this presentation with the PDF — and a one-minute feedback form. I read every response."', sourceIds: [] },
+  { id: "S51", act: "Closing", title: "The final line", durationSec: 30, steps: 0, timeline: [], notes: '**"AI is changing how we build software. We must change how we develop software engineers."** Then: "One QR code: feedback, the slides, the PDF and the code — all in one place. The feedback takes a minute; I read every response." Then open Q&A: the next 10 minutes, questions in the chat. This slide holds; the presenter window counts down Q&A.', sourceIds: [] },
 ];
 
 export const TOTAL_SCREENS = screens.length;
 
-/** The Q&A slide: the talk timer covers slides 1..QA_INDEX; its countdown stops at 0. */
-export const QA_INDEX = screens.findIndex((s) => s.act === "Q&A");
+/** First slide of the close (act "Closing"). The talk timer covers slides 1..CLOSE_INDEX − 1. */
+export const CLOSE_INDEX = screens.findIndex((s) => s.act === "Closing");
+/** The final slide holds during Q&A: its countdown stops at 0, then the presenter window counts down QA_SEC. */
+export const QA_INDEX = screens.length - 1;
 
-/** Timed talk = slides 1..Q&A (slide 0 is the lobby); the slides after Q&A are the separate close. */
-export const TALK_SCREENS = screens.slice(1, QA_INDEX + 1);
-export const CLOSE_SCREENS = screens.slice(QA_INDEX + 1);
+/** Timed talk = slides 1..CLOSE_INDEX − 1 (slide 0 is the lobby); the close is timed separately. */
+export const TALK_SCREENS = screens.slice(1, CLOSE_INDEX);
+export const CLOSE_SCREENS = screens.slice(CLOSE_INDEX);
 export const talkTotalSec = () => TALK_SCREENS.reduce((a, s) => a + s.durationSec, 0);
 export const closeTotalSec = () => CLOSE_SCREENS.reduce((a, s) => a + s.durationSec, 0);
 

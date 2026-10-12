@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TARGET_TOTAL_SEC } from "@/config";
-import { closeTotalSec, QA_INDEX, screens, slideLabel, talkTotalSec } from "@/content/screens";
+import { CLOSE_INDEX, closeTotalSec, QA_INDEX, screens, slideLabel, talkTotalSec } from "@/content/screens";
 import { sources } from "@/content/sources";
 import { normalizeState, stepBack, stepForward, type DeckState } from "./store";
 import { paceColor } from "@/components/deck/PresenterPanel";
@@ -41,8 +41,9 @@ describe("deck engine", () => {
     for (const sc of screens.slice(2)) expect(Math.max(0, ...(sc.timeline ?? []))).toBeLessThanOrEqual(600);
     expect(Math.max(...screens[1]!.timeline!)).toBeLessThanOrEqual(2500);
   });
-  it("slides 1–49 add up to exactly 41:30; close 50–51 is 2:00; slide 0 untimed", () => {
-    expect(QA_INDEX).toBe(49);
+  it("slides 1–49 add up to exactly 41:30; close 50–51 is 2:00; slide 0 untimed; the final slide holds for Q&A", () => {
+    expect(CLOSE_INDEX).toBe(50);
+    expect(QA_INDEX).toBe(51);
     expect(TARGET_TOTAL_SEC).toBe(2490);
     expect(talkTotalSec()).toBe(2490);
     expect(closeTotalSec()).toBe(120);

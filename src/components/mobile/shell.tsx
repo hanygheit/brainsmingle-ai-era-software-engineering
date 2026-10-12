@@ -2,12 +2,12 @@ import type { ReactNode } from "react";
 import { EVENT, SPEAKER } from "@/config";
 import opening from "@/content/opening.json";
 
-/** Light page shell for the phone pages (/vote, /feedback, /results): navy stage theme, no images, no animation library. */
-export function MobileShell({ children, wide = false }: { children: ReactNode; wide?: boolean }) {
+/** Light page shell for the phone pages (/vote, /feedback, /results, /thanks): navy stage theme, no images, no animation library. */
+export function MobileShell({ children, wide = false, maxW }: { children: ReactNode; wide?: boolean; maxW?: string }) {
   return (
     <main className="deck-room relative min-h-dvh overflow-x-hidden px-4 pt-5 pb-10 font-sans text-text sm:px-6" style={{ ["--ambient" as string]: "#5EE6AA" }}>
       <div className="room-backdrop" aria-hidden />
-      <div className={`relative mx-auto ${wide ? "max-w-5xl" : "max-w-md"}`}>
+      <div className={`relative mx-auto ${maxW ?? (wide ? "max-w-5xl" : "max-w-md")}`}>
         <header className="flex items-center gap-3">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] border border-line font-display text-[14px] font-bold text-own" aria-hidden>
             {SPEAKER.monogram}

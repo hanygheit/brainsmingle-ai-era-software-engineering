@@ -3,12 +3,17 @@
 export const SPEAKER = {
   name: "Hany Saad",
   monogram: "HS",
-  roles: ["Senior Software Engineering Manager · ITWorx", "AI & Software Engineering · ITI"],
+  role: "Senior Software Engineering Manager · ITWorx",
 } as const;
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/hanysaad";
 export const BRAINSMINGLE_URL = "https://brainsmingle.com/hanysaad";
 export const PRESENTATION_URL = "https://brainsmingle-ai-era-software-engineering.lovable.app";
+export const REPO_URL = "https://github.com/hanygheit/brainsmingle-ai-era-software-engineering";
+/** Audience hub (/thanks): feedback, slides, PDF, code and links in one place. Always open. */
+export const HUB_URL = `${PRESENTATION_URL}/thanks`;
+/** The hub link as printed under its QR: exactly the URL it encodes, without the scheme. */
+export const HUB_LINK_TEXT = HUB_URL.replace(/^https?:\/\//, "");
 export const SITE_TITLE = "AI-Era Software Engineering — Hany Saad | BrainsMingle AI Summit 2026";
 export const SITE_DESCRIPTION = "From Graduate Readiness to Talent Development: Hany Saad’s keynote on AI-era software engineering, learning and talent development at BrainsMingle AI Summit 2026.";
 /** Link-preview image (public/og-image.png, 1200×630): title, Live · Mon 12 Oct · 8:00PM Cairo time, the seven stops. */
@@ -44,6 +49,8 @@ export const SHARE = {
 
 /** Total talk target: 41:30. */
 export const TARGET_TOTAL_SEC = 41 * 60 + 30;
+/** Q&A after the final slide (which holds): the presenter window counts this down. */
+export const QA_SEC = 10 * 60;
 
 export const ACTS = [
   "Lobby",
