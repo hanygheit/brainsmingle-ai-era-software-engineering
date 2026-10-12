@@ -14,7 +14,7 @@ import { VoteBars } from "./live-vote";
 import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
 import qrBrains from "@/assets/qr-brainsmingle-hanysaad.svg.asset.json";
 import qrPres from "@/assets/qr-presentation-ai-era-software-engineering.svg.asset.json";
-import { S1 } from "./opening";
+import { ColdOpen } from "./opening";
 import { Chip, Reveal, SpeakerBlock, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
@@ -252,14 +252,14 @@ export function S47(_: ScreenProps) {
 }
 
 /* ---------- S48 · The code is ready. Are we? Yes — we can be. ---------- */
-export function S48({ step, screen }: ScreenProps) {
+export function S48({ step }: ScreenProps) {
   const s = rv.s22;
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden p-[96px]">
       <div className="flex items-center gap-[64px]">
         <div className="relative h-[349px] w-[620px] shrink-0 overflow-hidden rounded-[16px] border border-line">
           <div style={{ width: 1920, height: 1080, transform: `scale(${620 / 1920})`, transformOrigin: "top left" }}>
-            <S1 screen={screen} step={3} choice={null} />
+            <ColdOpen step={2} explained={step >= 1} />
           </div>
         </div>
         <div>

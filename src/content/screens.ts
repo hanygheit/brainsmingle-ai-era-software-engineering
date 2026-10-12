@@ -30,7 +30,7 @@ const sep = (id: string, n: number, act: Act): Screen => ({
 
 export const screens: Screen[] = [
   { id: "S0", act: "Lobby", title: "Lobby", durationSec: 0, steps: 0, timeline: [], notes: "Lobby. Press → at 8:00PM to start.", sourceIds: [] },
-  { id: "S1", act: "Opening", title: "The code is ready", durationSec: 55, steps: 3, timeline: [200, 1700, 2400], notes: 'Let it play; silent 2 s. "Imagine a fresh graduate submitting this tomorrow — as a final-year project, or as their first pull request on your team." **"The code is ready. Are we?"**', sourceIds: [] },
+  { id: "S1", act: "Opening", title: "The code is ready", durationSec: 55, steps: 3, timeline: [200, 1700, 2100], notes: 'Let it play; silent 2 s. "Imagine a fresh graduate submitting this tomorrow — as a final-year project, or as their first pull request on your team." **"The code is ready. Are we?"**', sourceIds: [] },
   { id: "S2", act: "Opening", title: "Ready for what?", durationSec: 90, steps: 2, timeline: [60, 120], notes: 'Poll: **"Who\'s in the room?"** — scan the QR (no sign-in, 10 seconds) or type 1, 2, 3 or 4 in chat (keys 1–4 add chat votes). Give it about 15 s, then read the mix: "Most of you are [learning / building / teaching / leading] — every stop ends with an action for you, and I\'ll come back to this mix in Q&A." 20-second intro: both sides of this question. Then: "Here\'s the route."', sourceIds: [] },
   { id: "S3", act: "Opening", title: "Seven stops. One question.", durationSec: 45, steps: 3, timeline: [60, 120, 540], notes: 'Seven stops, one question. "Wherever you voted, your stop is on this line — and **every stop ends with one action you can start this week.**" Point at the stops; don\'t read the promises.', sourceIds: [] },
   sep("S4", 1, "Act 1 · The shift"),

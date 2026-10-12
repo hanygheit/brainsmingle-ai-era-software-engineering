@@ -27,7 +27,16 @@
     ]
   },
   "s1": {
-    "app": { "name": "shop-api", "heading": "Welcome back", "email": "Email", "password": "Password", "button": "Sign in", "footer": "A fictional store" },
+    "card": {
+      "title": "shop-api · Final-year project",
+      "built": "Built in 2 h 14 min with an AI coding agent",
+      "files": "Files",
+      "checks": "Checks",
+      "tree": ["src/Program.cs", "src/Auth/TokenService.cs", "src/Auth/AuthController.cs", "src/Data/AppDbContext.cs", "tests/AuthTests.cs", "README.md"],
+      "list": ["Build passing", "23 / 23 tests", "Docs generated", "Deployed"],
+      "explain": "Can the author explain it?",
+      "stamp": "READY · Grade A"
+    },
     "panelEyebrow": "Final-year project · built with an AI coding agent",
     "task": "Add secure authentication to this application.",
     "tag": "Illustrative · simulated",
