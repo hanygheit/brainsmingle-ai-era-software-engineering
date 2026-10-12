@@ -345,7 +345,7 @@ function PdfUpload() {
       </div>
       <p className="mt-1 text-[13px] text-muted">
         {state?.stored
-          ? `Uploaded ${state.uploadedAt ? new Date(state.uploadedAt).toLocaleString() : ""} · ${state.pages ?? "?"} pages`
+          ? `Uploaded ${state.uploadedAt ? new Date(state.uploadedAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short", hour12: true }) : ""} · ${state.pages ?? "?"} pages`
           : "No PDF stored yet"}
       </p>
     </div>

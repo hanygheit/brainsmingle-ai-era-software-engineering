@@ -108,7 +108,7 @@ export function LockScreen({ onBack }: { onBack?: () => void }) {
             <h1 className="font-display text-[34px] leading-[1.08] font-bold tracking-[-0.03em] [text-wrap:balance] md:text-[44px]">
               The full deck opens after the live session
             </h1>
-            <p className="mt-2 text-[18px] text-muted sm:text-[22px]">Mon 12 Oct, 21:00 Cairo</p>
+            <p className="mt-2 text-[18px] text-muted sm:text-[22px]">Mon 12 Oct, 9:00PM Cairo time</p>
             <div className="mx-auto mt-4 w-fit">
               <BrandBar width={180} />
             </div>
@@ -116,9 +116,9 @@ export function LockScreen({ onBack }: { onBack?: () => void }) {
           <OpensIn />
           <section className="flex w-full flex-col items-center gap-5 rounded-[20px] border border-line bg-surface/60 px-5 py-5 sm:px-8 md:flex-row md:justify-between md:text-left">
             <div>
-              <p className="font-display text-[20px] font-bold sm:text-[26px]">Join the session at 20:00 Cairo</p>
+              <p className="font-display text-[20px] font-bold [text-wrap:balance] sm:text-[26px]">Join the session at 8:00PM Cairo time</p>
               <p className="mt-1 text-[15px] text-muted">BrainsMingle AI Summit 2026 · AI in Learning &amp; Development</p>
-              <p className="mt-1 text-[15px] text-muted">Live · Mon 12 Oct · 20:00–21:00 Cairo</p>
+              <p className="mt-1 text-[15px] text-muted">Live · Mon 12 Oct · 8:00–9:00PM Cairo time</p>
             </div>
             <div className="flex shrink-0 flex-wrap justify-center gap-6">
               <QRTile url={LINKEDIN_URL} label="Connect on LinkedIn" image={qrLinkedin.url} size={180} />

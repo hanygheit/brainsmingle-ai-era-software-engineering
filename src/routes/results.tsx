@@ -221,7 +221,7 @@ function Feedback({ entries }: { entries: FeedbackEntry[] }) {
               <tbody>
                 {[...entries].reverse().map((e) => (
                   <tr key={e.id} className="border-b border-line/60 align-top">
-                    <td className="px-2 py-2 whitespace-nowrap text-muted tabular-nums">{new Date(e.submittedAt).toLocaleString()}</td>
+                    <td className="px-2 py-2 whitespace-nowrap text-muted tabular-nums">{new Date(e.submittedAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short", hour12: true })}</td>
                     <td className="px-2 py-2 tabular-nums">{e.rating}</td>
                     <td className="px-2 py-2">{e.valuable ?? "—"}</td>
                     <td className="px-2 py-2">{e.change || "—"}</td>

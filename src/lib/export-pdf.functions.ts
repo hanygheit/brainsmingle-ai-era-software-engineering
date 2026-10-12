@@ -15,7 +15,7 @@ export const exportPdf = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { isDeckOpen } = await import("./deck-gate.server");
     if (!(await isDeckOpen(data.token))) {
-      return { ok: false as const, missing: true as const, error: "The PDF opens after the live session — Mon 12 Oct, 21:00 Cairo." };
+      return { ok: false as const, missing: true as const, error: "The PDF opens after the live session — Mon 12 Oct, 9:00PM Cairo time." };
     }
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

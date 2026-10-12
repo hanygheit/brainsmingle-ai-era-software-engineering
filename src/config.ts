@@ -11,9 +11,9 @@ export const BRAINSMINGLE_URL = "https://brainsmingle.com/hanysaad";
 export const PRESENTATION_URL = "https://brainsmingle-ai-era-software-engineering.lovable.app";
 export const SITE_TITLE = "AI-Era Software Engineering — Hany Saad | BrainsMingle AI Summit 2026";
 export const SITE_DESCRIPTION = "From Graduate Readiness to Talent Development: Hany Saad’s keynote on AI-era software engineering, learning and talent development at BrainsMingle AI Summit 2026.";
-/** Link-preview image (public/og-image.png, 1200×630): title, Live · Mon 12 Oct · 20:00 Cairo, the six stops. */
+/** Link-preview image (public/og-image.png, 1200×630): title, Live · Mon 12 Oct · 8:00PM Cairo time, the six stops. */
 export const SOCIAL_PREVIEW_URL = `${PRESENTATION_URL}/og-image.png`;
-export const SOCIAL_PREVIEW_ALT = "AI-Era Software Engineering — Hany Saad. Live · Mon 12 Oct · 20:00 Cairo. Six stops from The shift to Companies.";
+export const SOCIAL_PREVIEW_ALT = "AI-Era Software Engineering — Hany Saad. Live · Mon 12 Oct · 8:00PM Cairo time. Six stops from The shift to Companies.";
 export const PDF_FILENAME = "AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026.pdf";
 
 export const EVENT = {
@@ -27,7 +27,7 @@ export const BLUEPRINT_PATH = "/blueprint";
 
 /**
  * The full deck (slides 2+, overview, presenter, /blueprint, /print, PDF) opens for
- * everyone at this instant — the end of the live session, 21:00 Cairo. Checked against
+ * everyone at this instant — the end of the live session, 9:00PM Cairo time. Checked against
  * server time. Before it only the first PREVIEW_SLIDES slides are public; the presenter
  * PIN unlocks one browser for UNLOCK_TOKEN_HOURS.
  */
@@ -37,9 +37,9 @@ export const UNLOCK_TOKEN_HOURS = 6;
 
 /** Link-preview text for the deck pages (Open Graph / Twitter), with the live date and the six stops. */
 export const SHARE = {
-  title: "AI-Era Software Engineering — Hany Saad · Live · Mon 12 Oct · 20:00 Cairo",
+  title: "AI-Era Software Engineering — Hany Saad · Live · Mon 12 Oct · 8:00PM Cairo time",
   description:
-    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 20:00 Cairo. Six stops: The shift · Students · Universities & educators · Fresh graduates · Current engineers · Companies.",
+    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 8:00PM Cairo time. Six stops: The shift · Students · Universities & educators · Fresh graduates · Current engineers · Companies.",
 } as const;
 
 /** Total talk target: 41:30. */
