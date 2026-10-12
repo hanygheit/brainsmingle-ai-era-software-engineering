@@ -49,7 +49,7 @@
     "columns": [
       { "label": "Skills", "sub": "learn now", "items": ["Programming, data structures & algorithms", "HTTP, APIs & SQL", "Git & testing", "Auth & OWASP basics", "Reading code you didn't write"] },
       { "label": "Habits", "sub": "every week", "items": ["First version by hand — AI explains, doesn't solve", "Then ask AI for an alternative; explain the trade-off", "A 30-minute AI-off kata", "Log what the AI got wrong", "Teach back one concept"] },
-      { "label": "Project", "sub": "one portfolio piece", "items": ["One small API, built twice", "v1 by hand · v2 extended with an agent", "README, AGENTS.md and a process log", "Negative tests · “3 AI mistakes I caught”", "A 5-minute walkthrough video"] }
+      { "label": "Project", "sub": "one portfolio piece", "items": ["One small API, built twice", "v1 by hand · v2 extended with an agent", "README, AGENTS.md and a process log", "Negative tests · “3 AI mistakes I caught”", "Go broad, not narrow: a product engineer, not just “frontend” or “backend”"] }
     ],
     "tools": [
       ["Learn", "ChatGPT study mode · Claude learning mode · Gemini Guided Learning · CS50.ai"],
@@ -94,7 +94,7 @@
     "eyebrow": "Your plan · fresh graduates",
     "headline": "Your first 90 days.",
     "columns": [
-      { "label": "Stand out", "sub": "before day one", "items": ["A project with a process log", "One merged open-source PR", "An “AI mistakes I caught” write-up", "Explain every line"] },
+      { "label": "Stand out", "sub": "before day one", "items": ["A project with a process log", "One merged open-source PR", "An “AI mistakes I caught” write-up", "Explain every line", "Go broad, not narrow: a product engineer, not just “frontend” or “backend”"] },
       { "label": "Days 1–30", "sub": "learn the system", "items": ["Set up the agent with the team's context files", "Read the codebase with AI as a guide", "Fix three small bugs — first attempt by hand"] },
       { "label": "Days 31–60", "sub": "contribute", "items": ["Issue → plan → agent → verify → PR", "A negative test with every change", "Pair with a senior on one agent session"] },
       { "label": "Days 61–90", "sub": "own", "items": ["One small feature, end to end", "A written design rationale", "Catch one bug before review"] }

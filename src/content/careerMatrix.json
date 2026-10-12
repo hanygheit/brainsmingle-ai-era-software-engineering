@@ -121,6 +121,9 @@
         "Extend it with an agent and log what it got wrong",
         "Teach back one concept a week"
       ],
+      "blueprintNext": [
+        "Go broad, not narrow: be a product engineer, not just a “frontend” or “backend” developer"
+      ],
       "never": "the first version of anything you're learning",
       "ready": "you can build and debug a small service with AI off"
     },
@@ -129,6 +132,9 @@
         "Master one coding agent end to end",
         "Ship one project with a process log",
         "Practise debugging unfamiliar code"
+      ],
+      "blueprintNext": [
+        "Go broad, not narrow: be a product engineer, not just a “frontend” or “backend” developer"
       ],
       "never": "understanding why the code works",
       "ready": "you take an issue to a merged PR and walk a reviewer through it"

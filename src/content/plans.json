@@ -10,6 +10,7 @@
         ["Learn now", ["Programming, data structures & algorithms", "HTTP, APIs & SQL", "Git, testing and debugging", "Auth basics and the OWASP Top 10", "Reading code you didn't write", "Writing a clear specification: inputs, outputs, constraints, acceptance criteria"]],
         ["Weekly habits", ["First version by hand — AI may explain, not solve", "Then ask AI for an alternative and explain the trade-off in your own words", "A 30-minute AI-off kata: an algorithm, a bug or a small refactor", "A log of what the AI got wrong — and how you noticed", "Teach back one concept a week: a post, a talk or a study partner"]],
         ["Portfolio project — one small API, built twice", ["v1 by hand: a small REST API with auth, a database and tests", "v2: extend it with a coding agent — one new feature, end to end", "Ship a README, an AGENTS.md (your rules for the agent) and a process log", "Negative tests for every auth rule, and a short “3 AI mistakes I caught” write-up", "A 5-minute walkthrough video that explains every design decision"]],
+        ["Go broad, not narrow — a product engineer, not just “frontend” or “backend”", ["Work end to end: UI, API, data, tests, deployment — AI makes crossing the stack cheaper than ever", "Learn the business domain you build for (e.g. fintech, health, e-commerce): domain understanding is what AI can't supply", "Keep one deep strength (T-shaped), but don't define yourself by a single layer or framework"]],
         ["Ready when", ["You can build and debug a small service with AI off — and explain the version you built with AI"]]
       ]
     },
@@ -31,6 +32,7 @@
       "action": "Make it visible: every PR explained, every agent mistake logged.",
       "blocks": [
         ["Stand out — before day one", ["One project with a process log and an AGENTS.md", "One merged open-source pull request", "An “AI mistakes I caught” write-up", "Be ready to explain every line — and to change it live"]],
+        ["Go broad, not narrow — a product engineer, not just “frontend” or “backend”", ["Work end to end: UI, API, data, tests, deployment — AI makes crossing the stack cheaper than ever", "Learn the business domain you build for (e.g. fintech, health, e-commerce): domain understanding is what AI can't supply", "Keep one deep strength (T-shaped), but don't define yourself by a single layer or framework"]],
         ["Days 1–30 — learn the system", ["Set up your agent with the team's context files and conventions", "Read the codebase with AI as a guide; draw the architecture yourself", "Fix three small bugs — first attempt by hand, then compare with the agent"]],
         ["Days 31–60 — contribute", ["Issue → plan → agent → verify → PR, with the plan approved before the code", "A negative test with every change", "Pair with a senior on one agent session; ask them to review your prompts and diffs"]],
         ["Days 61–90 — own", ["One small feature, end to end", "A written design rationale: two alternatives considered, and why this one", "Catch one bug before review — and write down how you found it"]]

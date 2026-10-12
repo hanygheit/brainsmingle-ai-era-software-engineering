@@ -40,7 +40,7 @@ const MATRIX: [string, number[]][] = [
 
 const WEEKS: [string, string][] = [
   ["Weeks 1–2", "Fundamentals by hand — a small API built AI-off, explained."],
-  ["Weeks 3–4", "One agent end to end — extend the API, with a process log."],
+  ["Weeks 3–4", "One agent end to end — extend the API into a feature that spans UI, API and data, with a process log."],
   ["Weeks 5–6", "Validation — an “AI mistakes I caught” write-up."],
   ["Weeks 7–8", "Change and explain — a design rationale and a mock debugging interview."],
 ];
@@ -182,7 +182,7 @@ export function BlueprintSections() {
                 <p className="mt-1 font-mono text-[12px] text-muted">Delegation radius: {cm.radius[i]}</p>
                 <p className="mt-4 font-mono text-[12px] text-direct uppercase">Your next 90 days</p>
                 <ul className="mt-2 list-disc space-y-1 pl-5 text-[15px]">
-                  {p.next.map((n) => <li key={n}>{n}</li>)}
+                  {[...p.next, ...(p.blueprintNext ?? [])].map((n) => <li key={n}>{n}</li>)}
                 </ul>
                 <p className="mt-4 font-mono text-[12px] text-validate uppercase">Never delegate</p>
                 <p className="mt-1 text-[15px]">{p.never}</p>
