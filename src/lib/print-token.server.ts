@@ -49,22 +49,24 @@ export async function verifyPrintToken(token: string, variant: string) {
 }
 
 /**
- * Presenter PIN (6–8 digits). Only its salted PBKDF2-SHA256 hash exists, in the server env vars
- * PRESENTER_PIN_HASH and PRESENTER_PIN_SALT (base64, made by scripts/hash-pin.mjs) — never in the repo.
- * Server only.
+ * Presenter PIN. Its salted PBKDF2-SHA256 hash comes from the server env vars PRESENTER_PIN_HASH and
+ * PRESENTER_PIN_SALT (base64, made by scripts/hash-pin.mjs; 6–8 digits). Server only.
  */
 const PIN_ITERATIONS = 100_000; // Cloudflare Workers' PBKDF2 maximum; must match scripts/hash-pin.mjs
 
+/**
+ * TEMPORARY (talk day, 12 Oct 2026): until the two secrets are set, the old 4-digit PIN keeps working.
+ * Its hash is already public in the git history, so it is weak. Delete this fallback once the secrets exist.
+ */
+const LEGACY_PIN = { salt: "NSDL/Cg9SFyJe/s6Naqj5A==", hash: "dw2jSR91s1SAti0o15c3RZYulUpjtXDLk/2ucu16ZZg=" };
+
 const fromB64 = (s: string) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 
-/** The configured hash and salt, or null when either is missing (then every PIN is refused). */
+/** The configured hash and salt, or the temporary legacy PIN when either secret is missing. */
 function pinSecret() {
   const hash = process.env["PRESENTER_PIN_HASH"]?.trim();
   const salt = process.env["PRESENTER_PIN_SALT"]?.trim();
-  if (!hash || !salt) {
-    console.error("Presenter PIN is not configured: set PRESENTER_PIN_HASH and PRESENTER_PIN_SALT");
-    return null;
-  }
+  if (!hash || !salt) return LEGACY_PIN;
   return { hash, salt };
 }
 
@@ -78,14 +80,14 @@ async function hashPin(pin: string, salt: string) {
   return btoa(String.fromCharCode(...new Uint8Array(bits)));
 }
 
-/** True when `pin` is the presenter PIN. A wrong PIN waits ~0.8 s to slow guessing. Fails closed. */
+/** True when `pin` is the presenter PIN. A wrong PIN waits ~0.8 s to slow guessing. */
 export async function checkPin(pin: string | undefined | null) {
   // Local dev only (compiled out of builds): a test PIN from the launch config, as in deck-gate.server.ts.
   const devPin = import.meta.env.DEV ? process.env["DEV_PRESENTER_PIN"] : undefined;
   if (devPin && pin === devPin) return true;
   let ok = false;
   const secret = pinSecret();
-  if (secret && !!pin && /^\d{6,8}$/.test(pin)) {
+  if (!!pin && /^\d{4,8}$/.test(pin)) {
     try {
       ok = safeEqual(await hashPin(pin, secret.salt), secret.hash);
     } catch {

@@ -43,7 +43,7 @@ Before the deck opens (see below), prefix the export with `DECK_PIN=<pin>` so th
 
 ## Presenter PIN
 
-The presenter PIN (6–8 digits) unlocks the deck before `DECK_UNLOCK_AT`, the presenter window's PIN actions, `/results` and the PDF upload. The repo holds nothing about it: the server (`checkPin` in `src/lib/print-token.server.ts`) compares a PBKDF2-SHA256 hash (100,000 iterations) against two server secrets, and refuses every PIN when either is missing.
+The presenter PIN (6–8 digits) unlocks the deck before `DECK_UNLOCK_AT`, the presenter window's PIN actions, `/results` and the PDF upload. The repo holds nothing about it: the server (`checkPin` in `src/lib/print-token.server.ts`) compares a PBKDF2-SHA256 hash (100,000 iterations) against two server secrets. **Temporary:** while either secret is missing, it falls back to the old 4-digit PIN (its hash is in the code, as before) — set the secrets and delete `LEGACY_PIN` after the talk.
 
 To set or change it:
 
@@ -51,7 +51,7 @@ To set or change it:
 2. Lovable → Cloud → Secrets: add (or update) `PRESENTER_PIN_SALT` and `PRESENTER_PIN_HASH` with those values.
 3. Publish → Update, then unlock the lock screen or open `/results` with the new PIN.
 
-Never commit the PIN, the salt or the hash. The old 4-digit PIN's hash is in the git history: it is compromised and must not be reused.
+Never commit the PIN, the salt or the hash. The old 4-digit PIN's hash is public in the code and git history: treat it as compromised and replace it as soon as possible.
 
 ## Time gate (preview until the session ends)
 
