@@ -4,7 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { POLL_IDS, type PollId } from "@/config";
 import interview from "@/content/interview.json";
 import opening from "@/content/opening.json";
-import { CHOICE_EVENT, type ChoiceDetail } from "@/deck/useKeyboard";
+import { CHOICE_EVENT, type ChoiceDetail } from "@/deck/events";
+import { DEFAULT_POLL_STATE, getPollState, type PollState } from "./poll-state.functions";
+import { voterId } from "./device-id";
 
 export type Counts = [number, number, number];
 const zero = (): Counts => [0, 0, 0];
@@ -16,20 +18,75 @@ export const POLL_CONTENT: Record<PollId, { question: string; options: string[] 
 };
 export const isPollId = (v: unknown): v is PollId => POLL_IDS.includes(v as PollId);
 
-/* ---------- voter ---------- */
-export function voterId() {
-  const k = "ai-era-voter-id";
+/** "Learning — student or recent graduate" → head "Learning", sub "student or recent graduate". */
+export function splitOption(label: string) {
+  const [head, ...rest] = label.split(" — ");
+  return { head: head!, sub: rest.join(" — ") || null };
+}
+
+/** This device's vote on a poll (remembered by the vote page). */
+export const MY_VOTE_KEY = (poll: PollId) => `ai-era-my-vote-${poll}`;
+export function readMyVote(poll: PollId): number | null {
   try {
-    let id = localStorage.getItem(k);
-    if (!id) {
-      id = crypto.randomUUID();
-      localStorage.setItem(k, id);
-    }
-    return id;
+    const v = Number(localStorage.getItem(MY_VOTE_KEY(poll)));
+    return v >= 1 && v <= 3 ? v : null;
   } catch {
-    return crypto.randomUUID();
+    return null;
   }
 }
+
+/* ---------- open / closed ---------- */
+/** Poll open/closed state, refreshed every `everyMs` while the page is visible. Null until first loaded. */
+export function usePollState(everyMs = 5000) {
+  const print = usePrintMode();
+  const [state, setState] = useState<PollState | null>(null);
+  useEffect(() => {
+    if (print) return;
+    let alive = true;
+    const load = async () => {
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+      try {
+        const s = await getPollState();
+        if (alive) setState(s);
+      } catch {
+        if (alive) setState((prev) => prev ?? DEFAULT_POLL_STATE);
+      }
+    };
+    void load();
+    const id = setInterval(() => void load(), everyMs);
+    const onVis = () => void load();
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      alive = false;
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [everyMs, print]);
+  return { state, setState };
+}
+
+/** Bare /vote: the most recently opened poll; with no open times, the first one this device hasn't voted on. */
+export function currentOpenPoll(state: PollState): PollId | null {
+  const open = POLL_IDS.filter((p) => state[p].open);
+  if (open.length <= 1) return open[0] ?? null;
+  const timed = open.filter((p) => state[p].at).sort((a, b) => state[b].at!.localeCompare(state[a].at!));
+  if (timed.length) return timed[0]!;
+  return open.find((p) => readMyVote(p) === null) ?? open[open.length - 1]!;
+}
+
+/** Raw vote rows for the results CSV (public data under the existing RLS). */
+export async function fetchVoteRows() {
+  const { data, error } = await supabase
+    .from("poll_votes")
+    .select("poll_id, option, created_at")
+    .in("poll_id", [...POLL_IDS])
+    .order("created_at", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as { poll_id: PollId; option: number; created_at: string }[];
+}
+
+/* ---------- voter ---------- */
+export { voterId };
 
 export async function castVote(poll: PollId, option: 1 | 2 | 3) {
   const { error } = await supabase
@@ -86,6 +143,17 @@ export function addManual(poll: PollId, option: number) {
 }
 export const clearManual = (poll: PollId) => writeManual(poll, zero());
 
+/** Keys 1/2/3 add one manual vote on S2 (on S12 they reveal the answers instead). One listener per window, however many tallies are mounted. */
+let choiceKeysBound = false;
+function listenForChoiceKeys() {
+  if (choiceKeysBound) return;
+  choiceKeysBound = true;
+  window.addEventListener(CHOICE_EVENT, (e) => {
+    const d = (e as CustomEvent<ChoiceDetail>).detail;
+    if (d.screenId === POLL_SCREEN["s2-challenge"] && d.n <= 3) addManual("s2-challenge", d.n);
+  });
+}
+
 /* ---------- live counts ---------- */
 async function fetchCounts(poll: PollId): Promise<Counts> {
   const { data, error } = await supabase.from("poll_votes").select("option").eq("poll_id", poll);
@@ -109,19 +177,11 @@ export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } 
 
   useEffect(() => {
     channel();
+    listenForChoiceKeys();
     const sync = () => setManual(readManual(poll));
     sync();
-    const onChoice = (e: Event) => {
-      const d = (e as CustomEvent<ChoiceDetail>).detail;
-      // Keys 1/2/3 add manual votes on S2 only; on S12 they reveal the answers instead.
-      if (poll === "s2-challenge" && d.screenId === POLL_SCREEN[poll] && d.n <= 3) addManual(poll, d.n);
-    };
     window.addEventListener(MANUAL_EVENT, sync);
-    window.addEventListener(CHOICE_EVENT, onChoice);
-    return () => {
-      window.removeEventListener(MANUAL_EVENT, sync);
-      window.removeEventListener(CHOICE_EVENT, onChoice);
-    };
+    return () => window.removeEventListener(MANUAL_EVENT, sync);
   }, [poll]);
 
   useEffect(() => {

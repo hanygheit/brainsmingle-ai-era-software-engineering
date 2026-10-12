@@ -1,0 +1,25 @@
+{
+  "title": "Session feedback",
+  "intro": "Five quick questions — under a minute.",
+  "rating": { "label": "Overall, how was the session?", "hint": "Required", "words": ["Poor", "Fair", "Good", "Very good", "Excellent"] },
+  "valuable": {
+    "label": "Most valuable part",
+    "options": [
+      "The shift in roles",
+      "Students & educators",
+      "Fresh graduates",
+      "Engineers' growth paths",
+      "Companies & measurement"
+    ]
+  },
+  "change": { "label": "One change I'll make in the next 7 days", "placeholder": "e.g. Review one agent session", "max": 280 },
+  "comments": { "label": "Comments for Hany", "placeholder": "Anything you'd like to share", "max": 1000 },
+  "contact": { "label": "Name / email", "hint": "Optional", "name": "Name", "email": "Email", "ok": "OK to contact me" },
+  "submit": "Send feedback",
+  "thanks": {
+    "title": "Thank you!",
+    "body": "Your feedback helps make the next session better.",
+    "already": "We already have your feedback from this device — thank you.",
+    "links": ["Open the presentation", "Download the PDF", "Connect on LinkedIn"]
+  }
+}

@@ -41,6 +41,9 @@ export type Act = (typeof ACTS)[number];
 export const POLL_IDS = ["s2-challenge", "s7-interview"] as const;
 export type PollId = (typeof POLL_IDS)[number];
 export const voteUrl = (poll: PollId) => `${PRESENTATION_URL}/vote?poll=${poll}`;
+/** Short on-screen form of the vote link (bare /vote opens whichever poll is open). */
+export const VOTE_LINK_SHORT = "…lovable.app/vote";
+export const FEEDBACK_URL = `${PRESENTATION_URL}/feedback`;
 
 /** Theme tokens (mirrored as CSS variables in styles.css). */
 export const THEME = {

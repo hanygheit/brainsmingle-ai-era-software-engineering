@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { pointer } from "./pointer";
 import { useDeck } from "./store";
+import { CHOICE_EVENT, type ChoiceDetail } from "./events";
 
+export { CHOICE_EVENT, type ChoiceDetail };
 export const DOWNLOAD_EVENT = "deck-download";
-export const CHOICE_EVENT = "deck-choice";
-export type ChoiceDetail = { screenId: string; n: number };
 
 /** Presentation shortcuts shared by the audience and presenter windows. */
 export function useKeyboard({ presenterWindow = false }: { presenterWindow?: boolean } = {}) {
