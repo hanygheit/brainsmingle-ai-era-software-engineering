@@ -39,6 +39,10 @@ export function S25({ step }: ScreenProps) {
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <SrcTag items={["Indeed Hiring Lab, Jul 2026", step >= 2 && "SignalFire, Jun 2026"]} />
+      <p className="act-ink mb-[14px] flex items-center gap-[12px] font-mono text-[20px] font-semibold tracking-[0.04em]">
+        <span className="h-[10px] w-[10px] rounded-full" style={{ background: "var(--act)" }} aria-hidden />
+        {s.callback}
+      </p>
       <p className={`${H} text-[72px]`}>{s.headline}</p>
       <div className="flex flex-1 items-center gap-[96px]">
         <Reveal on={step >= 1}>

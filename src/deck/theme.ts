@@ -9,9 +9,9 @@ export const isPaper = (screenId: string) => PAPER.has(screenId);
 
 export const ACT_COLORS: Partial<Record<Act, string>> = {
   "Act 1 · The shift": "#2563EB",
-  "Act 2 · Students": "#0E9F6E",
-  "Act 3 · Universities & educators": "#BE185D",
-  "Act 4 · Fresh graduates": "#B7791F",
+  "Act 2 · Universities & educators": "#0E9F6E",
+  "Act 3 · Students": "#BE185D",
+  "Act 4 · Fresh graduates & juniors": "#B7791F",
   "Act 5 · Current engineers": "#7C3AED",
   "Act 6 · Companies": "#DC2626",
   "Act 7 · Customers & clients": "#0E7490",
@@ -20,9 +20,9 @@ export const ACT_COLORS: Partial<Record<Act, string>> = {
 /** Act colours lifted for text on the navy stage (all ≥ 4.5:1 on #0F1B33). */
 export const ACT_COLORS_ON_NAVY: Partial<Record<Act, string>> = {
   "Act 1 · The shift": "#8AB6FF",
-  "Act 2 · Students": "#5EE6AA",
-  "Act 3 · Universities & educators": "#F9A8D4",
-  "Act 4 · Fresh graduates": "#F6C35C",
+  "Act 2 · Universities & educators": "#5EE6AA",
+  "Act 3 · Students": "#F9A8D4",
+  "Act 4 · Fresh graduates & juniors": "#F6C35C",
   "Act 5 · Current engineers": "#B9A2FF",
   "Act 6 · Companies": "#FF8A80",
   "Act 7 · Customers & clients": "#67E8F9",

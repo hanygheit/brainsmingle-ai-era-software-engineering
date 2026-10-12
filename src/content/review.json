@@ -16,8 +16,8 @@
     "line": "AI can write the code. Engineers still own the outcome.",
     "rolesLabel": "One line for each of us",
     "roles": [
-      ["Students", "Learn it by hand, then with AI — and explain both.", 2],
-      ["Educators", "Change one assignment: AI allowed, explanation required.", 3],
+      ["Educators", "Change one assignment: AI allowed, explanation required.", 2],
+      ["Students", "Learn it by hand, then with AI — and explain both.", 3],
       ["Graduates", "Show evidence, not demos: every PR explained, every agent mistake caught.", 4],
       ["Engineers", "Grow your delegation radius — and review one agent session a week.", 5],
       ["Leaders", "Rewrite one development plan around what people can safely own.", 0],

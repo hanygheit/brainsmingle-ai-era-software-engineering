@@ -16,9 +16,13 @@ describe("deck engine", () => {
     expect(slideLabel(46)).toBe("46 / 52 · Stop 07 · Customers & clients");
     expect(slideLabel(47)).toBe("47 / 52 · Faster — not free, and not instant");
   });
-  it("has seven navy stop separators (agenda stops 01–07) at 4, 14, 18, 24, 32, 39, 46", () => {
-    expect(screens.flatMap((sc, i) => (sc.separator ? [i] : []))).toEqual([4, 14, 18, 24, 32, 39, 46]);
+  it("has seven navy stop separators (agenda stops 01–07) at 4, 14, 20, 24, 32, 39, 46", () => {
+    expect(screens.flatMap((sc, i) => (sc.separator ? [i] : []))).toEqual([4, 14, 20, 24, 32, 39, 46]);
     expect(screens.filter((sc) => sc.separator).map((sc) => sc.separator)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(slideLabel(14)).toBe("14 / 52 · Stop 02 · Universities & educators");
+    expect(slideLabel(20)).toBe("20 / 52 · Stop 03 · Students");
+    expect(slideLabel(24)).toBe("24 / 52 · Stop 04 · Fresh graduates & juniors");
+    expect(screens.slice(21, 24).map((sc) => sc.durationSec)).toEqual([60, 75, 75]);
     expect(screens[46]!.act).toBe("Act 7 · Customers & clients");
     expect(screens[47]!.act).toBe("Act 7 · Customers & clients");
     expect(screens[48]!.act).toBe("Synthesis");

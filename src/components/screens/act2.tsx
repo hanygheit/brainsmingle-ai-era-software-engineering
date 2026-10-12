@@ -1,5 +1,5 @@
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import { CodeDiff, EASE, Eyebrow, QuoteGlyph } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import tk from "@/content/tasks.json";
@@ -57,7 +57,7 @@ export function S12({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S19–S21 · AI-native is not fundamentals-free (Keep · Shift / Add · Prove / Dohmke) ---------- */
+/* ---------- S15–S17 · AI-native is not fundamentals-free (Keep · Shift / Add · Prove / Dohmke) ---------- */
 function FundamentalsColumns({ step, keys }: { step: number; keys: string[] }) {
   const s = a2.s8;
   return (
@@ -93,13 +93,13 @@ function FundamentalsColumns({ step, keys }: { step: number; keys: string[] }) {
     </div>
   );
 }
-export function S19({ step }: ScreenProps) {
+export function S15({ step }: ScreenProps) {
   return <FundamentalsColumns step={step} keys={["KEEP", "SHIFT"]} />;
 }
-export function S20({ step }: ScreenProps) {
+export function S16({ step }: ScreenProps) {
   return <FundamentalsColumns step={step} keys={["ADD", "PROVE"]} />;
 }
-export function S21({ step }: ScreenProps) {
+export function S17({ step }: ScreenProps) {
   const s = a2.s8;
   return (
     <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
@@ -114,46 +114,8 @@ export function S21({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S15 · Concepts outlive tools ---------- */
-export function S15({ step }: ScreenProps) {
-  const s = a2.s9;
-  const reduce = useReducedMotion();
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    if (reduce) return;
-    const id = setInterval(() => setI((v) => (v + 1) % s.rows.length), 1500);
-    return () => clearInterval(id);
-  }, [reduce, s.rows.length]);
-  return (
-    <div className="relative flex h-full w-full flex-col p-[96px]">
-      <p className={`${H} text-[72px]`}>{s.headline}</p>
-      <div className="mt-[56px] grid grid-cols-2 gap-[64px] text-[22px]">
-        <Eyebrow>{s.colTools}</Eyebrow>
-        <Eyebrow>{s.colConcepts}</Eyebrow>
-      </div>
-      <Reveal on={step >= 1} className="mt-[20px] grid grid-cols-2 gap-[64px]">
-        <div className="relative h-[120px] rounded-[20px] border border-line bg-surface">
-          <AnimatePresence mode="wait">
-            <motion.p key={i} className="absolute inset-0 flex items-center px-[40px] font-mono text-[40px] text-text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
-              {s.rows[i]![0]}
-            </motion.p>
-          </AnimatePresence>
-        </div>
-        <div className="flex flex-col gap-[14px]">
-          {s.rows.map(([, concept], k) => (
-            <p key={concept} className={`${H} text-[36px] transition-colors duration-300`} style={{ color: k === i ? "var(--own)" : "var(--text)" }}>{concept}</p>
-          ))}
-        </div>
-      </Reveal>
-      <Reveal on={step >= 2} className="mt-auto">
-        <p className={`${H} keyline text-[60px]`}>{s.last}</p>
-      </Reveal>
-    </div>
-  );
-}
-
-/* ---------- S16 · Learn with AI — and without it ---------- */
-export function S16({ step }: ScreenProps) {
+/* ---------- S22 · Learn with AI — and without it ---------- */
+export function S22({ step }: ScreenProps) {
   const s = a2.s10;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
@@ -175,16 +137,22 @@ export function S16({ step }: ScreenProps) {
           <p className="mt-[28px] font-mono text-[24px] text-text">{s.patterns}</p>
           <div className="mt-[8px]"><Tag>{s.patternsTag}</Tag></div>
         </div>
-        <Reveal on={step >= 1}>
-          <div className="grid grid-cols-2 gap-[20px]">
-            {s.loop.map((l, i) => (
-              <div key={l} className="rounded-[18px] border border-line bg-surface p-[28px]">
-                <p className="font-mono text-[22px] text-own">{i + 1} {i === 3 ? "↺" : "→"}</p>
-                <p className="mt-[8px] text-[28px] text-text">{l}</p>
-              </div>
+        <div>
+          <p className="act-ink font-mono text-[18px] font-semibold tracking-[0.16em] uppercase">{s.orderLabel}</p>
+          <ol className="mt-[16px] flex flex-col gap-[14px]">
+            {s.order.map((l, i) => (
+              <Reveal key={l} on={step >= 1} delay={i * 0.06}>
+                <li className="flex items-center gap-[24px] rounded-[18px] border border-l-[6px] border-line bg-surface px-[28px] py-[20px]" style={{ borderLeftColor: "var(--act)" }}>
+                  <span className="act-ink w-[40px] shrink-0 font-display text-[48px] leading-none font-bold">{i + 1}</span>
+                  <span className="text-[28px] leading-[1.25] text-text">{l}</span>
+                </li>
+              </Reveal>
             ))}
-          </div>
-        </Reveal>
+          </ol>
+          <Reveal on={step >= 1} delay={0.18}>
+            <p className="mt-[16px] text-[22px] leading-[1.35] text-muted">{s.orderCaption}</p>
+          </Reveal>
+        </div>
       </div>
       <Reveal on={step >= 2} className="mt-[40px] flex flex-col gap-[8px]">
         <p className="text-[22px] text-muted">{s.dora}</p>
@@ -197,8 +165,8 @@ export function S16({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S22 · If AI can build it, what are we assessing? ---------- */
-export function S22({ step }: ScreenProps) {
+/* ---------- S18 · If AI can build it, what are we assessing? ---------- */
+export function S18({ step }: ScreenProps) {
   const [open, setOpen] = useState<number | null>(null);
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">

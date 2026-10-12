@@ -280,7 +280,7 @@ export function S50({ step }: ScreenProps) {
             return (
               <Reveal key={String(who)} on={step >= 2} delay={i * 0.06} className={`h-full ${i < 4 ? "col-span-3" : "col-span-4"}`}>
                 <div className="h-full rounded-[18px] border border-line bg-surface px-[24px] py-[18px]" style={{ borderTop: `4px solid ${ink}` }}>
-                  <p className="font-mono text-[16px] font-semibold tracking-[0.16em] uppercase" style={{ color: ink }}>{who}</p>
+                  <p className="font-mono text-[18px] font-semibold tracking-[0.16em] uppercase" style={{ color: ink }}>{who}</p>
                   <p className="mt-[8px] text-[23px] leading-[1.3] text-text">{what}</p>
                 </div>
               </Reveal>

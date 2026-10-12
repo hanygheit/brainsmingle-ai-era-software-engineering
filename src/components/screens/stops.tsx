@@ -112,7 +112,7 @@ function Marked({ text, mark }: { text: string; mark?: string | undefined }) {
 }
 
 type Quote = { quote: string; mark?: string; speaker: string; role: string; source: string };
-function QuoteCol({ q, size = 30 }: { q: Quote; size?: number }) {
+function QuoteCol({ q, size = 30, srcPx = 16 }: { q: Quote; size?: number; srcPx?: number }) {
   return (
     <figure className="relative flex h-full flex-col overflow-hidden rounded-[20px] border border-line bg-surface p-[40px]">
       <QuoteGlyph className="absolute -top-[34px] right-[24px]" size={200} />
@@ -122,17 +122,17 @@ function QuoteCol({ q, size = 30 }: { q: Quote; size?: number }) {
       <figcaption className="mt-auto pt-[28px]">
         <p className="text-[24px] font-semibold text-text">{q.speaker}</p>
         <p className="text-[20px] text-muted">{q.role}</p>
-        <p className="mt-[6px] font-mono text-[16px] text-muted">{q.source}</p>
+        <p className="mt-[6px] font-mono text-muted" style={{ fontSize: srcPx }}>{q.source}</p>
       </figcaption>
     </figure>
   );
 }
 
-type Col = { label: string; sub?: string; items: string[] };
+type Col = { label: string; sub?: string; items: string[]; strip?: string };
 /**
  * The "Your move" slide that closes every stop: columns (or numbered actions),
- * one evidence line, optional example tools, and the ACTION band.
- * Phases: 1 columns · 2 evidence · 3 tools · 4 action.
+ * one evidence line, optional example tools, and the ACTION band (with an optional bridge line under it).
+ * Phases: 1 columns · 2 evidence · 3 tools · 4 action. `large` lifts the small labels to 18 px.
  */
 function StopPlan({
   step,
@@ -145,6 +145,8 @@ function StopPlan({
   toolsLabel = "Example tools — not endorsements",
   note,
   action,
+  bridge,
+  large = false,
   src,
 }: {
   step: number;
@@ -157,8 +159,11 @@ function StopPlan({
   toolsLabel?: string;
   note?: string;
   action: string;
+  bridge?: string;
+  large?: boolean;
   src: (string | false)[];
 }) {
+  const small = large ? "text-[18px]" : "text-[15px]";
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
       <SrcTag items={src} />
@@ -170,9 +175,9 @@ function StopPlan({
         <div className="grid gap-[24px]" style={{ gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))` }}>
           {columns.map((c, i) => (
             <Reveal key={c.label} on={step >= 1} delay={i * 0.06} className="h-full">
-              <div className="h-full rounded-[18px] border border-t-[6px] border-line bg-surface p-[28px]" style={{ borderTopColor: "var(--act)" }}>
+              <div className="flex h-full flex-col rounded-[18px] border border-t-[6px] border-line bg-surface p-[28px]" style={{ borderTopColor: "var(--act)" }}>
                 <p className="act-ink font-display text-[32px] leading-[1.1] font-bold">{c.label}</p>
-                {c.sub ? <p className="mt-[6px] font-mono text-[15px] tracking-[0.14em] text-muted uppercase">{c.sub}</p> : null}
+                {c.sub ? <p className={`mt-[6px] font-mono ${small} tracking-[0.14em] text-muted uppercase`}>{c.sub}</p> : null}
                 <ul className="mt-[18px] space-y-[12px]">
                   {c.items.map((it) => (
                     <li key={it} className="flex gap-[14px] text-[23px] leading-[1.3] text-text">
@@ -181,6 +186,7 @@ function StopPlan({
                     </li>
                   ))}
                 </ul>
+                {c.strip ? <p className="mt-auto border-t border-line pt-[14px] text-[20px] leading-[1.35] text-muted">{c.strip}</p> : null}
               </div>
             </Reveal>
           ))}
@@ -211,11 +217,11 @@ function StopPlan({
 
       {tools ? (
         <Reveal on={step >= 3} className="mt-[20px]">
-          <p className="font-mono text-[14px] tracking-[0.14em] text-muted uppercase">{toolsLabel}</p>
+          <p className={`font-mono ${large ? "text-[18px]" : "text-[14px]"} tracking-[0.14em] text-muted uppercase`}>{toolsLabel}</p>
           <div className="mt-[8px] flex flex-wrap items-baseline gap-x-[36px] gap-y-[8px] text-[20px]">
             {tools.map(([k, v]) => (
               <span key={k}>
-                <span className="act-ink mr-[10px] font-mono text-[15px] font-semibold tracking-[0.14em] uppercase">{k}</span>
+                <span className={`act-ink mr-[10px] font-mono ${small} font-semibold tracking-[0.14em] uppercase`}>{k}</span>
                 <span className="text-text">{v}</span>
               </span>
             ))}
@@ -226,6 +232,11 @@ function StopPlan({
       </div>
 
       <ActionBand on={step >= 4}>{action}</ActionBand>
+      {bridge ? (
+        <Reveal on={step >= 4} delay={0.06}>
+          <p className="mt-[14px] text-[20px] text-muted">→ {bridge}</p>
+        </Reveal>
+      ) : null}
     </div>
   );
 }
@@ -238,7 +249,7 @@ function ActionBand({ on, children }: { on: boolean; children: ReactNode }) {
         className="flex items-center gap-[28px] rounded-[18px] px-[36px] py-[22px]"
         style={{ background: "color-mix(in oklab, var(--act) 9%, var(--surface))", borderLeft: "8px solid var(--act)" }}
       >
-        <span className="act-ink shrink-0 font-mono text-[17px] font-semibold tracking-[0.18em]">ACTION</span>
+        <span className="act-ink shrink-0 font-mono text-[18px] font-semibold tracking-[0.18em]">ACTION</span>
         <p className="font-display text-[34px] leading-[1.2] font-bold text-text">{children}</p>
       </div>
     </Reveal>
@@ -286,8 +297,68 @@ export function S13({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S17 · Your plan (students) ---------- */
-export function S17({ step }: ScreenProps) {
+/* ---------- S21 · Students: the myth ("AI does everything — so I don't need to learn") ---------- */
+export function S21({ step }: ScreenProps) {
+  const s = st.studentMyth;
+  const reduce = useReducedMotion();
+  const bullet = (color: string) => <span className="mt-[15px] h-[9px] w-[9px] shrink-0 rounded-full" style={{ background: color }} aria-hidden />;
+  return (
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <SrcTag items={[step >= 2 && "Andrew Ng, The Batch, Mar 2025"]} />
+      <StopEyebrow>{s.eyebrow}</StopEyebrow>
+      <div className="relative mt-[14px] flex items-center gap-[40px]">
+        <p className={`${H} text-[64px] leading-[1.05]`}>{s.headline}</p>
+        {/* the slide-1 rubber stamp, smaller, in the fail colour */}
+        <motion.p
+          className="shrink-0 rounded-[12px] border-[4px] px-[22px] py-[4px] font-display text-[44px] leading-[1.1] font-bold whitespace-nowrap"
+          style={{ color: "var(--fail)", borderColor: "var(--fail)", background: "rgba(255, 255, 255, 0.88)", boxShadow: "0 10px 22px -10px rgba(192, 54, 44, 0.45)", rotate: -6 }}
+          initial={false}
+          animate={step >= 1 ? { opacity: 1, scale: 1 } : { opacity: 0, scale: reduce ? 1 : 1.4 }}
+          transition={{ duration: reduce ? 0.15 : 0.18, ease: "easeOut" }}
+          aria-hidden={step < 1}
+        >
+          {s.stamp}
+        </motion.p>
+      </div>
+
+      <div className="mt-[44px] grid grid-cols-[1fr_1fr_1.05fr] gap-[28px]">
+        <Reveal on={step >= 2} className="h-full">
+          <div className="h-full rounded-[18px] border border-t-[6px] border-line bg-surface p-[32px]" style={{ borderTopColor: "var(--delegate-fill)" }}>
+            <p className="font-display text-[34px] leading-[1.1] font-bold text-delegate">{s.lessLabel}</p>
+            <ul className="mt-[20px] space-y-[14px]">
+              {s.less.map((it) => (
+                <li key={it} className="flex gap-[16px] text-[30px] leading-[1.3] text-muted">{bullet("var(--delegate-fill)")}<span>{it}</span></li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+        <Reveal on={step >= 2} delay={0.06} className="h-full">
+          <div className="h-full rounded-[18px] border border-t-[6px] border-line bg-surface p-[32px]" style={{ borderTopColor: "var(--act)" }}>
+            <p className="act-ink font-display text-[34px] leading-[1.1] font-bold">{s.moreLabel} <span className="text-text">{s.moreLead}</span></p>
+            <ul className="mt-[20px] space-y-[10px]">
+              {s.more.map((it) => (
+                <li key={it} className="flex gap-[16px] text-[30px] leading-[1.3] text-text">{bullet("var(--act)")}<span>{it}</span></li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+        <Reveal on={step >= 2} delay={0.12} className="h-full">
+          <QuoteCol q={s.ng} size={26} srcPx={18} />
+        </Reveal>
+      </div>
+      <Reveal on={step >= 2} delay={0.12}>
+        <p className="mt-[24px] text-[26px] leading-[1.35] text-muted">{s.still}</p>
+      </Reveal>
+
+      <Reveal on={step >= 3} className="mt-auto">
+        <p className={`${H} keyline text-[44px] leading-[1.2]`}>{s.last}</p>
+      </Reveal>
+    </div>
+  );
+}
+
+/* ---------- S23 · Your plan (students) ---------- */
+export function S23({ step }: ScreenProps) {
   const s = st.studentPlan;
   return (
     <StopPlan
@@ -298,13 +369,15 @@ export function S17({ step }: ScreenProps) {
       evidence={s.evidence}
       tools={s.tools}
       action={s.action}
-      src={[step >= 2 && "Andrew Ng, The Batch, Mar 2025", step >= 2 && "Lee et al., CHI 2025", step >= 3 && "GitHub Docs"]}
+      bridge={s.bridge}
+      large
+      src={[step >= 2 && "Lee et al., CHI 2025", step >= 3 && "GitHub Docs"]}
     />
   );
 }
 
-/* ---------- S23 · Your rollout (universities & educators) ---------- */
-export function S23({ step }: ScreenProps) {
+/* ---------- S19 · Your rollout (universities & educators) ---------- */
+export function S19({ step }: ScreenProps) {
   const s = st.educatorRollout;
   return (
     <StopPlan
@@ -378,6 +451,7 @@ export function S31({ step }: ScreenProps) {
       evidence={s.evidence}
       tools={s.tools}
       action={s.action}
+      large
       src={[step >= 2 && "DX, Sep 2025"]}
     />
   );

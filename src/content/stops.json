@@ -43,13 +43,33 @@
     "action": "This week: one real task, one agent — and proof before you ship."
   },
 
+  "studentMyth": {
+    "eyebrow": "Students · the myth",
+    "headline": "“AI does everything — so I don't need to learn.”",
+    "stamp": "Wrong.",
+    "lessLabel": "Less of",
+    "less": ["memorising syntax", "typing boilerplate", "hunting through API docs"],
+    "moreLabel": "More of",
+    "moreLead": "engineering",
+    "more": ["design", "debugging", "testing", "security", "reading & reviewing code"],
+    "still": "You still read and understand every line — and write it yourself when needed.",
+    "last": "Good news: learning a new concept has never been faster. The catch: there's more to learn.",
+    "ng": {
+      "quote": "Some people today are discouraging others from learning programming on the grounds AI will automate it. This advice will be seen as some of the worst career advice ever given.",
+      "mark": "some of the worst career advice ever given",
+      "speaker": "Andrew Ng",
+      "role": "Founder, DeepLearning.AI",
+      "source": "The Batch, Issue 292 · 12 Mar 2025"
+    }
+  },
+
   "studentPlan": {
     "eyebrow": "Your plan · students",
     "headline": "Learn with AI. Prove it without AI.",
     "columns": [
-      { "label": "Skills", "sub": "learn now", "items": ["Programming, data structures & algorithms", "HTTP, APIs & SQL", "Git & testing", "Auth & OWASP basics", "Reading code you didn't write"] },
-      { "label": "Habits", "sub": "every week", "items": ["First version by hand — AI explains, doesn't solve", "Then ask AI for an alternative; explain the trade-off", "A 30-minute AI-off kata", "Log what the AI got wrong", "Teach back one concept"] },
-      { "label": "Project", "sub": "one portfolio piece", "items": ["One small API, built twice", "v1 by hand · v2 extended with an agent", "README, AGENTS.md and a process log", "Negative tests · “3 AI mistakes I caught”", "Go broad, not narrow: a product engineer, not just “frontend” or “backend”"] }
+      { "label": "Foundations", "sub": "the engineering core", "items": ["Know how an OS runs your code", "Model data and write real SQL", "Design with OOP — not just classes", "Solve the problem before you prompt"], "strip": "See the whole SDLC: requirements → design → build → test → deploy → operate" },
+      { "label": "Breadth", "sub": "go broad, not narrow", "items": ["Be a product engineer — own a feature end to end: the user problem, UI, API, data, tests, release", "Learn a business domain (fintech, health, e-commerce…)", "Keep one deep strength (T-shaped)"] },
+      { "label": "Edge", "sub": "what sets you apart", "items": ["Technical English — a prompt is a specification; write it clearly in English", "GenAI & agents — after you can code: by hand → with AI → with agents", "Habits: first version by hand · log what the AI got wrong · teach back one concept"] }
     ],
     "tools": [
       ["Learn", "ChatGPT study mode · Claude learning mode · Gemini Guided Learning · CS50.ai"],
@@ -57,8 +77,9 @@
       ["Agents", "Claude Code · OpenAI Codex · Gemini CLI"],
       ["Test", "xUnit / pytest · Playwright"]
     ],
-    "evidence": "Andrew Ng on “don't learn to code”: “This advice will be seen as some of the worst career advice ever given.” · Lee et al. (CHI 2025): the more people trust AI, the less critical thinking they report.",
-    "action": "This month: build one small API by hand, extend it with an agent — and explain both."
+    "evidence": "Lee et al. (CHI 2025): the more people trust AI, the less critical thinking they report.",
+    "action": "One project: build it by hand, extend it with an agent, explain every line.",
+    "bridge": "Graduates & juniors: all of this applies to you — Stop 04 adds the job-market reality and more tips."
   },
 
   "educatorRollout": {
@@ -91,10 +112,10 @@
   },
 
   "first90": {
-    "eyebrow": "Your plan · fresh graduates",
+    "eyebrow": "Your plan · fresh graduates & juniors",
     "headline": "Your first 90 days.",
     "columns": [
-      { "label": "Stand out", "sub": "before day one", "items": ["A project with a process log", "One merged open-source PR", "An “AI mistakes I caught” write-up", "Explain every line", "Go broad, not narrow: a product engineer, not just “frontend” or “backend”"] },
+      { "label": "Stand out", "sub": "before day one", "items": ["A project with a process log", "One merged open-source PR", "An “AI mistakes I caught” write-up", "Explain every line", "Volunteer for cross-stack tickets — breadth, on the job"] },
       { "label": "Days 1–30", "sub": "learn the system", "items": ["Set up the agent with the team's context files", "Read the codebase with AI as a guide", "Fix three small bugs — first attempt by hand"] },
       { "label": "Days 31–60", "sub": "contribute", "items": ["Issue → plan → agent → verify → PR", "A negative test with every change", "Pair with a senior on one agent session"] },
       { "label": "Days 61–90", "sub": "own", "items": ["One small feature, end to end", "A written design rationale", "Catch one bug before review"] }

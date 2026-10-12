@@ -39,7 +39,7 @@ export const UNLOCK_TOKEN_HOURS = 6;
 export const SHARE = {
   title: "AI-Era Software Engineering — Hany Saad · Live · Mon 12 Oct · 8:00PM Cairo time",
   description:
-    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 8:00PM Cairo time. Seven stops: The shift · Students · Universities & educators · Fresh graduates · Current engineers · Companies · Customers & clients.",
+    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 8:00PM Cairo time. Seven stops: The shift · Universities & educators · Students · Fresh graduates & juniors · Current engineers · Companies · Customers & clients.",
 } as const;
 
 /** Total talk target: 41:30. */
@@ -49,9 +49,9 @@ export const ACTS = [
   "Lobby",
   "Opening",
   "Act 1 · The shift",
-  "Act 2 · Students",
-  "Act 3 · Universities & educators",
-  "Act 4 · Fresh graduates",
+  "Act 2 · Universities & educators",
+  "Act 3 · Students",
+  "Act 4 · Fresh graduates & juniors",
   "Act 5 · Current engineers",
   "Act 6 · Companies",
   "Act 7 · Customers & clients",

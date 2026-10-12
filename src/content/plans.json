@@ -2,21 +2,8 @@
   "intro": "Every stop of the talk ends with one action. These are the full plans behind them. Tools are named as examples, grouped by purpose — not endorsements.",
   "roles": [
     {
-      "id": "students",
-      "stop": 2,
-      "title": "Students",
-      "action": "This month: build one small API by hand, extend it with an agent — and explain both.",
-      "blocks": [
-        ["Learn now", ["Programming, data structures & algorithms", "HTTP, APIs & SQL", "Git, testing and debugging", "Auth basics and the OWASP Top 10", "Reading code you didn't write", "Writing a clear specification: inputs, outputs, constraints, acceptance criteria"]],
-        ["Weekly habits", ["First version by hand — AI may explain, not solve", "Then ask AI for an alternative and explain the trade-off in your own words", "A 30-minute AI-off kata: an algorithm, a bug or a small refactor", "A log of what the AI got wrong — and how you noticed", "Teach back one concept a week: a post, a talk or a study partner"]],
-        ["Portfolio project — one small API, built twice", ["v1 by hand: a small REST API with auth, a database and tests", "v2: extend it with a coding agent — one new feature, end to end", "Ship a README, an AGENTS.md (your rules for the agent) and a process log", "Negative tests for every auth rule, and a short “3 AI mistakes I caught” write-up", "A 5-minute walkthrough video that explains every design decision"]],
-        ["Go broad, not narrow — a product engineer, not just “frontend” or “backend”", ["Work end to end: UI, API, data, tests, deployment — AI makes crossing the stack cheaper than ever", "Learn the business domain you build for (e.g. fintech, health, e-commerce): domain understanding is what AI can't supply", "Keep one deep strength (T-shaped), but don't define yourself by a single layer or framework"]],
-        ["Ready when", ["You can build and debug a small service with AI off — and explain the version you built with AI"]]
-      ]
-    },
-    {
       "id": "educators",
-      "stop": 3,
+      "stop": 2,
       "title": "Universities & educators",
       "action": "This term: change one assignment — AI allowed, explanation required.",
       "blocks": [
@@ -26,13 +13,30 @@
       ]
     },
     {
+      "id": "students",
+      "stop": 3,
+      "title": "Students",
+      "action": "One project: build it by hand, extend it with an agent, explain every line.",
+      "blocks": [
+        ["The myth — “AI does everything, so I don't need to learn”", ["Wrong. Less of: memorising syntax, typing boilerplate, hunting through API docs", "More of: engineering — design, debugging, testing, security, reading & reviewing code", "You still read and understand every line — and write it yourself when needed", "Good news: learning a new concept has never been faster. The catch: there's more to learn"]],
+        ["Foundations — the engineering core", ["Know how an OS runs your code: processes, memory, threads, files", "Model data and write real SQL: schemas, joins, indexes, transactions", "Design with OOP — not just classes: responsibilities, interfaces, composition", "Solve the problem before you prompt: decompose it and sketch it, then ask", "Programming, data structures & algorithms; HTTP & APIs; Git, testing and debugging; auth basics and the OWASP Top 10", "See the whole SDLC: requirements → design → build → test → deploy → operate"]],
+        ["Breadth — go broad, not narrow", ["Be a product engineer — own a feature end to end: the user problem, UI, API, data, tests, release. It's a way of working with product and design; it doesn't replace analysts or testers", "Learn a business domain (fintech, health, e-commerce…): domain understanding is what AI can't supply", "Keep one deep strength (T-shaped), but don't define yourself by a single layer or framework"]],
+        ["Edge — what sets you apart", ["Technical English — a prompt is a specification; write it clearly in English: inputs, outputs, constraints, acceptance criteria", "GenAI & agents — after you can code: by hand → with AI → with agents. Agentic coding is a skill too — learn it after you've written code yourself", "Read code you didn't write — and review AI output like a teammate's pull request"]],
+        ["Learning order", ["1 · Write it yourself", "2 · Use AI to explain, compare and critique", "3 · Delegate to agents — once you can verify the result"]],
+        ["Weekly habits", ["First version by hand — AI may explain, not solve", "Log what the AI got wrong — and how you noticed", "Teach back one concept a week: a post, a talk or a study partner", "A 30-minute AI-off kata: an algorithm, a bug or a small refactor"]],
+        ["Concepts outlive tools — learn the concept behind each tool", ["Framework APIs → separation of concerns", "ORM syntax → data modelling & transactions", "AI coding products → decomposition & validation", "Cloud commands → scalability & reliability", "Security libraries → authN/authZ & threat modelling", "Frameworks change. Engineering principles travel with you."]],
+        ["Portfolio project — one small API, built twice", ["v1 by hand: a small REST API with auth, a database and tests", "v2: extend it with a coding agent — one new feature, end to end", "Ship a README, an AGENTS.md (your rules for the agent) and a process log", "Negative tests for every auth rule, and a short “3 AI mistakes I caught” write-up", "A 5-minute walkthrough video that explains every design decision"]],
+        ["Ready when", ["You can build and debug a small service with AI off — and explain the version you built with AI"]]
+      ]
+    },
+    {
       "id": "graduates",
       "stop": 4,
-      "title": "Fresh graduates",
+      "title": "Fresh graduates & juniors",
       "action": "Make it visible: every PR explained, every agent mistake logged.",
       "blocks": [
         ["Stand out — before day one", ["One project with a process log and an AGENTS.md", "One merged open-source pull request", "An “AI mistakes I caught” write-up", "Be ready to explain every line — and to change it live"]],
-        ["Go broad, not narrow — a product engineer, not just “frontend” or “backend”", ["Work end to end: UI, API, data, tests, deployment — AI makes crossing the stack cheaper than ever", "Learn the business domain you build for (e.g. fintech, health, e-commerce): domain understanding is what AI can't supply", "Keep one deep strength (T-shaped), but don't define yourself by a single layer or framework"]],
+        ["Breadth on the job — everything from Stop 03 applies", ["The Students plan is yours too: foundations, breadth (the product-engineer mindset) and edge", "Volunteer for cross-stack tickets — breadth, on the job", "Learn the business domain of your first product: ask why each feature exists"]],
         ["Days 1–30 — learn the system", ["Set up your agent with the team's context files and conventions", "Read the codebase with AI as a guide; draw the architecture yourself", "Fix three small bugs — first attempt by hand, then compare with the agent"]],
         ["Days 31–60 — contribute", ["Issue → plan → agent → verify → PR, with the plan approved before the code", "A negative test with every change", "Pair with a senior on one agent session; ask them to review your prompts and diffs"]],
         ["Days 61–90 — own", ["One small feature, end to end", "A written design rationale: two alternatives considered, and why this one", "Catch one bug before review — and write down how you found it"]]
