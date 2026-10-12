@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useRef, useState } from "react";
-import { ArcMotif, EASE, Eyebrow, QuoteCard, QuoteGlyph } from "@/components/kit";
+import { ArcMotif, EASE, Eyebrow, QRTile, QuoteGlyph } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import { BLUEPRINT_PATH } from "@/config";
 import c from "@/content/act3.json";
@@ -33,7 +33,7 @@ function useToggleT(step: number) {
   return on;
 }
 
-/* ---------- S25–S27 · The entry door is narrowing (4.5% / Stanford / Garman) ---------- */
+/* ---------- S25–S27 · Entry-level hiring and the WorxForge internship case ---------- */
 export function S25({ step }: ScreenProps) {
   const s = c.s12;
   return (
@@ -107,22 +107,32 @@ export function S26({ step }: ScreenProps) {
 export function S27({ step }: ScreenProps) {
   const s = c.s12;
   return (
-    <div className="relative flex h-full w-full flex-col justify-center p-[96px]">
-      <SrcTag items={["The Register, Aug 2025", step >= 2 && "Fortune, Feb 2026", step >= 2 && "Platformer, Jun 2026"]} />
-      <Reveal on={step >= 1}>
-        <QuoteCard quote={s.quote} speaker={s.speaker} role={s.role} source={s.source} date={s.date} />
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <SrcTag items={["ITWorx · WorxForge internship case, 2026"]} />
+      <Eyebrow color="var(--act)">{s.caseLabel}</Eyebrow>
+      <p className={`${H} mt-[18px] text-[80px] leading-[1.1]`}>{s.good}</p>
+      <Reveal on={step >= 1} className="mt-[28px]">
+        <p className="max-w-[1500px] font-display text-[44px] leading-[1.2] font-bold text-own">{s.facts}</p>
+        <p className="mt-[16px] max-w-[1400px] text-[28px] leading-[1.35] text-muted">{s.result}</p>
       </Reveal>
-      <Reveal on={step >= 2} className="mt-[48px]">
-        <Eyebrow color="var(--own)">{s.openLabel}</Eyebrow>
-        <div className="mt-[16px] grid grid-cols-2 gap-[24px]">
-          {s.open.map(([q, by]) => (
-            <div key={by} className="rounded-[16px] border-l-[6px] border-own bg-surface p-[28px]">
-              <p className="text-[28px] leading-[1.3] text-text">{q}</p>
-              <p className="mt-[12px] font-mono text-[16px] text-muted">{by}</p>
-            </div>
-          ))}
-        </div>
-      </Reveal>
+      <div className="mt-[48px] flex flex-1 items-center gap-[80px]">
+        <Reveal on={step >= 2} className="flex-1">
+          <div className="space-y-[24px]">
+            {s.roles.map(([col, label, text]) => (
+              <div key={label} className="flex items-start gap-[28px] border-b border-line pb-[20px]">
+                <p className="w-[190px] shrink-0 font-display text-[32px] font-bold" style={{ color: COL[col!] }}>{label}</p>
+                <p className="flex-1 text-[28px] leading-[1.35] text-text">{text}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-[28px] text-[22px] text-muted">{s.limits}</p>
+        </Reveal>
+        <Reveal on={step >= 1} className="w-[400px] shrink-0 text-center">
+          <p className="mb-[20px] font-display text-[36px] font-bold text-text">{s.qrTitle}</p>
+          <QRTile url={s.qrUrl} size={300} label={s.qrLink} />
+          <p className="mt-[18px] text-[22px] leading-[1.35] text-muted">{s.qrSub}</p>
+        </Reveal>
+      </div>
     </div>
   );
 }

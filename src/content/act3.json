@@ -12,16 +12,21 @@
     "nyfedLabel": "Recent-graduate unemployment (ages 22–27)",
     "nyfed": [["Computer engineering", 7.8], ["Computer science", 7.0], ["All majors", 4.2]],
     "nyfedSrc": "Federal Reserve Bank of New York · 2024 data, published Feb 2026",
-    "quote": "How's that going to work when ten years in the future you have no one that has learned anything",
-    "speaker": "Matt Garman",
-    "role": "CEO, AWS",
-    "source": "via The Register",
-    "date": "Aug 2025",
-    "openLabel": "Narrower — not closed",
-    "open": [
-      ["“We are tripling our entry-level hiring, and yes, that is for software developers”", "Nickle LaMoreaux, CHRO, IBM · via Fortune, Feb 2026"],
-      ["“This is the reason we're hiring 11,000 interns and new college grads this year at Amazon.”", "Matt Garman, CEO, AWS · Platformer, Jun 2026"]
-    ]
+    "caseLabel": "ITWorx Summer Internship 2026 · WorxForge",
+    "good": "Good news: juniors can build real software",
+    "facts": "Four students. Four weeks. A new stack. One working application.",
+    "result": "A locally deployed .NET and React application for publishing, discovering and reusing knowledge assets.",
+    "roles": [
+      ["delegate", "Delegate", "Coding agents generated the application code"],
+      ["direct", "Direct", "The students directed the agents"],
+      ["validate", "Validate", "They tested the results and iterated toward the agreed behaviour"],
+      ["own", "Own", "The students owned the challenge — with technical mentorship"]
+    ],
+    "limits": "One observational case with technical mentorship, not a controlled study.",
+    "qrTitle": "Here's the code.",
+    "qrUrl": "https://github.com/itworx/WorxForge",
+    "qrLink": "github.com/itworx/WorxForge",
+    "qrSub": "Open source (MIT) · whitepaper in the repo"
   },
   "s13": {
     "headline": "The new entry-level bar.",

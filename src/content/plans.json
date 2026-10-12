@@ -45,7 +45,7 @@
     {
       "id": "engineers",
       "stop": 5,
-      "title": "Current engineers",
+      "title": "Experienced software engineers",
       "action": "This sprint: review one agent session as a team — and do one task AI-off.",
       "blocks": [
         ["Developer", ["Master one agent end to end: issue → approved plan → PR, with your own verification", "A weekly AI-off kata; own the regression tests", "Ready when you catch agent errors before reviewers do"]],
@@ -68,7 +68,7 @@
     {
       "id": "companies",
       "stop": 6,
-      "title": "Companies",
+      "title": "Software companies & teams",
       "action": "Start Monday: baseline first — then adopt, train and measure together.",
       "blocks": [
         ["Days 1–30 — foundations", ["A clear, communicated AI stance and guardrails: data, security, review rules", "Two or three workflows, with pilot teams", "Baseline delivery and quality (lead time, change failure rate, escaped defects) before rollout", "Context files in key repositories"]],
@@ -80,7 +80,7 @@
     {
       "id": "clients",
       "stop": 7,
-      "title": "Customers & clients",
+      "title": "Software buyers & stakeholders",
       "action": "Ask your vendor how they use AI — and how they verify it.",
       "blocks": [
         ["Within your reach", ["Simple apps you build yourself: prototypes, internal tools and automations"]],

@@ -3,7 +3,7 @@
   "2": { "eyebrow": "STOP 02", "title": "Universities & educators", "question": "What should we teach — and how should we assess it?" },
   "3": { "eyebrow": "STOP 03", "title": "Students", "question": "What should you learn now — and how?" },
   "4": { "eyebrow": "STOP 04", "title": "Fresh graduates & juniors", "question": "What does ‘job-ready’ mean now?" },
-  "5": { "eyebrow": "STOP 05", "title": "Current engineers", "question": "How do working engineers keep growing?" },
-  "6": { "eyebrow": "STOP 06", "title": "Companies", "question": "What must organisations start now?" },
-  "7": { "eyebrow": "STOP 07", "title": "Customers & clients", "question": "What should you expect from AI‑built software?" }
+  "5": { "eyebrow": "STOP 05", "title": "Experienced software engineers", "question": "How do working engineers keep growing?" },
+  "6": { "eyebrow": "STOP 06", "title": "Software companies & teams", "question": "What must organisations start now?" },
+  "7": { "eyebrow": "STOP 07", "title": "Software buyers & stakeholders", "question": "What should you expect from AI‑built software?" }
 }

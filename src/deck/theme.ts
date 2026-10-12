@@ -12,9 +12,9 @@ export const ACT_COLORS: Partial<Record<Act, string>> = {
   "Act 2 · Universities & educators": "#0E9F6E",
   "Act 3 · Students": "#BE185D",
   "Act 4 · Fresh graduates & juniors": "#B7791F",
-  "Act 5 · Current engineers": "#7C3AED",
-  "Act 6 · Companies": "#DC2626",
-  "Act 7 · Customers & clients": "#0E7490",
+  "Act 5 · Experienced software engineers": "#7C3AED",
+  "Act 6 · Software companies & teams": "#DC2626",
+  "Act 7 · Software buyers & stakeholders": "#0E7490",
 };
 
 /** Act colours lifted for text on the navy stage (all ≥ 4.5:1 on #0F1B33). */
@@ -23,9 +23,9 @@ export const ACT_COLORS_ON_NAVY: Partial<Record<Act, string>> = {
   "Act 2 · Universities & educators": "#5EE6AA",
   "Act 3 · Students": "#F9A8D4",
   "Act 4 · Fresh graduates & juniors": "#F6C35C",
-  "Act 5 · Current engineers": "#B9A2FF",
-  "Act 6 · Companies": "#FF8A80",
-  "Act 7 · Customers & clients": "#67E8F9",
+  "Act 5 · Experienced software engineers": "#B9A2FF",
+  "Act 6 · Software companies & teams": "#FF8A80",
+  "Act 7 · Software buyers & stakeholders": "#67E8F9",
 };
 
 /** Act n is agenda stop n ("Stop 01" … "Stop 07"); the Opening and Closing are not stops. */

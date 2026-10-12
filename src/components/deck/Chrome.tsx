@@ -291,7 +291,7 @@ export function RoomHeader() {
           )}
         </span>
         <span className="font-mono text-[13px] text-muted tabular-nums">
-          <span className="text-text">{pad2(deck.index)}</span> / {pad2(deck.total)}
+          <span className="text-text">{pad2(deck.index)}</span> / {pad2(deck.total - 1)}
         </span>
         <button
           type="button"

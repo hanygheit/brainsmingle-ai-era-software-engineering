@@ -18,7 +18,7 @@ export const SITE_TITLE = "AI-Era Software Engineering — Hany Saad | BrainsMin
 export const SITE_DESCRIPTION = "From Graduate Readiness to Talent Development: Hany Saad’s keynote on AI-era software engineering, learning and talent development at BrainsMingle AI Summit 2026.";
 /** Link-preview image (public/og-image.png, 1200×630): title, Live · Mon 12 Oct · 8:00PM Cairo time, the seven stops. */
 export const SOCIAL_PREVIEW_URL = `${PRESENTATION_URL}/og-image.png`;
-export const SOCIAL_PREVIEW_ALT = "AI-Era Software Engineering — Hany Saad. Live · Mon 12 Oct · 8:00PM Cairo time. Seven stops from The shift to Customers & clients.";
+export const SOCIAL_PREVIEW_ALT = "AI-Era Software Engineering — Hany Saad. Live · Mon 12 Oct · 8:00PM Cairo time. Seven stops from The shift to Software buyers & stakeholders.";
 export const PDF_FILENAME = "AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026.pdf";
 
 export const EVENT = {
@@ -44,7 +44,7 @@ export const UNLOCK_TOKEN_HOURS = 6;
 export const SHARE = {
   title: "AI-Era Software Engineering — Hany Saad · Live · Mon 12 Oct · 8:00PM Cairo time",
   description:
-    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 8:00PM Cairo time. Seven stops: The shift · Universities & educators · Students · Fresh graduates & juniors · Current engineers · Companies · Customers & clients.",
+    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 8:00PM Cairo time. Seven stops: The shift · Universities & educators · Students · Fresh graduates & juniors · Experienced software engineers · Software companies & teams · Software buyers & stakeholders.",
 } as const;
 
 /** Total talk target: 41:30. */
@@ -59,9 +59,9 @@ export const ACTS = [
   "Act 2 · Universities & educators",
   "Act 3 · Students",
   "Act 4 · Fresh graduates & juniors",
-  "Act 5 · Current engineers",
-  "Act 6 · Companies",
-  "Act 7 · Customers & clients",
+  "Act 5 · Experienced software engineers",
+  "Act 6 · Software companies & teams",
+  "Act 7 · Software buyers & stakeholders",
   "Synthesis",
   "Q&A",
   "Closing",

@@ -457,7 +457,7 @@ export function S31({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S38 · Your learning system (current engineers) ---------- */
+/* ---------- S38 · Your learning system (experienced software engineers) ---------- */
 export function S38({ step }: ScreenProps) {
   const s = st.engineerLearning;
   return (
@@ -529,7 +529,7 @@ export function S45({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S47 · Stop 07 · Customers & clients: faster — not free, and not instant ---------- */
+/* ---------- S47 · Stop 07 · Software buyers & stakeholders: faster — not free, and not instant ---------- */
 const CLIENT_ICONS: Record<string, LucideIcon> = { wrench: Wrench, zap: Zap, shield: ShieldCheck };
 export function S47({ step }: ScreenProps) {
   const s = st.clients;

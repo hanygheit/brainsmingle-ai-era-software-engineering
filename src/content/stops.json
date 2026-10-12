@@ -130,7 +130,7 @@
   },
 
   "engineerLearning": {
-    "eyebrow": "Your learning system · current engineers",
+    "eyebrow": "Your learning system · experienced software engineers",
     "headline": "New ways to grow — at every level.",
     "columns": [
       { "label": "Pair", "sub": "with an agent", "items": ["State the intent, approve the plan", "Review every diff", "Use it as a tutor on unfamiliar code"] },
@@ -150,7 +150,7 @@
   },
 
   "noLongerOptional": {
-    "eyebrow": "Companies",
+    "eyebrow": "Software companies & teams",
     "headline": "AI adoption is no longer optional.",
     "quotes": [
       {
@@ -176,7 +176,7 @@
   },
 
   "roadmap": {
-    "eyebrow": "Your 90-day roadmap · companies",
+    "eyebrow": "Your 90-day roadmap · software companies & teams",
     "headline": "Adopt, train and measure — together.",
     "columns": [
       { "label": "Days 1–30", "sub": "foundations", "items": ["A clear AI stance and guardrails: data, security, review rules", "Two or three workflows, with pilot teams", "Baseline delivery and quality before rollout", "Context files in key repositories"] },
@@ -188,7 +188,7 @@
   },
 
   "clients": {
-    "eyebrow": "A word for customers & clients",
+    "eyebrow": "A word for software buyers & stakeholders",
     "headline": "Faster — not free, and not instant.",
     "messages": [
       { "icon": "wrench", "title": "Yes, you can build simple apps yourself.", "body": "Prototypes, internal tools and automations are now within reach — with the builder tools from Stop 01." },

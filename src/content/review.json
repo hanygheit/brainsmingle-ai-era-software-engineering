@@ -14,10 +14,10 @@
       ["Educators", "Change one assignment: AI allowed, explanation required.", 2],
       ["Students", "Learn it by hand, then with AI — and explain both.", 3],
       ["Graduates", "Show evidence, not demos: every PR explained, every agent mistake caught.", 4],
-      ["Engineers", "Grow your delegation radius — and review one agent session a week.", 5],
+      ["Experienced software engineers", "Grow your delegation radius — and review one agent session a week.", 5],
       ["Leaders", "Rewrite one development plan around what people can safely own.", 0],
-      ["Companies", "Start the 90 days: baseline, train by stage, measure outcomes — not usage.", 6],
-      ["Clients", "Expect faster, not free: ask how it's built and how it's verified.", 7]
+      ["Software companies & teams", "Start the 90 days: baseline, train by stage, measure outcomes — not usage.", 6],
+      ["Software buyers & stakeholders", "Expect faster, not free: ask how it's built and how it's verified.", 7]
     ]
   },
   "s23": {
@@ -49,6 +49,6 @@
         "own"
       ]
     ],
-    "qa": "Q&A · next 10 minutes — ask in the chat"
+    "qa": "Q&A · next 10 minutes — ask in the Q&A section"
   }
 }

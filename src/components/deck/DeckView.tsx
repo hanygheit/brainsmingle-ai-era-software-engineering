@@ -145,7 +145,7 @@ function DeckInner() {
       ) : null}
       <Blackout />
       <p className="sr-only" aria-live="polite">
-        Slide {deck.index} of {deck.total}: {deck.screen.title}
+        Slide {deck.index} of {deck.total - 1}: {deck.screen.title}
       </p>
     </main>
   );

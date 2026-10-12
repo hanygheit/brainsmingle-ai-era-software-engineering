@@ -11,20 +11,20 @@ describe("deck engine", () => {
   it("has 52 screens S0–S51, each id matching its index", () => {
     expect(screens).toHaveLength(52);
     screens.forEach((sc, i) => expect(sc.id).toBe(`S${i}`));
-    expect(slideLabel(5)).toBe("5 / 52 · Everyone can build software now");
-    expect(slideLabel(3)).toBe("3 / 52 · Seven stops. One question.");
-    expect(slideLabel(46)).toBe("46 / 52 · Stop 07 · Customers & clients");
-    expect(slideLabel(47)).toBe("47 / 52 · Faster — not free, and not instant");
+    expect(slideLabel(5)).toBe("5 / 51 · Everyone can build software now");
+    expect(slideLabel(3)).toBe("3 / 51 · Seven stops. One question.");
+    expect(slideLabel(46)).toBe("46 / 51 · Stop 07 · Software buyers & stakeholders");
+    expect(slideLabel(47)).toBe("47 / 51 · Faster — not free, and not instant");
   });
   it("has seven navy stop separators (agenda stops 01–07) at 4, 14, 20, 24, 32, 39, 46", () => {
     expect(screens.flatMap((sc, i) => (sc.separator ? [i] : []))).toEqual([4, 14, 20, 24, 32, 39, 46]);
     expect(screens.filter((sc) => sc.separator).map((sc) => sc.separator)).toEqual([1, 2, 3, 4, 5, 6, 7]);
-    expect(slideLabel(14)).toBe("14 / 52 · Stop 02 · Universities & educators");
-    expect(slideLabel(20)).toBe("20 / 52 · Stop 03 · Students");
-    expect(slideLabel(24)).toBe("24 / 52 · Stop 04 · Fresh graduates & juniors");
+    expect(slideLabel(14)).toBe("14 / 51 · Stop 02 · Universities & educators");
+    expect(slideLabel(20)).toBe("20 / 51 · Stop 03 · Students");
+    expect(slideLabel(24)).toBe("24 / 51 · Stop 04 · Fresh graduates & juniors");
     expect(screens.slice(21, 24).map((sc) => sc.durationSec)).toEqual([60, 75, 75]);
-    expect(screens[46]!.act).toBe("Act 7 · Customers & clients");
-    expect(screens[47]!.act).toBe("Act 7 · Customers & clients");
+    expect(screens[46]!.act).toBe("Act 7 · Software buyers & stakeholders");
+    expect(screens[47]!.act).toBe("Act 7 · Software buyers & stakeholders");
     expect(screens[48]!.act).toBe("Synthesis");
   });
   it("sources and slides point at each other", () => {
