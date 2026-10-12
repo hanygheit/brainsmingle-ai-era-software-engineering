@@ -3,7 +3,7 @@
 export const SPEAKER = {
   name: "Hany Saad",
   monogram: "HS",
-  roles: ["Senior Software Engineering Manager · ITWorx", "AI & Software Engineering Expert · ITI"],
+  roles: ["Senior Software Engineering Manager · ITWorx", "AI & Software Engineering · ITI"],
 } as const;
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/hanysaad";
