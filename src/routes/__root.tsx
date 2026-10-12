@@ -11,7 +11,6 @@ import { useEffect, type ReactNode } from "react";
 
 import { Toaster } from "@/components/ui/sonner";
 import { GateProvider } from "@/deck/gate";
-import { SHARE_IMAGE } from "@/config";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -82,25 +81,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#0F1B33" },
-      { title: "AI-Era Software Engineering — Hany Saad" },
-      { name: "description", content: "Interactive keynote by Hany Saad — BrainsMingle AI Summit 2026." },
       { name: "author", content: "Hany Saad" },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "BrainsMingle AI Summit 2026" },
-      { property: "og:image", content: SHARE_IMAGE.url },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: SHARE_IMAGE.alt },
+      { property: "og:site_name", content: "AI-Era Software Engineering · Hany Saad" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: SHARE_IMAGE.url },
-      { name: "twitter:image:alt", content: SHARE_IMAGE.alt },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
   shellComponent: RootShell,

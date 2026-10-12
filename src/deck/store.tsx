@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { BROADCAST_CHANNEL } from "@/config";
+import { BROADCAST_CHANNEL, SITE_TITLE } from "@/config";
 import { screens, slideLabel, TOTAL_SCREENS, type Screen } from "@/content/screens";
 
 export type OverlayKey = "overview" | "sources" | "black" | "presenter" | "locked";
@@ -162,7 +162,7 @@ export function DeckProvider({
         window.history.replaceState(window.history.state, "", url);
       }
     }
-    document.title = slideLabel(state.index);
+    if (syncUrl) document.title = `${slideLabel(state.index)} — ${SITE_TITLE}`;
   }, [state, ready, syncUrl]);
 
   const canSeeRef = useRef(canSee);

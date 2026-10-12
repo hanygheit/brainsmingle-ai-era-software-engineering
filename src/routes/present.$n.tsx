@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Deck } from "@/components/deck/DeckView";
 import { slideLabel } from "@/content/screens";
-import { PREVIEW_SLIDES, SHARE } from "@/config";
+import { PREVIEW_SLIDES, SHARE, SITE_TITLE, SOCIAL_PREVIEW_ALT, SOCIAL_PREVIEW_URL } from "@/config";
 
 export const Route = createFileRoute("/present/$n")({
   head: ({ params }) => ({
@@ -11,9 +11,15 @@ export const Route = createFileRoute("/present/$n")({
       { property: "og:title", content: SHARE.title },
       { property: "og:description", content: SHARE.description },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: SOCIAL_PREVIEW_URL },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: SOCIAL_PREVIEW_ALT },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: SHARE.title },
       { name: "twitter:description", content: SHARE.description },
+      { name: "twitter:image", content: SOCIAL_PREVIEW_URL },
+      { name: "twitter:image:alt", content: SOCIAL_PREVIEW_ALT },
     ],
   }),
   component: PresentRoute,
@@ -30,5 +36,5 @@ function PresentRoute() {
 /** Same format the deck writes on every navigation, so the two never disagree. Locked slides' titles stay out of the server HTML. */
 function slideTitle(n: string) {
   const i = Number.parseInt(n, 10) || 0;
-  return i < PREVIEW_SLIDES ? slideLabel(i) : "AI-Era Software Engineering — Hany Saad";
+  return i < PREVIEW_SLIDES ? `${slideLabel(i)} — ${SITE_TITLE}` : SITE_TITLE;
 }
