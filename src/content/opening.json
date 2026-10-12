@@ -16,7 +16,8 @@
     "brainsmingle": "Follow on BrainsMingle",
     "bio": [
       "20+ years in software engineering — building, architecting and leading teams.",
-      "20+ years in software engineering — building, architecting and leading teams. Senior Software Engineering Manager at ITWorx · Also worked  in many other roles including  Software Engineering & GenAI Expert at ITI, MCIT. \nDeliver talks at local and international tech events."
+      "Senior Software Engineering Manager at ITWorx · also worked in many other roles, including Software Engineering & GenAI Expert at ITI and MCIT.",
+      "Delivers talks at local and international tech events."
     ],
     "startingNow": "Starting now",
     "startsIn": "Starts in",
@@ -37,8 +38,20 @@
       "built": "Built in 2 h 14 min with an AI coding agent",
       "files": "Files",
       "checks": "Checks",
-      "tree": ["src/Program.cs", "src/Auth/TokenService.cs", "src/Auth/AuthController.cs", "src/Data/AppDbContext.cs", "tests/AuthTests.cs", "README.md"],
-      "list": ["Build passing", "23 / 23 tests", "Docs generated", "Deployed"],
+      "tree": [
+        "src/Program.cs",
+        "src/Auth/TokenService.cs",
+        "src/Auth/AuthController.cs",
+        "src/Data/AppDbContext.cs",
+        "tests/AuthTests.cs",
+        "README.md"
+      ],
+      "list": [
+        "Build passing",
+        "23 / 23 tests",
+        "Docs generated",
+        "Deployed"
+      ],
       "explain": "Can the author explain it?",
       "stamp": "READY · Grade A"
     },
@@ -46,19 +59,49 @@
     "task": "Add secure authentication to this application.",
     "tag": "Illustrative · simulated",
     "terminal": [
-      { "text": "› Reading repository…" },
-      { "text": "› Investigating auth dependencies…" },
-      { "text": "› Plan proposed (7 steps)" },
-      { "text": "› Editing 14 files…" },
-      { "text": "› Generating tests…" },
-      { "text": "› Running tests… 21 passed · 2 failed", "status": "warn" },
-      { "text": "› Fixing failures…" },
-      { "text": "› Running tests… 23 passed", "status": "ok" },
-      { "text": "› Updating docs…" },
-      { "text": "› Opening pull request…" },
-      { "text": "✓ Implementation ready for review", "status": "ok" }
+      {
+        "text": "› Reading repository…"
+      },
+      {
+        "text": "› Investigating auth dependencies…"
+      },
+      {
+        "text": "› Plan proposed (7 steps)"
+      },
+      {
+        "text": "› Editing 14 files…"
+      },
+      {
+        "text": "› Generating tests…"
+      },
+      {
+        "text": "› Running tests… 21 passed · 2 failed",
+        "status": "warn"
+      },
+      {
+        "text": "› Fixing failures…"
+      },
+      {
+        "text": "› Running tests… 23 passed",
+        "status": "ok"
+      },
+      {
+        "text": "› Updating docs…"
+      },
+      {
+        "text": "› Opening pull request…"
+      },
+      {
+        "text": "✓ Implementation ready for review",
+        "status": "ok"
+      }
     ],
-    "chips": ["Implementation generated", "Tests generated", "Documentation generated", "Pull request opened"],
+    "chips": [
+      "Implementation generated",
+      "Tests generated",
+      "Documentation generated",
+      "Pull request opened"
+    ],
     "line1": "The code is ready.",
     "line2": "Are we?"
   },
