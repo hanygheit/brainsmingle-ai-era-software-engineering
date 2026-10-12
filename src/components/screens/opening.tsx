@@ -1,6 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { usePrintMode } from "@/deck/print-mode";
-import { useEffect, useState } from "react";
 import { ArcMotif, EASE, Eyebrow, QRTile, Terminal, type TermStatus } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import { BRAINSMINGLE_URL, EVENT, LINKEDIN_URL } from "@/config";
@@ -9,6 +8,12 @@ import { LiveVote } from "./live-vote";
 import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
 import qrBrains from "@/assets/qr-brainsmingle-hanysaad.svg.asset.json";
 import { BrandBar, Chip, Pill, Reveal, SpeakerBlock, Tag, useTicker } from "./shared";
+import { Terminal as TerminalIcon } from "lucide-react";
+import agenda from "@/content/agenda.json";
+import separators from "@/content/separators.json";
+import { stopColors } from "@/deck/theme";
+import { useServerNow } from "@/deck/gate";
+import { ICONS } from "./stops";
 
 function BreathingArcs({ radius = 520, opacity = 0.6 }: { radius?: number; opacity?: number }) {
   const reduce = useReducedMotion();
@@ -27,12 +32,7 @@ function BreathingArcs({ radius = 520, opacity = 0.6 }: { radius?: number; opaci
 function Countdown() {
   const print = usePrintMode();
   const target = new Date(EVENT.start).getTime();
-  const [now, setNow] = useState<number | null>(null);
-  useEffect(() => {
-    setNow(Date.now());
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, []);
+  const now = useServerNow();
   if (print) return <p className="font-mono text-[26px] text-muted">Mon 12 Oct 2026 · 20:00 Cairo</p>;
   if (now === null) return <p className="h-[30px]" />;
   const left = Math.max(0, Math.floor((target - now) / 1000));
@@ -61,29 +61,75 @@ function SignatureTitle({ text }: { text: string }) {
 }
 
 /* ---------- S0 · Lobby ---------- */
+/** The six parts of the talk (stops 02–07), numbered 1–6 for the lobby. */
+const JOURNEY = c.s0.journey.map((promise, i) => ({
+  n: String(i + 1).padStart(2, "0"),
+  name: separators[String(i + 1) as keyof typeof separators].title,
+  Icon: ICONS[agenda.stops[i + 1]?.icon ?? ""] ?? TerminalIcon,
+  promise,
+  ...stopColors(i + 2),
+}));
+
+function Journey() {
+  return (
+    <section aria-label={c.s0.cover}>
+      <p className="text-center font-mono text-[18px] tracking-[0.18em] text-muted uppercase">{c.s0.cover}</p>
+      <div className="relative mt-[28px]">
+        {/* the connecting line, centre of the first node to centre of the last */}
+        <div
+          className="absolute top-[37px] right-[calc(100%/12)] left-[calc(100%/12)] h-[2px] rounded-full opacity-70"
+          style={{ background: `linear-gradient(90deg, ${JOURNEY.map((j) => j.ink).join(", ")})` }}
+          aria-hidden
+        />
+        <ol className="relative grid grid-cols-6">
+          {JOURNEY.map(({ n, name, Icon, promise, fill, ink }) => (
+            <li key={n} className="flex flex-col items-center px-[14px] text-center">
+              {/* SVG ring: big CSS circles print with a flattened bottom in Chromium's PDF output */}
+              <span className="relative block h-[76px] w-[76px]">
+                <svg width={76} height={76} viewBox="0 0 76 76" className="absolute inset-0" aria-hidden>
+                  <circle cx={38} cy={38} r={36} style={{ fill: `color-mix(in oklab, ${fill} 20%, #0F1B33)` }} stroke={ink} strokeWidth={2} />
+                </svg>
+                <Icon size={32} strokeWidth={1.75} color={ink} className="absolute top-[22px] left-[22px]" aria-hidden />
+              </span>
+              <p className="mt-[16px] font-mono text-[17px] tracking-[0.12em]" style={{ color: ink }}>
+                {n}
+              </p>
+              <p className="mt-[4px] font-display text-[26px] leading-[1.15] font-bold tracking-[-0.01em] text-text [text-wrap:balance]">{name}</p>
+              <p className="mt-[8px] text-[21px] leading-[1.3] text-muted [text-wrap:balance]">{promise}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
 export function S0(_: ScreenProps) {
   return (
     <div className="relative h-full w-full overflow-hidden">
-      <BreathingArcs />
-      <div className="absolute top-[88px] right-[96px] left-[96px]">
+      <BreathingArcs opacity={0.4} />
+      <div className="absolute top-[64px] right-[96px] left-[96px] flex justify-center">
         <Pill>{c.s0.eyebrow}</Pill>
       </div>
-      <div className="absolute inset-x-0 top-0 bottom-[180px] flex flex-col items-center justify-center text-center">
-        <h1 className="font-display text-[108px] leading-[1] font-bold tracking-[-0.04em] text-text"><SignatureTitle text={c.s0.title} /></h1>
-        <p className="mt-[28px] text-[38px] text-muted">{c.s0.subtitle}</p>
-        <div className="mt-[40px]">
-          <BrandBar width={280} />
+      <div className="absolute inset-x-0 top-[152px] flex flex-col items-center text-center">
+        <h1 className="font-display text-[100px] leading-[1] font-bold tracking-[-0.04em] text-text"><SignatureTitle text={c.s0.title} /></h1>
+        <p className="mt-[20px] text-[36px] text-muted">{c.s0.subtitle}</p>
+        <div className="mt-[28px]">
+          <BrandBar width={260} />
         </div>
-        <div className="mt-[36px]">
+        <div className="mt-[22px]">
           <Countdown />
         </div>
       </div>
-      <div className="absolute bottom-[96px] left-[96px]">
+      <div className="absolute top-[470px] right-[96px] left-[96px]">
+        <Journey />
+      </div>
+      <div className="absolute bottom-[72px] left-[96px]">
         <SpeakerBlock />
       </div>
-      <div className="absolute right-[96px] bottom-[96px] flex gap-[40px]">
-        <QRTile url={LINKEDIN_URL} label={c.s0.linkedin} image={qrLinkedin.url} size={260} />
-        <QRTile url={BRAINSMINGLE_URL} label={c.s0.brainsmingle} image={qrBrains.url} size={260} />
+      <div className="absolute right-[96px] bottom-[60px] flex gap-[32px]">
+        <QRTile url={LINKEDIN_URL} label={c.s0.linkedin} image={qrLinkedin.url} size={180} />
+        <QRTile url={BRAINSMINGLE_URL} label={c.s0.brainsmingle} image={qrBrains.url} size={180} />
       </div>
     </div>
   );

@@ -14,7 +14,16 @@
     "linkedin": "Connect on LinkedIn",
     "brainsmingle": "Follow on BrainsMingle",
     "startingNow": "Starting now",
-    "startsIn": "Starts in"
+    "startsIn": "Starts in",
+    "cover": "What we’ll cover",
+    "journey": [
+      "From typing to directing",
+      "Concepts that outlive tools",
+      "Keep, shift, add, prove",
+      "The new entry-level bar",
+      "Grow judgment, not just reach",
+      "A 90-day capability roadmap"
+    ]
   },
   "s1": {
     "app": { "name": "shop-api", "heading": "Welcome back", "email": "Email", "password": "Password", "button": "Sign in", "footer": "A fictional store" },

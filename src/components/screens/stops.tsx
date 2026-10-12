@@ -9,7 +9,7 @@ import st from "@/content/stops.json";
 import { Reveal, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
-const ICONS: Record<string, LucideIcon> = {
+export const ICONS: Record<string, LucideIcon> = {
   terminal: Terminal,
   workflow: Workflow,
   book: BookOpen,
