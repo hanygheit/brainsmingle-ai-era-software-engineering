@@ -34,7 +34,7 @@ import { ScreenRenderer } from "./ScreenRenderer";
 
 const TALK_TITLE = opening.s0.title;
 const actsInDeck = ACTS.filter((a) => screens.some((s) => s.act === a));
-/** "Stop 02 · The shift" for numbered acts; other sections keep their own name. */
+/** "Stop 01 · The shift" for numbered acts; other sections keep their own name. */
 const actLabel = (act: Act) => {
   const info = actInfo(act);
   return info ? `${stopLabel(info.stop)} · ${info.name}` : act;

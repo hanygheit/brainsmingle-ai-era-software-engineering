@@ -1,7 +1,7 @@
 import type { Act } from "@/config";
 
 export interface Screen {
-  id: string; // "S0".."S49" — always "S" + its index in `screens`
+  id: string; // "S0".."S51" — always "S" + its index in `screens`
   act: Act;
   title: string;
   durationSec: number;
@@ -11,15 +11,16 @@ export interface Screen {
   timeline?: number[];
   notes: string; // **bold** = key line
   sourceIds: string[];
-  /** Act number (1–6) when this is a navy act-separator slide (shown as agenda stop n+1). */
+  /** Act number (1–7) when this is a navy act-separator slide (shown as agenda stop n: "STOP 0n"). */
   separator?: number;
 }
 
 const SEPARATOR_NOTES = "Read the question line, one breath, move on.";
+/** Separator title as the audience sees it: "Stop 01 · The shift". */
 const sep = (id: string, n: number, act: Act): Screen => ({
   id,
   act,
-  title: act,
+  title: `Stop ${String(n).padStart(2, "0")} · ${act.split(" · ")[1] ?? act}`,
   durationSec: 10,
   steps: 3,
   timeline: [60, 120, 180],
@@ -75,10 +76,12 @@ export const screens: Screen[] = [
   { id: "S43", act: "Act 6 · Companies", title: "An AI subscription is not a development strategy · Evidence", durationSec: 35, steps: 1, timeline: [60], notes: "Mentoring channel going quiet. Beck.", sourceIds: ["dx-onboarding", "anthropic-work-dec-2025", "beck-juniors"] },
   { id: "S44", act: "Act 6 · Companies", title: "Measure outcomes, not lines of AI code", durationSec: 80, steps: 2, timeline: [60, 120], notes: 'Activity vs outcomes. McKinsey 2026: 80% report productivity gains, only 37% see any EBIT impact; high performers are twice as likely to measure impact. **"Don\'t measure how much AI they use. Measure what they can safely own."**', sourceIds: ["faros-sep-2026", "dora-mar-2026", "mckinsey-2026"] },
   { id: "S45", act: "Act 6 · Companies", title: "Your 90-day roadmap", durationSec: 80, steps: 4, timeline: [60, 120, 180, 240], notes: 'Foundations, capability, measure & scale — baseline before rollout. DORA AI Capabilities Model as the checklist; BCG: regular use is sharply higher with ≥5 hours of training. **"Start Monday: baseline first — then adopt, train and measure together."**', sourceIds: ["dora-ai-capabilities", "bcg-2025"] },
-  { id: "S46", act: "Synthesis", title: "The new engineering contract", durationSec: 65, steps: 1, timeline: [60], notes: "A responsibility framework, not a sequence. Engineer of record. Keys 1–6 change stage. Teach · Prepare · Develop · Enable. Keep it to one minute.", sourceIds: [] },
-  { id: "S47", act: "Q&A", title: "Where should we raise the engineering bar first?", durationSec: 120, steps: 0, timeline: [], notes: 'The room, from the opening poll: "[W]% of you are learning, [X]% building, [Y]% teaching, [Z]% leading." **"Let\'s take your questions — and I\'ll answer for each of you."** Where should we raise the bar first? Take questions; frame each answer for the asker\'s role. Point at the feedback QR: under a minute.', sourceIds: [] },
-  { id: "S48", act: "Closing", title: "The code is ready. Are we? Yes — we can be.", durationSec: 90, steps: 3, timeline: [60, 120, 180], notes: 'Back to the cold open. "The code is ready. Are we?" **"Yes — we can be."** One line per role. **"AI can write the code. Engineers still own the outcome."**', sourceIds: [] },
-  { id: "S49", act: "Closing", title: "The final line", durationSec: 30, steps: 0, timeline: [], notes: '**"AI is changing how we build software. We must change how we develop software engineers."** Then: "The four QR codes take you to my LinkedIn, my BrainsMingle profile, this presentation with the PDF — and a one-minute feedback form. I read every response."', sourceIds: [] },
+  sep("S46", 7, "Act 7 · Customers & clients"),
+  { id: "S47", act: "Act 7 · Customers & clients", title: "Faster — not free, and not instant", durationSec: 50, steps: 2, timeline: [60, 240], notes: "A word for customers and clients. Yes, you can build simple apps yourself now. And yes, teams using agents can deliver faster and cheaper. But production software is still engineering: security, integration, data, scale, support. **AI makes software faster — not free, and not instant.** Ask your vendor how they use AI, and how they verify it.", sourceIds: [] },
+  { id: "S48", act: "Synthesis", title: "The new engineering contract", durationSec: 65, steps: 1, timeline: [60], notes: "A responsibility framework, not a sequence. Engineer of record. Keys 1–6 change stage. Teach · Prepare · Develop · Enable. Keep it to one minute.", sourceIds: [] },
+  { id: "S49", act: "Q&A", title: "Where should we raise the engineering bar first?", durationSec: 60, steps: 0, timeline: [], notes: 'The room, from the opening poll: "[W]% of you are learning, [X]% building, [Y]% teaching, [Z]% leading." **"Let\'s take your questions — and I\'ll answer for each of you."** Where should we raise the bar first? Take questions; frame each answer for the asker\'s role. Point at the feedback QR: under a minute.', sourceIds: [] },
+  { id: "S50", act: "Closing", title: "The code is ready. Are we? Yes — we can be.", durationSec: 90, steps: 3, timeline: [60, 120, 180], notes: 'Back to the cold open. "The code is ready. Are we?" **"Yes — we can be."** One line per role. **"AI can write the code. Engineers still own the outcome."**', sourceIds: [] },
+  { id: "S51", act: "Closing", title: "The final line", durationSec: 30, steps: 0, timeline: [], notes: '**"AI is changing how we build software. We must change how we develop software engineers."** Then: "The four QR codes take you to my LinkedIn, my BrainsMingle profile, this presentation with the PDF — and a one-minute feedback form. I read every response."', sourceIds: [] },
 ];
 
 export const TOTAL_SCREENS = screens.length;

@@ -1,6 +1,6 @@
 import { Fragment, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { BookOpen, Building2, GraduationCap, Layers, School, Terminal, Workflow, type LucideIcon } from "lucide-react";
+import { BookOpen, Building2, GraduationCap, Handshake, Layers, School, ShieldCheck, Terminal, Workflow, Wrench, Zap, type LucideIcon } from "lucide-react";
 import { EASE, Eyebrow, QuoteGlyph } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
 import { stopColors } from "@/deck/theme";
@@ -17,6 +17,7 @@ export const ICONS: Record<string, LucideIcon> = {
   cap: GraduationCap,
   layers: Layers,
   building: Building2,
+  handshake: Handshake,
 };
 
 /* ---------- S3 · Agenda: seven stops (navy) ---------- */
@@ -224,16 +225,23 @@ function StopPlan({
       ) : null}
       </div>
 
-      <Reveal on={step >= 4}>
-        <div
-          className="flex items-center gap-[28px] rounded-[18px] px-[36px] py-[22px]"
-          style={{ background: "color-mix(in oklab, var(--act) 9%, var(--surface))", borderLeft: "8px solid var(--act)" }}
-        >
-          <span className="act-ink shrink-0 font-mono text-[17px] font-semibold tracking-[0.18em]">ACTION</span>
-          <p className="font-display text-[34px] leading-[1.2] font-bold text-text">{action}</p>
-        </div>
-      </Reveal>
+      <ActionBand on={step >= 4}>{action}</ActionBand>
     </div>
+  );
+}
+
+/** The ACTION band at the foot of every "Your move" slide. */
+function ActionBand({ on, children }: { on: boolean; children: ReactNode }) {
+  return (
+    <Reveal on={on}>
+      <div
+        className="flex items-center gap-[28px] rounded-[18px] px-[36px] py-[22px]"
+        style={{ background: "color-mix(in oklab, var(--act) 9%, var(--surface))", borderLeft: "8px solid var(--act)" }}
+      >
+        <span className="act-ink shrink-0 font-mono text-[17px] font-semibold tracking-[0.18em]">ACTION</span>
+        <p className="font-display text-[34px] leading-[1.2] font-bold text-text">{children}</p>
+      </div>
+    </Reveal>
   );
 }
 
@@ -444,5 +452,40 @@ export function S45({ step }: ScreenProps) {
       action={s.action}
       src={[step >= 2 && "DORA AI Capabilities Model, Sep 2025", step >= 2 && "BCG, Jun 2025"]}
     />
+  );
+}
+
+/* ---------- S47 · Stop 07 · Customers & clients: faster — not free, and not instant ---------- */
+const CLIENT_ICONS: Record<string, LucideIcon> = { wrench: Wrench, zap: Zap, shield: ShieldCheck };
+export function S47({ step }: ScreenProps) {
+  const s = st.clients;
+  return (
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <StopEyebrow>{s.eyebrow}</StopEyebrow>
+      <p className={`${H} mt-[14px] text-[88px] leading-[1.02]`}>{s.headline}</p>
+      <div className="flex flex-1 flex-col justify-center py-[36px]">
+        <div className="grid grid-cols-3 gap-[28px]">
+          {s.messages.map((m, i) => {
+            const Icon = CLIENT_ICONS[m.icon] ?? Wrench;
+            return (
+              <Reveal key={m.title} on={step >= 1} delay={i * 0.06} className="h-full">
+                <div className="h-full rounded-[18px] border border-t-[6px] border-line bg-surface p-[36px]" style={{ borderTopColor: "var(--act)" }}>
+                  <span
+                    className="flex h-[64px] w-[64px] items-center justify-center rounded-[16px]"
+                    style={{ background: "color-mix(in oklab, var(--act) 12%, var(--surface))" }}
+                    aria-hidden
+                  >
+                    <Icon size={34} strokeWidth={1.9} className="act-ink" />
+                  </span>
+                  <p className="mt-[26px] font-display text-[38px] leading-[1.12] font-bold text-text">{m.title}</p>
+                  <p className="mt-[16px] text-[27px] leading-[1.35] text-muted">{m.body}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+      <ActionBand on={step >= 2}>{s.action}</ActionBand>
+    </div>
   );
 }

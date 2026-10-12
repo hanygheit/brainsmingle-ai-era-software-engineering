@@ -9,9 +9,9 @@ import { S0, S1, S2 } from "@/components/screens/opening";
 import { S5, S6, S7, S8, S10, S11 } from "@/components/screens/act1";
 import { S12, S19, S20, S21, S15, S16, S22 } from "@/components/screens/act2";
 import { S25, S26, S27, S29, S30, S33, S34, S35, S36, S37 } from "@/components/screens/act3";
-import { S41, S42, S43, S44, S46, S47, S48, S49 } from "@/components/screens/act5";
+import { S41, S42, S43, S44, S48, S49, S50, S51 } from "@/components/screens/act5";
 import { ActSeparator } from "@/components/screens/separators";
-import { S3, S9, S13, S17, S23, S28, S31, S38, S40, S45 } from "@/components/screens/stops";
+import { S3, S9, S13, S17, S23, S28, S31, S38, S40, S45, S47 } from "@/components/screens/stops";
 
 const TALK_TITLE = opening.s0.title;
 
@@ -25,7 +25,7 @@ export interface ScreenProps {
 
 const REGISTRY: Partial<Record<string, ComponentType<ScreenProps>>> = {
   S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12, S13, S15, S16, S17, S19, S20, S21, S22, S23, S25, S26, S27, S28, S29, S30, S31,
-  S33, S34, S35, S36, S37, S38, S40, S41, S42, S43, S44, S45, S46, S47, S48, S49,
+  S33, S34, S35, S36, S37, S38, S40, S41, S42, S43, S44, S45, S47, S48, S49, S50, S51,
 };
 
 /** Milliseconds at which phase k (1-based) starts. */

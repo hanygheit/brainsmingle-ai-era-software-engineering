@@ -62,13 +62,13 @@ function SignatureTitle({ text }: { text: string }) {
 }
 
 /* ---------- S0 · Lobby ---------- */
-/** The six parts of the talk (stops 02–07), numbered 1–6 for the lobby. */
+/** The seven stops of the talk, numbered 01–07 as on the agenda. */
 const JOURNEY = c.s0.journey.map((promise, i) => ({
   n: String(i + 1).padStart(2, "0"),
   name: separators[String(i + 1) as keyof typeof separators].title,
-  Icon: ICONS[agenda.stops[i + 1]?.icon ?? ""] ?? TerminalIcon,
+  Icon: ICONS[agenda.stops[i]?.icon ?? ""] ?? TerminalIcon,
   promise,
-  ...stopColors(i + 2),
+  ...stopColors(i + 1),
 }));
 
 function Journey() {
@@ -78,11 +78,11 @@ function Journey() {
       <div className="relative mt-[28px]">
         {/* the connecting line, centre of the first node to centre of the last */}
         <div
-          className="absolute top-[37px] right-[calc(100%/12)] left-[calc(100%/12)] h-[2px] rounded-full opacity-70"
+          className="absolute top-[37px] right-[calc(100%/14)] left-[calc(100%/14)] h-[2px] rounded-full opacity-70"
           style={{ background: `linear-gradient(90deg, ${JOURNEY.map((j) => j.ink).join(", ")})` }}
           aria-hidden
         />
-        <ol className="relative grid grid-cols-6">
+        <ol className="relative grid grid-cols-7">
           {JOURNEY.map(({ n, name, Icon, promise, fill, ink }) => (
             <li key={n} className="flex flex-col items-center px-[14px] text-center">
               {/* SVG ring: big CSS circles print with a flattened bottom in Chromium's PDF output */}
@@ -353,7 +353,7 @@ function ProjectCard({ visible, files, dim, explained, soft }: { visible: number
 }
 
 /**
- * The cold open. `explained` is the callback on slide 48: the same card, complete,
+ * The cold open. `explained` is the callback on slide 50: the same card, complete,
  * with "Can the author explain it?" finally turning green.
  */
 export function ColdOpen({ step, explained = false }: { step: number; explained?: boolean }) {

@@ -1,8 +1,9 @@
 {
-  "1": { "eyebrow": "STOP 02", "title": "The shift", "question": "What changed when AI started writing the code?" },
-  "2": { "eyebrow": "STOP 03", "title": "Students", "question": "What should you learn now — and how?" },
-  "3": { "eyebrow": "STOP 04", "title": "Universities & educators", "question": "What should we teach — and how should we assess it?" },
-  "4": { "eyebrow": "STOP 05", "title": "Fresh graduates", "question": "What does ‘job-ready’ mean now?" },
-  "5": { "eyebrow": "STOP 06", "title": "Current engineers", "question": "How do working engineers keep growing?" },
-  "6": { "eyebrow": "STOP 07", "title": "Companies", "question": "What must organisations start now?" }
+  "1": { "eyebrow": "STOP 01", "title": "The shift", "question": "What changed when AI started writing the code?" },
+  "2": { "eyebrow": "STOP 02", "title": "Students", "question": "What should you learn now — and how?" },
+  "3": { "eyebrow": "STOP 03", "title": "Universities & educators", "question": "What should we teach — and how should we assess it?" },
+  "4": { "eyebrow": "STOP 04", "title": "Fresh graduates", "question": "What does ‘job-ready’ mean now?" },
+  "5": { "eyebrow": "STOP 05", "title": "Current engineers", "question": "How do working engineers keep growing?" },
+  "6": { "eyebrow": "STOP 06", "title": "Companies", "question": "What must organisations start now?" },
+  "7": { "eyebrow": "STOP 07", "title": "Customers & clients", "question": "What should you expect from AI‑built software?" }
 }

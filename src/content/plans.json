@@ -3,7 +3,7 @@
   "roles": [
     {
       "id": "students",
-      "stop": 3,
+      "stop": 2,
       "title": "Students",
       "action": "This month: build one small API by hand, extend it with an agent — and explain both.",
       "blocks": [
@@ -16,7 +16,7 @@
     },
     {
       "id": "educators",
-      "stop": 4,
+      "stop": 3,
       "title": "Universities & educators",
       "action": "This term: change one assignment — AI allowed, explanation required.",
       "blocks": [
@@ -27,7 +27,7 @@
     },
     {
       "id": "graduates",
-      "stop": 5,
+      "stop": 4,
       "title": "Fresh graduates",
       "action": "Make it visible: every PR explained, every agent mistake logged.",
       "blocks": [
@@ -40,7 +40,7 @@
     },
     {
       "id": "engineers",
-      "stop": 6,
+      "stop": 5,
       "title": "Current engineers",
       "action": "This sprint: review one agent session as a team — and do one task AI-off.",
       "blocks": [
@@ -52,7 +52,7 @@
     },
     {
       "id": "leaders",
-      "stop": 1,
+      "stop": 0,
       "title": "Engineering leaders",
       "action": "Rewrite one development plan around what people can safely own.",
       "blocks": [
@@ -63,7 +63,7 @@
     },
     {
       "id": "companies",
-      "stop": 7,
+      "stop": 6,
       "title": "Companies",
       "action": "Start Monday: baseline first — then adopt, train and measure together.",
       "blocks": [
@@ -71,6 +71,17 @@
         ["Days 31–60 — capability", ["Training by career stage, not a one-off workshop — BCG: regular use is sharply higher with at least five hours of training", "Mentoring through agent-session reviews", "Update onboarding and one competency row"]],
         ["Days 61–90 — measure & scale", ["Compare with the baseline across delivery, quality and capability — not seats or % AI-generated code", "Scale or stop each workflow on evidence", "Update development plans and promotion criteria"]],
         ["Use as a checklist", ["DORA AI Capabilities Model: clear AI stance · healthy data ecosystems · AI-accessible internal data · strong version control · small batches · user-centric focus · quality internal platforms"]]
+      ]
+    },
+    {
+      "id": "clients",
+      "stop": 7,
+      "title": "Customers & clients",
+      "action": "Ask your vendor how they use AI — and how they verify it.",
+      "blocks": [
+        ["Within your reach", ["Simple apps you build yourself: prototypes, internal tools and automations"]],
+        ["What agentic AI changes", ["Teams deliver faster and at lower cost — delivery cycles shrink when engineers direct agents well"]],
+        ["What it doesn't change", ["It's still engineering: security, integration, data, scale and support take expertise, time and budget"]]
       ]
     }
   ],

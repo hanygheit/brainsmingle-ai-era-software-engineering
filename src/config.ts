@@ -11,9 +11,9 @@ export const BRAINSMINGLE_URL = "https://brainsmingle.com/hanysaad";
 export const PRESENTATION_URL = "https://brainsmingle-ai-era-software-engineering.lovable.app";
 export const SITE_TITLE = "AI-Era Software Engineering — Hany Saad | BrainsMingle AI Summit 2026";
 export const SITE_DESCRIPTION = "From Graduate Readiness to Talent Development: Hany Saad’s keynote on AI-era software engineering, learning and talent development at BrainsMingle AI Summit 2026.";
-/** Link-preview image (public/og-image.png, 1200×630): title, Live · Mon 12 Oct · 8:00PM Cairo time, the six stops. */
+/** Link-preview image (public/og-image.png, 1200×630): title, Live · Mon 12 Oct · 8:00PM Cairo time, the seven stops. */
 export const SOCIAL_PREVIEW_URL = `${PRESENTATION_URL}/og-image.png`;
-export const SOCIAL_PREVIEW_ALT = "AI-Era Software Engineering — Hany Saad. Live · Mon 12 Oct · 8:00PM Cairo time. Six stops from The shift to Companies.";
+export const SOCIAL_PREVIEW_ALT = "AI-Era Software Engineering — Hany Saad. Live · Mon 12 Oct · 8:00PM Cairo time. Seven stops from The shift to Customers & clients.";
 export const PDF_FILENAME = "AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026.pdf";
 
 export const EVENT = {
@@ -35,11 +35,11 @@ export const DECK_UNLOCK_AT = "2026-10-12T18:00:00Z";
 export const PREVIEW_SLIDES = 2;
 export const UNLOCK_TOKEN_HOURS = 6;
 
-/** Link-preview text for the deck pages (Open Graph / Twitter), with the live date and the six stops. */
+/** Link-preview text for the deck pages (Open Graph / Twitter), with the live date and the seven stops. */
 export const SHARE = {
   title: "AI-Era Software Engineering — Hany Saad · Live · Mon 12 Oct · 8:00PM Cairo time",
   description:
-    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 8:00PM Cairo time. Six stops: The shift · Students · Universities & educators · Fresh graduates · Current engineers · Companies.",
+    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 8:00PM Cairo time. Seven stops: The shift · Students · Universities & educators · Fresh graduates · Current engineers · Companies · Customers & clients.",
 } as const;
 
 /** Total talk target: 41:30. */
@@ -54,6 +54,7 @@ export const ACTS = [
   "Act 4 · Fresh graduates",
   "Act 5 · Current engineers",
   "Act 6 · Companies",
+  "Act 7 · Customers & clients",
   "Synthesis",
   "Q&A",
   "Closing",

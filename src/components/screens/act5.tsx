@@ -167,8 +167,8 @@ export function S44({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S46 ---------- */
-export function S46({ step, choice }: ScreenProps) {
+/* ---------- S48 ---------- */
+export function S48({ step, choice }: ScreenProps) {
   const idx = choice && choice >= 1 && choice <= 6 ? choice - 1 : 2;
   const row = dd.rows[idx]!;
   return (
@@ -215,7 +215,7 @@ export function S46({ step, choice }: ScreenProps) {
   );
 }
 
-/* ---------- S47 ---------- */
+/* ---------- S49 ---------- */
 function FrameworkWords() {
   return (
     <div className="flex gap-[28px] font-display text-[28px] font-bold">
@@ -223,7 +223,7 @@ function FrameworkWords() {
     </div>
   );
 }
-export function S47(_: ScreenProps) {
+export function S49(_: ScreenProps) {
   const { state } = usePollState(5000);
   const closed = state ? !state["s2-challenge"].open : false;
   return (
@@ -251,8 +251,8 @@ export function S47(_: ScreenProps) {
   );
 }
 
-/* ---------- S48 · The code is ready. Are we? Yes — we can be. ---------- */
-export function S48({ step }: ScreenProps) {
+/* ---------- S50 · The code is ready. Are we? Yes — we can be. ---------- */
+export function S50({ step }: ScreenProps) {
   const s = rv.s22;
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden p-[96px]">
@@ -273,14 +273,15 @@ export function S48({ step }: ScreenProps) {
       </div>
       <Reveal on={step >= 2} className="mt-[52px]">
         <Eyebrow>{s.rolesLabel}</Eyebrow>
-        <div className="mt-[16px] grid grid-cols-3 gap-[20px]">
+        {/* seven roles: four on top, three below, both rows full width (12-column grid) */}
+        <div className="mt-[16px] grid grid-cols-12 gap-[20px]">
           {s.roles.map(([who, what, stop], i) => {
             const { ink } = stopColors(Number(stop));
             return (
-              <Reveal key={String(who)} on={step >= 2} delay={i * 0.06} className="h-full">
-                <div className="h-full rounded-[18px] border border-line bg-surface px-[26px] py-[22px]" style={{ borderTop: `4px solid ${ink}` }}>
+              <Reveal key={String(who)} on={step >= 2} delay={i * 0.06} className={`h-full ${i < 4 ? "col-span-3" : "col-span-4"}`}>
+                <div className="h-full rounded-[18px] border border-line bg-surface px-[24px] py-[18px]" style={{ borderTop: `4px solid ${ink}` }}>
                   <p className="font-mono text-[16px] font-semibold tracking-[0.16em] uppercase" style={{ color: ink }}>{who}</p>
-                  <p className="mt-[10px] text-[26px] leading-[1.3] text-text">{what}</p>
+                  <p className="mt-[8px] text-[23px] leading-[1.3] text-text">{what}</p>
                 </div>
               </Reveal>
             );
@@ -294,8 +295,8 @@ export function S48({ step }: ScreenProps) {
   );
 }
 
-/* ---------- S49 ---------- */
-export function S49(_: ScreenProps) {
+/* ---------- S51 ---------- */
+export function S51(_: ScreenProps) {
   const s = rv.s23;
   return (
     <div className="relative h-full w-full overflow-hidden">

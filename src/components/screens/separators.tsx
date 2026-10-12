@@ -9,7 +9,7 @@ import { Reveal } from "./shared";
 export function ActSeparator({ screen, step }: ScreenProps) {
   const s = c[String(screen.separator) as keyof typeof c];
   const n = screen.separator ?? 1;
-  const stop = n + 1; // agenda numbering: the Opening is stop 01
+  const stop = n; // act n is agenda stop n
   const fill = ACT_COLORS[screen.act] ?? "#4C8DFF";
   const ink = ACT_COLORS_ON_NAVY[screen.act] ?? "var(--text)";
   return (

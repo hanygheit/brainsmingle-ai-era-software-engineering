@@ -8,15 +8,20 @@ import { paceColor } from "@/components/deck/PresenterPanel";
 const s = (index: number, enter: 1 | -1 = 1): DeckState => ({ index, enter, replay: 0, choice: null });
 
 describe("deck engine", () => {
-  it("has 50 screens S0–S49, each id matching its index", () => {
-    expect(screens).toHaveLength(50);
+  it("has 52 screens S0–S51, each id matching its index", () => {
+    expect(screens).toHaveLength(52);
     screens.forEach((sc, i) => expect(sc.id).toBe(`S${i}`));
-    expect(slideLabel(5)).toBe("5 / 50 · Everyone can build software now");
-    expect(slideLabel(3)).toBe("3 / 50 · Seven stops. One question.");
+    expect(slideLabel(5)).toBe("5 / 52 · Everyone can build software now");
+    expect(slideLabel(3)).toBe("3 / 52 · Seven stops. One question.");
+    expect(slideLabel(46)).toBe("46 / 52 · Stop 07 · Customers & clients");
+    expect(slideLabel(47)).toBe("47 / 52 · Faster — not free, and not instant");
   });
-  it("has six navy stop separators (agenda stops 02–07) at 4, 14, 18, 24, 32, 39", () => {
-    expect(screens.flatMap((sc, i) => (sc.separator ? [i] : []))).toEqual([4, 14, 18, 24, 32, 39]);
-    expect(screens.filter((sc) => sc.separator).map((sc) => sc.separator)).toEqual([1, 2, 3, 4, 5, 6]);
+  it("has seven navy stop separators (agenda stops 01–07) at 4, 14, 18, 24, 32, 39, 46", () => {
+    expect(screens.flatMap((sc, i) => (sc.separator ? [i] : []))).toEqual([4, 14, 18, 24, 32, 39, 46]);
+    expect(screens.filter((sc) => sc.separator).map((sc) => sc.separator)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(screens[46]!.act).toBe("Act 7 · Customers & clients");
+    expect(screens[47]!.act).toBe("Act 7 · Customers & clients");
+    expect(screens[48]!.act).toBe("Synthesis");
   });
   it("sources and slides point at each other", () => {
     const ids = new Set(sources.map((s) => s.id));
@@ -32,8 +37,8 @@ describe("deck engine", () => {
     for (const sc of screens.slice(2)) expect(Math.max(0, ...(sc.timeline ?? []))).toBeLessThanOrEqual(600);
     expect(Math.max(...screens[1]!.timeline!)).toBeLessThanOrEqual(2500);
   });
-  it("slides 1–47 add up to exactly 41:30; close 48–49 is 2:00; slide 0 untimed", () => {
-    expect(QA_INDEX).toBe(47);
+  it("slides 1–49 add up to exactly 41:30; close 50–51 is 2:00; slide 0 untimed", () => {
+    expect(QA_INDEX).toBe(49);
     expect(TARGET_TOTAL_SEC).toBe(2490);
     expect(talkTotalSec()).toBe(2490);
     expect(closeTotalSec()).toBe(120);
@@ -42,18 +47,18 @@ describe("deck engine", () => {
   it("one press moves exactly one slide; back shows the final state", () => {
     expect(stepForward(s(3))).toEqual(s(4, 1));
     expect(stepBack(s(4))).toEqual(s(3, -1));
-    expect(stepForward(s(49))).toEqual(s(49));
+    expect(stepForward(s(51))).toEqual(s(51));
     expect(stepBack(s(0))).toEqual(s(0));
   });
-  it("walks S0→S49 and back in 49 presses each way", () => {
+  it("walks S0→S51 and back in 51 presses each way", () => {
     let st = s(0);
-    for (let i = 0; i < 49; i++) st = stepForward(st);
-    expect(st.index).toBe(49);
-    for (let i = 0; i < 49; i++) st = stepBack(st);
+    for (let i = 0; i < 51; i++) st = stepForward(st);
+    expect(st.index).toBe(51);
+    for (let i = 0; i < 51; i++) st = stepBack(st);
     expect(st.index).toBe(0);
   });
   it("clamps bad incoming state and ignores old step values", () => {
-    expect(normalizeState({ index: 99, step: 99 })?.index).toBe(49);
+    expect(normalizeState({ index: 99, step: 99 })?.index).toBe(51);
     expect(normalizeState({ index: 4, step: 3 })).toEqual(s(4));
     expect(normalizeState("x")).toBeNull();
   });

@@ -164,5 +164,16 @@
     ],
     "evidence": "DORA's AI Capabilities Model: clear AI stance · healthy data ecosystems · AI-accessible internal data · strong version control · small batches · user-centric focus · quality internal platforms. BCG: regular use is sharply higher with at least five hours of training.",
     "action": "Start Monday: baseline first — then adopt, train and measure together."
+  },
+
+  "clients": {
+    "eyebrow": "A word for customers & clients",
+    "headline": "Faster — not free, and not instant.",
+    "messages": [
+      { "icon": "wrench", "title": "Yes, you can build simple apps yourself.", "body": "Prototypes, internal tools and automations are now within reach — with the builder tools from Stop 01." },
+      { "icon": "zap", "title": "Agentic AI helps teams deliver faster and at lower cost.", "body": "Delivery cycles shrink when engineers direct agents well." },
+      { "icon": "shield", "title": "It's still engineering.", "body": "Security, integration, data, scale and support take expertise, time and budget." }
+    ],
+    "action": "Your move: ask your vendor how they use AI — and how they verify it."
   }
 }
