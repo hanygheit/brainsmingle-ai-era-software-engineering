@@ -161,7 +161,7 @@ export function S8({ step }: ScreenProps) {
   }
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={["Google, Oct 2024 · Apr 2026", step >= 3 && "Anthropic, Jun 2026", step >= 3 && "Coinbase, Sep 2025", step >= 3 && "JetBrains, Aug 2026", step >= 3 && "Stack Overflow, Oct 2026"]} />
+      <SrcTag items={["Google, Oct 2024 · Apr 2026", step >= 3 && "Anthropic, Jun 2026", step >= 3 && "Axios, Jan 2026", step >= 3 && "JetBrains, Aug 2026", step >= 3 && "Stack Overflow, Oct 2026"]} />
       <div className="flex items-end gap-[80px]">
         <div>
           <StatNumber value={pts[idx]?.value ?? 0} suffix="%" color="var(--own)" label={`${s.statLabel} · ${pts[idx]?.label ?? ""}`} />
@@ -191,13 +191,27 @@ export function S8({ step }: ScreenProps) {
             </figcaption>
           </figure>
         </Reveal>
-        <div className="mt-[24px] grid grid-cols-4 gap-[20px]">
-          {s.tiles.map(([v, label, src], i) => (
+        <div className="mt-[24px] grid grid-cols-4 gap-[20px]" style={{ gridTemplateColumns: s.tiles.map((t) => (t[3] ? "1.4fr" : "1fr")).join(" ") }}>
+          {s.tiles.map(([v, label, src, quote, by], i) => (
             <Reveal key={src} on={step >= 3} delay={i * 0.06} className="h-full">
               <div className="h-full rounded-[16px] border border-line bg-surface px-[24px] py-[18px]">
-                <p className="font-display text-[44px] leading-[1] font-bold text-own tabular-nums">{v}</p>
-                <p className="mt-[10px] text-[19px] leading-[1.3] text-text">{label}</p>
-                <p className="mt-[8px] font-mono text-[14px] text-muted">{src}</p>
+                {quote ? (
+                  <>
+                    <p className="font-display text-[24px] leading-[1.1] font-bold text-own">{v}</p>
+                    <p className="mt-[4px] text-[18px] leading-[1.3] text-muted">
+                      {label} <span className="font-mono text-[14px]">· {src}</span>
+                    </p>
+                    <p className="mt-[8px] text-[18px] leading-[1.25] text-text">
+                      {quote} <span className="text-muted">{by}</span>
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="font-display text-[44px] leading-[1] font-bold text-own tabular-nums">{v}</p>
+                    <p className="mt-[10px] text-[19px] leading-[1.3] text-text">{label}</p>
+                    <p className="mt-[8px] font-mono text-[14px] text-muted">{src}</p>
+                  </>
+                )}
               </div>
             </Reveal>
           ))}
@@ -217,7 +231,7 @@ export function S10({ step }: ScreenProps) {
   const ci = 3;
   return (
     <div className="relative flex h-full w-full flex-col p-[96px]">
-      <SrcTag items={[step >= 1 && "Anthropic, 14 Sep 2026", "Axios, Jan 2026"]} />
+      <SrcTag items={[step >= 1 && "Anthropic, 14 Sep 2026"]} />
       <div className="relative">
         <div className="flex gap-[36px]">
           {s.stages.map((st, i) => {
@@ -262,7 +276,6 @@ export function S10({ step }: ScreenProps) {
         <Reveal on={step >= 3}>
           <p className={`${H} keyline text-[56px]`}>{s.last}</p>
         </Reveal>
-        <p className="mt-[28px] max-w-[1600px] text-[20px] text-muted">{s.footer}</p>
       </div>
     </div>
   );
