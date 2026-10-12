@@ -19,7 +19,7 @@ React + TypeScript + TanStack Start + Tailwind, existing animation library, Lova
 ## Hard rules
 - **No third-party services** (no Browserless, no external PDF/render APIs). PDF = `/print` route → Playwright locally → uploaded in the presenter window.
 - **Never commit secrets.** `PRESENTER_PIN` lives only in Lovable Cloud → Secrets. `.env` values from Lovable (Supabase URL / publishable key) are public client keys; don't add others.
-- **Database:** polls use the old `poll_votes` table with added `poll_id` and `option` columns. Do NOT drop/alter the old columns or the `poll_sessions` table. Poll ids: `s2-challenge`, `s7-interview`.
+- **Database:** polls use the old `poll_votes` table with added `poll_id` and `option` columns. Do NOT drop/alter the old columns or the `poll_sessions` table. Poll ids: `s2-challenge` (now "Who's in the room?" — learning / building / leading or teaching), `s7-interview`; both keep exactly 3 options (check constraint). Schema migrations only apply via Lovable, so poll open/closed state (`state/polls.json`) and feedback (`feedback/<device>.json`) live in the private `exports` bucket, written by server functions (`src/lib/poll-state.functions.ts`, `feedback.functions.ts`, `store.server.ts`). Routes: `/vote`, `/feedback`, `/results` (PIN, noindex, unlinked). See README "Live polls, feedback and results".
 - **Do not change any slide wording** unless a task says so. All text, quotes and numbers are verified; every number/quote keeps its on-slide SourceTag and its `sources.ts` entry (exact article URLs, never homepages).
 - No pure black anywhere.
 
