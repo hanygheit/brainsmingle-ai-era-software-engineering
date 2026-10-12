@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlueprintRouteImport } from './routes/blueprint'
 import { Route as EngineTestRouteImport } from './routes/engine-test'
+import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as PresenterRouteImport } from './routes/presenter'
 import { Route as PrintRouteImport } from './routes/print'
+import { Route as ResultsRouteImport } from './routes/results'
 import { Route as VoteRouteImport } from './routes/vote'
 import { Route as PresentNRouteImport } from './routes/present.$n'
 
@@ -32,6 +34,11 @@ const EngineTestRoute = EngineTestRouteImport.update({
   path: '/engine-test',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PresenterRoute = PresenterRouteImport.update({
   id: '/presenter',
   path: '/presenter',
@@ -40,6 +47,11 @@ const PresenterRoute = PresenterRouteImport.update({
 const PrintRoute = PrintRouteImport.update({
   id: '/print',
   path: '/print',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VoteRoute = VoteRouteImport.update({
@@ -57,8 +69,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blueprint': typeof BlueprintRoute
   '/engine-test': typeof EngineTestRoute
+  '/feedback': typeof FeedbackRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
+  '/results': typeof ResultsRoute
   '/vote': typeof VoteRoute
   '/present/$n': typeof PresentNRoute
 }
@@ -66,8 +80,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/blueprint': typeof BlueprintRoute
   '/engine-test': typeof EngineTestRoute
+  '/feedback': typeof FeedbackRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
+  '/results': typeof ResultsRoute
   '/vote': typeof VoteRoute
   '/present/$n': typeof PresentNRoute
 }
@@ -76,8 +92,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/blueprint': typeof BlueprintRoute
   '/engine-test': typeof EngineTestRoute
+  '/feedback': typeof FeedbackRoute
   '/presenter': typeof PresenterRoute
   '/print': typeof PrintRoute
+  '/results': typeof ResultsRoute
   '/vote': typeof VoteRoute
   '/present/$n': typeof PresentNRoute
 }
@@ -87,8 +105,10 @@ export interface FileRouteTypes {
     | '/'
     | '/blueprint'
     | '/engine-test'
+    | '/feedback'
     | '/presenter'
     | '/print'
+    | '/results'
     | '/vote'
     | '/present/$n'
   fileRoutesByTo: FileRoutesByTo
@@ -96,8 +116,10 @@ export interface FileRouteTypes {
     | '/'
     | '/blueprint'
     | '/engine-test'
+    | '/feedback'
     | '/presenter'
     | '/print'
+    | '/results'
     | '/vote'
     | '/present/$n'
   id:
@@ -105,8 +127,10 @@ export interface FileRouteTypes {
     | '/'
     | '/blueprint'
     | '/engine-test'
+    | '/feedback'
     | '/presenter'
     | '/print'
+    | '/results'
     | '/vote'
     | '/present/$n'
   fileRoutesById: FileRoutesById
@@ -115,8 +139,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BlueprintRoute: typeof BlueprintRoute
   EngineTestRoute: typeof EngineTestRoute
+  FeedbackRoute: typeof FeedbackRoute
   PresenterRoute: typeof PresenterRoute
   PrintRoute: typeof PrintRoute
+  ResultsRoute: typeof ResultsRoute
   VoteRoute: typeof VoteRoute
   PresentNRoute: typeof PresentNRoute
 }
@@ -144,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EngineTestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/presenter': {
       id: '/presenter'
       path: '/presenter'
@@ -156,6 +189,13 @@ declare module '@tanstack/react-router' {
       path: '/print'
       fullPath: '/print'
       preLoaderRoute: typeof PrintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/vote': {
@@ -179,8 +219,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlueprintRoute: BlueprintRoute,
   EngineTestRoute: EngineTestRoute,
+  FeedbackRoute: FeedbackRoute,
   PresenterRoute: PresenterRoute,
   PrintRoute: PrintRoute,
+  ResultsRoute: ResultsRoute,
   VoteRoute: VoteRoute,
   PresentNRoute: PresentNRoute,
 }

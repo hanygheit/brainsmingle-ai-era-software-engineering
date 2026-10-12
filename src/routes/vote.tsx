@@ -1,17 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { CheckCircle2 } from "lucide-react";
-import { castVote, isPollId, POLL_CONTENT } from "@/lib/poll";
-import { EVENT, SPEAKER } from "@/config";
-import opening from "@/content/opening.json";
-import monogram from "@/assets/hs-monogram.png.asset.json";
-import { BrandBar } from "@/components/screens/shared";
+import { POLL_IDS, type PollId } from "@/config";
+import { castVote, currentOpenPoll, isPollId, MY_VOTE_KEY, POLL_CONTENT, readMyVote, splitOption, usePollCounts, usePollState } from "@/lib/poll";
+import type { PollState } from "@/lib/poll-state.functions";
+import { MiniBars, MobileShell, StatusPill } from "@/components/mobile/shell";
+import v from "@/content/vote.json";
 
-const TALK_TITLE = opening.s0.title;
+const t = v.page;
 
 export const Route = createFileRoute("/vote")({
-  validateSearch: (s) => z.object({ poll: z.string().catch("s2-challenge") }).parse(s),
+  validateSearch: (s) => z.object({ poll: z.string().max(40).optional().catch(undefined) }).parse(s),
   head: () => ({
     meta: [
       { title: "Vote — AI-Era Software Engineering live poll" },
@@ -25,114 +24,180 @@ export const Route = createFileRoute("/vote")({
   component: VotePage,
 });
 
-function VotePage() {
-  const { poll } = Route.useSearch();
-  const [mine, setMine] = useState<number | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-
+/** Bare /vote follows the open poll: it keeps the one shown until it closes or a poll is opened after it. */
+function useFollowedPoll(state: PollState | null) {
+  const [shown, setShown] = useState<PollId | null>(null);
   useEffect(() => {
+    if (!state) return;
+    setShown((cur) => {
+      const next = currentOpenPoll(state);
+      if (!cur || !state[cur].open) return next;
+      const nextAt = next ? state[next].at : null;
+      if (next && next !== cur && nextAt && (!state[cur].at || nextAt > state[cur].at!)) return next;
+      return cur;
+    });
+  }, [state]);
+  return shown;
+}
+
+function VotePage() {
+  const { poll: requested } = Route.useSearch();
+  const { state } = usePollState(6000);
+  const followed = useFollowedPoll(state);
+
+  if (requested !== undefined && !isPollId(requested)) {
+    return (
+      <MobileShell>
+        <p className="mt-10 text-[18px]">{t.unknown}</p>
+      </MobileShell>
+    );
+  }
+  const poll = isPollId(requested) ? requested : followed;
+  if (!poll) {
+    return (
+      <MobileShell>
+        {state ? (
+          <section className="mt-10" aria-live="polite">
+            <StatusPill live={false}>{t.live}</StatusPill>
+            <h1 className="mt-4 font-display text-[28px] leading-[1.15] font-bold tracking-[-0.02em]">{t.noPoll}</h1>
+            <p className="mt-3 text-[17px] text-muted">{t.noPollHint}</p>
+            <FeedbackLink />
+          </section>
+        ) : (
+          <p className="mt-10 text-[17px] text-muted" aria-live="polite">Loading the poll…</p>
+        )}
+      </MobileShell>
+    );
+  }
+  // An explicit poll shows straight away (open until the state says otherwise) — no wait on slow data.
+  const open = state ? state[poll].open : true;
+  const other = POLL_IDS.find((p) => p !== poll && state?.[p].open);
+  return (
+    <MobileShell>
+      <PollScreen key={poll} poll={poll} open={open} />
+      {other ? (
+        <p className="mt-8 text-[15px] text-muted">
+          {t.otherPoll}{" "}
+          <Link to="/vote" search={{ poll: other }} className="text-own underline underline-offset-4">
+            {POLL_CONTENT[other].question}
+          </Link>
+        </p>
+      ) : null}
+      <FeedbackLink />
+    </MobileShell>
+  );
+}
+
+function FeedbackLink() {
+  return (
+    <p className="mt-6 text-[15px]">
+      <Link to="/feedback" className="text-muted underline underline-offset-4 hover:text-text">
+        {t.feedback} →
+      </Link>
+    </p>
+  );
+}
+
+function PollScreen({ poll, open }: { poll: PollId; open: boolean }) {
+  const content = POLL_CONTENT[poll];
+  const [mine, setMine] = useState<number | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  useEffect(() => setMine(readMyVote(poll)), [poll]);
+
+  const vote = async (n: 1 | 2 | 3) => {
+    if (!open) return;
+    const prev = mine;
+    setMine(n);
+    setErr(null);
     try {
-      const v = Number(localStorage.getItem(`ai-era-my-vote-${poll}`));
-      if (v >= 1 && v <= 3) setMine(v);
+      localStorage.setItem(MY_VOTE_KEY(poll), String(n));
     } catch {
       /* ignore */
     }
-  }, [poll]);
-
-  if (!isPollId(poll)) {
-    return (
-      <main className="flex min-h-dvh items-center justify-center bg-bg p-6 text-center text-text">
-        <p className="text-[18px]">This poll doesn't exist. Scan the code on screen again.</p>
-      </main>
-    );
-  }
-  const content = POLL_CONTENT[poll];
-
-  const vote = async (n: 1 | 2 | 3) => {
-    setBusy(true);
-    setErr(null);
     try {
       await castVote(poll, n);
-      setMine(n);
+    } catch {
+      setMine(prev);
       try {
-        localStorage.setItem(`ai-era-my-vote-${poll}`, String(n));
+        if (prev) localStorage.setItem(MY_VOTE_KEY(poll), String(prev));
+        else localStorage.removeItem(MY_VOTE_KEY(poll));
       } catch {
         /* ignore */
       }
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "Vote failed.");
-    } finally {
-      setBusy(false);
+      setErr(t.error);
     }
   };
 
   return (
-    <main className="deck-room relative min-h-dvh overflow-hidden px-5 pt-6 pb-10 font-sans text-text" style={{ ["--ambient" as string]: "#5EE6AA" }}>
-      <div className="room-backdrop" aria-hidden />
-      <div className="relative mx-auto max-w-md">
-        <header className="flex items-center gap-3">
-          <img src={monogram.url} alt="" className="h-[32px] w-[32px]" />
-          <div className="min-w-0 leading-tight">
-            <p className="truncate font-display text-[15px] font-bold">{TALK_TITLE}</p>
-            <p className="truncate font-mono text-[11px] tracking-[0.12em] text-muted uppercase">{EVENT.name}</p>
-          </div>
-        </header>
+    <section className="mt-8">
+      <StatusPill live={open}>{open ? t.live : t.closed}</StatusPill>
+      <h1 className="mt-4 font-display text-[28px] leading-[1.15] font-bold tracking-[-0.02em] [text-wrap:balance]">{content.question}</h1>
 
-        <p className="mt-10 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-[12px] tracking-[0.14em] text-muted uppercase">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-own-fill opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-own-fill" />
-          </span>
-          Live poll
-        </p>
-        <h1 className="mt-4 font-display text-[30px] leading-[1.1] font-bold tracking-[-0.02em] [text-wrap:balance]">{content.question}</h1>
-        <div className="mt-5">
-          <BrandBar width={120} height={3} />
-        </div>
-
-        {mine ? (
-          <p className="glass mt-6 flex items-start gap-3 rounded-2xl border border-[var(--own)] p-4 text-[16px]">
-            <CheckCircle2 className="mt-[2px] h-5 w-5 shrink-0 text-own" />
-            <span>
-              Thanks — watch the screen. <span className="text-muted">You can change your vote.</span>
-            </span>
+      <div className="mt-5 min-h-[56px]" aria-live="polite">
+        {!open ? (
+          <p className="rounded-2xl border border-[var(--validate)] bg-surface/70 p-4 text-[18px] font-semibold">{t.closed}</p>
+        ) : mine ? (
+          <p className="rounded-2xl border border-[var(--own)] bg-surface/70 p-4 text-[17px]">
+            <span className="font-semibold text-own">✓ {t.thanks}</span> <span className="text-muted">{t.change}</span>
           </p>
-        ) : null}
-        <div className="mt-6 space-y-3">
-          {([1, 2, 3] as const).map((n) => {
-            const on = mine === n;
-            return (
-              <button
-                key={n}
-                disabled={busy}
-                onClick={() => void vote(n)}
-                aria-pressed={on}
-                className="glass flex min-h-[84px] w-full items-center gap-4 rounded-2xl border px-5 text-left transition-[border-color,background-color,transform] duration-200 active:scale-[0.99] disabled:opacity-70"
-                style={{
-                  borderColor: on ? "var(--own)" : "var(--line)",
-                  backgroundColor: on ? "color-mix(in oklab, var(--own-fill) 12%, var(--surface))" : undefined,
-                }}
-              >
-                <span
-                  className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-xl border font-display text-[24px] font-bold"
-                  style={{ borderColor: on ? "var(--own)" : "var(--line)", color: on ? "var(--own)" : "var(--muted)" }}
-                >
-                  {n}
-                </span>
-                <span className="flex-1 text-[18px] leading-snug">{content.options[n - 1]}</span>
-                {on ? <CheckCircle2 className="h-5 w-5 shrink-0 text-own" aria-hidden /> : null}
-              </button>
-            );
-          })}
-        </div>
-        {err ? <p className="mt-4 text-[15px] text-[var(--fail)]">{err}</p> : null}
-
-        <footer className="mt-12 flex items-center justify-between border-t border-line pt-5 font-mono text-[11px] tracking-[0.12em] text-muted uppercase">
-          <span>{SPEAKER.name}</span>
-          <span>{EVENT.track}</span>
-        </footer>
+        ) : (
+          <p className="pt-3 text-[16px] text-muted">{t.tap}</p>
+        )}
       </div>
-    </main>
+
+      <div className="mt-4 space-y-3" role="group" aria-label={content.question}>
+        {([1, 2, 3] as const).map((n) => {
+          const on = mine === n;
+          const { head, sub } = splitOption(content.options[n - 1]!);
+          return (
+            <button
+              key={n}
+              type="button"
+              disabled={!open}
+              onClick={() => void vote(n)}
+              aria-pressed={on}
+              className="flex min-h-[72px] w-full items-center gap-4 rounded-2xl border bg-surface/80 px-4 py-3 text-left transition-[border-color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[var(--own)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B152B] active:scale-[0.99] disabled:opacity-60"
+              style={{
+                borderColor: on ? "var(--own)" : "var(--line)",
+                backgroundColor: on ? "color-mix(in oklab, var(--own-fill) 14%, var(--surface))" : undefined,
+              }}
+            >
+              <span
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border font-display text-[22px] font-bold"
+                style={{ borderColor: on ? "var(--own)" : "var(--line)", color: on ? "var(--own)" : "var(--muted)" }}
+                aria-hidden
+              >
+                {n}
+              </span>
+              <span className="min-w-0 flex-1 text-[18px] leading-snug">
+                <span className="font-semibold">{head}</span>
+                {sub ? <span className="block text-[15px] text-muted">{sub}</span> : null}
+              </span>
+              {on ? <span className="shrink-0 text-[20px] text-own" aria-hidden>✓</span> : null}
+            </button>
+          );
+        })}
+      </div>
+      {err ? <p className="mt-4 text-[15px] text-[var(--fail)]" role="alert">{err}</p> : null}
+
+      {mine || !open ? <LiveResults poll={poll} mine={mine} /> : null}
+    </section>
+  );
+}
+
+function LiveResults({ poll, mine }: { poll: PollId; mine: number | null }) {
+  const { remote } = usePollCounts(poll);
+  const total = remote[0] + remote[1] + remote[2];
+  const labels = POLL_CONTENT[poll].options.map((o) => splitOption(o).head);
+  return (
+    <div className="mt-8 rounded-2xl border border-line bg-surface/60 p-4">
+      <p className="flex items-baseline justify-between font-mono text-[12px] tracking-[0.14em] text-muted uppercase">
+        <span>{t.results}</span>
+        <span className="tabular-nums">{total} {total === 1 ? "vote" : "votes"}</span>
+      </p>
+      <div className="mt-3">
+        <MiniBars labels={labels} counts={remote} highlight={mine} />
+      </div>
+    </div>
   );
 }
