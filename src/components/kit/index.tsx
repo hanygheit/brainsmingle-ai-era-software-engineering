@@ -445,7 +445,7 @@ export function QRTile({
 }: {
   url: string;
   label?: string;
-  size?: 260 | 200 | 180;
+  size?: 260 | 240 | 220 | 200 | 180;
   /** Optional pre-rendered QR image for the same URL. */
   image?: string;
 }) {

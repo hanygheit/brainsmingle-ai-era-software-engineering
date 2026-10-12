@@ -1,12 +1,11 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { CodeDiff, EASE, Eyebrow, QRTile, QuoteGlyph } from "@/components/kit";
+import { CodeDiff, EASE, Eyebrow, QuoteGlyph } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
-import { voteUrl } from "@/config";
 import iv from "@/content/interview.json";
 import a2 from "@/content/act2.json";
 import asm from "@/content/assessment.json";
-import { usePollCounts } from "@/lib/poll";
+import { LiveVote } from "./live-vote";
 import { Chip, Reveal, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
@@ -14,8 +13,6 @@ const H = "font-display font-bold tracking-[-0.03em] text-text";
 /* ---------- S12 · Two graduates ---------- */
 export function S12({ step, choice }: ScreenProps) {
   const s = iv.s7;
-  const { counts, total } = usePollCounts("s7-interview");
-  const url = voteUrl("s7-interview");
   const picked = choice && choice <= 3 ? choice - 1 : null;
   if (picked === null) {
     return (
@@ -29,27 +26,10 @@ export function S12({ step, choice }: ScreenProps) {
           ))}
         </div>
         <div className="mt-[14px]"><Tag>{s.tag}</Tag></div>
-        <Reveal on={step >= 1} className="mt-[48px] flex gap-[56px]">
-          <div className="flex-1">
-            <p className={`${H} text-[52px]`}>{s.prompt}</p>
-            <div className="mt-[28px] flex flex-col gap-[16px]">
-              {iv.poll.options.map((o, i) => {
-                const pct = total ? Math.round((counts[i]! / total) * 100) : 0;
-                return (
-                  <div key={o} className="relative overflow-hidden rounded-[14px] border border-line bg-surface px-[28px] py-[20px]">
-                    <motion.div className="absolute inset-y-0 left-0 bg-own-fill/15" animate={{ width: `${pct}%` }} transition={{ duration: 0.2, ease: EASE }} />
-                    <p className="relative flex justify-between gap-[24px] text-[30px] text-text">
-                      <span><span className="font-display font-bold text-muted">{i + 1}</span> · {o}</span>
-                      <span className="font-mono text-[22px] text-muted tabular-nums">{counts[i]} · {pct}%</span>
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-[10px] self-end">
-            <QRTile url={url} size={200} />
-            <p className="max-w-[260px] text-center font-mono text-[16px] break-all text-muted">{url.replace(/^https?:\/\//, "")}</p>
+        <Reveal on={step >= 1} className="mt-[40px]">
+          <p className={`${H} text-[52px]`}>{s.prompt}</p>
+          <div className="mt-[32px]">
+            <LiveVote poll="s7-interview" />
           </div>
         </Reveal>
       </div>

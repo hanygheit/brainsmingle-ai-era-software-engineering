@@ -1,7 +1,11 @@
 {
   "poll": {
-    "question": "Which is your biggest challenge?",
-    "options": ["Graduate readiness", "Developer growth", "Company readiness"]
+    "question": "Who's in the room?",
+    "options": [
+      "Learning — student or recent graduate",
+      "Building — developer or engineer",
+      "Leading or teaching — tech lead, manager, educator, L&D"
+    ]
   },
   "s0": {
     "eyebrow": "BrainsMingle AI Summit 2026 · AI in Learning & Development · Mon 12 Oct 2026 · 20:00 Cairo",
@@ -36,12 +40,7 @@
   },
   "s2": {
     "question": "Ready for what?",
-    "cards": [
-      "Graduate readiness — What should we teach?",
-      "Developer growth — What should we learn next?",
-      "Company readiness — What should we change?"
-    ],
-    "prompt": "Which is your biggest challenge? Type 1, 2 or 3 in chat.",
+    "prompt": "Watching without a phone? Type 1, 2 or 3 in chat.",
     "title": "AI-Era Software Engineering",
     "subtitle": "From Graduate Readiness to Talent Development"
   }

@@ -1,11 +1,11 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useState } from "react";
-import { ArcMotif, AudienceCards, EASE, Eyebrow, QRTile, Terminal, type TermStatus } from "@/components/kit";
+import { ArcMotif, EASE, Eyebrow, QRTile, Terminal, type TermStatus } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
-import { BRAINSMINGLE_URL, EVENT, LINKEDIN_URL, voteUrl } from "@/config";
+import { BRAINSMINGLE_URL, EVENT, LINKEDIN_URL } from "@/config";
 import c from "@/content/opening.json";
-import { usePollCounts } from "@/lib/poll";
+import { LiveVote } from "./live-vote";
 import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
 import qrBrains from "@/assets/qr-brainsmingle-hanysaad.svg.asset.json";
 import { BrandBar, Chip, Pill, Reveal, SpeakerBlock, Tag, useTicker } from "./shared";
@@ -170,37 +170,28 @@ export function S1({ step }: ScreenProps) {
 }
 
 /* ---------- S2 · Ready for what? ---------- */
-export function S2({ step, choice }: ScreenProps) {
-  const { counts } = usePollCounts("s2-challenge");
-  const print = usePrintMode();
-  const url = voteUrl("s2-challenge");
+export function S2({ step }: ScreenProps) {
   return (
     <div className="relative h-full w-full overflow-hidden">
       <div className="pointer-events-none absolute inset-x-0 top-[-260px] flex justify-center opacity-70">
         <ArcMotif count={6} radius={460} />
       </div>
-      <div className="absolute inset-x-0 top-[96px] flex flex-col items-center text-center">
+      <div className="absolute inset-x-0 top-[80px] flex flex-col items-center text-center">
         <h1 className="font-display text-[88px] leading-[1] font-bold tracking-[-0.035em] text-text"><SignatureTitle text={c.s2.title} /></h1>
         <p className="mt-[20px] text-[34px] text-muted">{c.s2.subtitle}</p>
       </div>
-      <Reveal on={step >= 1} className="absolute top-[290px] right-[96px] left-[96px]">
+      <Reveal on={step >= 1} className="absolute top-[300px] right-[96px] left-[96px]">
         <Eyebrow>{c.s2.question}</Eyebrow>
-        <p className="mt-[8px] font-display text-[34px] font-bold whitespace-nowrap text-text">
-          {c.s2.prompt} <span className="ml-[16px] font-mono text-[18px] font-normal text-muted">or scan to vote →</span>
-        </p>
-      </Reveal>
-      <Reveal on={step >= 1} className="absolute inset-0" y={24}>
-        <div className="absolute inset-0" style={{ transform: "translateY(-250px)" }}>
-          <AudienceCards labels={c.s2.cards} tally={print ? undefined : counts} active={choice} />
+        <p className="mt-[8px] font-display text-[60px] leading-[1.05] font-bold tracking-[-0.03em] text-text">{c.poll.question}</p>
+        <div className="mt-[44px]">
+          <LiveVote poll="s2-challenge" />
         </div>
       </Reveal>
-      <Reveal on={step >= 2} className="absolute bottom-[80px] left-[96px]">
+      <Reveal on={step >= 2} className="absolute bottom-[64px] left-[96px]">
         <SpeakerBlock compact />
       </Reveal>
-      <Reveal on={step >= 2} className="absolute right-[96px] bottom-[60px] flex items-end gap-[24px]">
-        <QRTile url={url} label="Vote 1 · 2 · 3" size={200} />
-        <QRTile url={LINKEDIN_URL} label={c.s0.linkedin} image={qrLinkedin.url} size={180} />
-        <QRTile url={BRAINSMINGLE_URL} label={c.s0.brainsmingle} image={qrBrains.url} size={180} />
+      <Reveal on={step >= 2} className="absolute right-[96px] bottom-[80px]">
+        <p className="font-mono text-[20px] text-muted">{c.s2.prompt}</p>
       </Reveal>
     </div>
   );

@@ -1,16 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { usePrintMode } from "@/deck/print-mode";
 import { useEffect, useState } from "react";
-import { AudienceCards, DownloadPdfButton, EASE, Eyebrow, QRTile } from "@/components/kit";
+import { DownloadPdfButton, EASE, Eyebrow, QRTile } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
-import { BRAINSMINGLE_URL, LINKEDIN_URL, PRESENTATION_URL } from "@/config";
+import { BRAINSMINGLE_URL, FEEDBACK_URL, LINKEDIN_URL, PRESENTATION_URL } from "@/config";
 import { stopColors } from "@/deck/theme";
 import tl from "@/content/talentLevers.json";
 import sc from "@/content/scorecard.json";
 import dd from "@/content/ddvo.json";
 import rv from "@/content/review.json";
-import op from "@/content/opening.json";
-import { usePollCounts } from "@/lib/poll";
+import { usePollState } from "@/lib/poll";
+import { VoteBars } from "./live-vote";
 import qrLinkedin from "@/assets/qr-linkedin-hanysaad.svg.asset.json";
 import qrBrains from "@/assets/qr-brainsmingle-hanysaad.svg.asset.json";
 import qrPres from "@/assets/qr-presentation-ai-era-software-engineering.svg.asset.json";
@@ -224,21 +224,27 @@ function FrameworkWords() {
   );
 }
 export function S47(_: ScreenProps) {
-  const { counts, total } = usePollCounts("s2-challenge", { live: false });
-  const print = usePrintMode();
-  const lead = total ? counts.indexOf(Math.max(...counts)) + 1 : null;
+  const { state } = usePollState(5000);
+  const closed = state ? !state["s2-challenge"].open : false;
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
       <p className={`${H} max-w-[1400px] text-[64px]`}>{rv.s21.headline}</p>
-      <div className="absolute inset-0" style={{ transform: "translateY(-250px)" }}>
-        <AudienceCards labels={op.s2.cards} tally={print ? undefined : counts} active={print ? null : lead} />
+      <div className="mt-[56px] flex items-start gap-[80px]">
+        <div className="w-[1020px] shrink-0">
+          <Eyebrow>{rv.s21.mix}</Eyebrow>
+          <div className="mt-[18px]">
+            <VoteBars poll="s2-challenge" compact closed={closed} />
+          </div>
+        </div>
+        <p className="flex-1 pt-[56px] font-display text-[54px] leading-[1.12] font-bold tracking-[-0.03em] text-own">{rv.s21.line}</p>
       </div>
       <div className="absolute right-[96px] bottom-[60px] left-[96px] flex items-end justify-between">
         <FrameworkWords />
-        <div className="flex gap-[28px]">
-          <QRTile url={LINKEDIN_URL} label={rv.s21.qr[0]!} image={qrLinkedin.url} size={200} />
-          <QRTile url={BRAINSMINGLE_URL} label={rv.s21.qr[1]!} image={qrBrains.url} size={200} />
-          <QRTile url={PRESENTATION_URL} label={rv.s21.qr[2]!} image={qrPres.url} size={200} />
+        <div className="flex gap-[44px]">
+          <QRTile url={LINKEDIN_URL} label={rv.s21.qr[0]!} image={qrLinkedin.url} size={180} />
+          <QRTile url={BRAINSMINGLE_URL} label={rv.s21.qr[1]!} image={qrBrains.url} size={180} />
+          <QRTile url={PRESENTATION_URL} label={rv.s21.qr[2]!} image={qrPres.url} size={180} />
+          <QRTile url={FEEDBACK_URL} label={rv.s21.qr[3]!} size={180} />
         </div>
       </div>
     </div>
@@ -314,10 +320,11 @@ export function S49(_: ScreenProps) {
         <SpeakerBlock compact />
         <DownloadPdfButton className="mt-[24px] rounded-full border-2 border-own px-[28px] py-[12px] text-[22px] text-own" />
       </Reveal>
-      <Reveal on delay={0.3} className="absolute right-[96px] bottom-[60px] flex gap-[40px]">
-        <QRTile url={LINKEDIN_URL} label={s.qr[0]!} image={qrLinkedin.url} size={260} />
-        <QRTile url={BRAINSMINGLE_URL} label={s.qr[1]!} image={qrBrains.url} size={260} />
-        <QRTile url={PRESENTATION_URL} label={s.qr[2]!} image={qrPres.url} size={260} />
+      <Reveal on delay={0.3} className="absolute right-[96px] bottom-[60px] flex gap-[56px]">
+        <QRTile url={LINKEDIN_URL} label={s.qr[0]!} image={qrLinkedin.url} size={220} />
+        <QRTile url={BRAINSMINGLE_URL} label={s.qr[1]!} image={qrBrains.url} size={220} />
+        <QRTile url={PRESENTATION_URL} label={s.qr[2]!} image={qrPres.url} size={220} />
+        <QRTile url={FEEDBACK_URL} label={s.qr[3]!} size={220} />
       </Reveal>
     </div>
   );

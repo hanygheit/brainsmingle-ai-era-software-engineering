@@ -1,0 +1,19 @@
+{
+  "scan": "Scan to vote · no sign-in · 10 seconds",
+  "closedOnSlide": "Voting closed · final results",
+  "printNote": "Live results appear here during the talk",
+  "page": {
+    "live": "Live poll",
+    "tap": "Tap one answer",
+    "thanks": "Thanks! Watch the screen.",
+    "change": "Changed your mind? Tap another answer.",
+    "results": "Live results",
+    "closed": "Voting closed — watch the screen",
+    "noPoll": "No poll is open right now",
+    "noPollHint": "Keep this page open — the next poll appears here by itself.",
+    "unknown": "This poll doesn't exist. Scan the code on screen again.",
+    "otherPoll": "Looking for the other poll?",
+    "error": "Your vote didn't go through. Tap again.",
+    "feedback": "Session feedback"
+  }
+}

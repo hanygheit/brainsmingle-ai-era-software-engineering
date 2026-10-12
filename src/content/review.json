@@ -1,10 +1,13 @@
 {
   "s21": {
     "headline": "Where should we raise the engineering bar first?",
+    "mix": "Who's in the room",
+    "line": "Let's take your questions — and I'll answer for each of you.",
     "qr": [
       "LinkedIn",
       "BrainsMingle",
-      "This presentation + PDF"
+      "This presentation + PDF",
+      "Session feedback"
     ]
   },
   "s22": {
@@ -53,7 +56,8 @@
     "qr": [
       "Connect on LinkedIn",
       "Follow on BrainsMingle",
-      "Get this presentation + PDF"
+      "Presentation + PDF",
+      "Session feedback"
     ]
   }
 }
