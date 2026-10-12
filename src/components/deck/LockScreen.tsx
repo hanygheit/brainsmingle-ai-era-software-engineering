@@ -63,16 +63,16 @@ function PinForm() {
           type="password"
           inputMode="numeric"
           autoComplete="off"
-          maxLength={4}
+          maxLength={8}
           autoFocus
           value={pin}
           onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
           placeholder="PIN"
-          className="h-[40px] w-[110px] rounded-full border border-line bg-surface px-4 text-center font-mono text-[16px] tracking-[0.3em] text-text outline-none focus:border-[var(--own)]"
+          className="h-[40px] w-[150px] rounded-full border border-line bg-surface px-4 text-center font-mono text-[16px] tracking-[0.3em] text-text outline-none focus:border-[var(--own)]"
         />
         <button
           type="submit"
-          disabled={busy || pin.length !== 4}
+          disabled={busy || pin.length < 4}
           className="h-[40px] rounded-full border border-line px-4 font-mono text-[13px] text-text hover:border-[var(--own)] disabled:opacity-50"
         >
           {busy ? "Checking…" : "Unlock"}

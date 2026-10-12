@@ -41,12 +41,24 @@ Then open the presenter window → **Upload PDF** (needs the presenter PIN). Eve
 
 Before the deck opens (see below), prefix the export with `DECK_PIN=<pin>` so the script unlocks its browser through the lock screen first.
 
+## Presenter PIN
+
+The presenter PIN (6–8 digits) unlocks the deck before `DECK_UNLOCK_AT`, the presenter window's PIN actions, `/results` and the PDF upload. The repo holds nothing about it: the server (`checkPin` in `src/lib/print-token.server.ts`) compares a PBKDF2-SHA256 hash (100,000 iterations) against two server secrets, and refuses every PIN when either is missing.
+
+To set or change it:
+
+1. `node scripts/hash-pin.mjs` — type the new PIN twice (not echoed); it prints `PRESENTER_PIN_SALT=…` and `PRESENTER_PIN_HASH=…`.
+2. Lovable → Cloud → Secrets: add (or update) `PRESENTER_PIN_SALT` and `PRESENTER_PIN_HASH` with those values.
+3. Publish → Update, then unlock the lock screen or open `/results` with the new PIN.
+
+Never commit the PIN, the salt or the hash. The old 4-digit PIN's hash is in the git history: it is compromised and must not be reused.
+
 ## Time gate (preview until the session ends)
 
 Until `DECK_UNLOCK_AT` in `src/config.ts` (2026-10-12T18:00:00Z = 21:00 Cairo), visitors get slides 0–1 plus `/vote` and `/feedback`. Every other slide, the overview, presenter window, `/blueprint`, `/print` and the PDF show a lock screen (navy, countdown, QR codes, "Presenter? Enter PIN").
 
 - The decision is made on the server (`src/lib/deck-gate.server.ts`): the `deckGate` server function returns the server clock, the unlock time and whether the browser's token is valid; `exportPdf` refuses without it. Locked pages never render on the server, so their HTML holds no slide content (the JS bundle still does).
-- The presenter PIN (same salted hash as everywhere else) returns an HMAC-signed token valid for 6 hours, kept in `localStorage` (`ai-era-unlock`) and shared with the presenter window. Wrong PINs: 0.8 s delay each, 5 per client per 15 minutes.
+- The presenter PIN (see "Presenter PIN" below) returns an HMAC-signed token valid for 6 hours, kept in `localStorage` (`ai-era-unlock`) and shared with the presenter window. Wrong PINs: 0.8 s delay each, 5 per client per 15 minutes.
 - After the unlock time everything is open to everyone with no PIN. `/results` stays PIN-protected.
 - Tests: `scripts/test-gate.mjs` (Playwright) — run it against a dev server started with `DECK_UNLOCK_AT_OVERRIDE` (and `DEV_PRESENTER_PIN` for the PIN steps); both work in local dev only.
 
@@ -61,4 +73,4 @@ No database migration is needed: everything uses the existing `poll_votes` table
 - **Presenter window → Polls**: `OPEN · close` / `CLOSED · open` per poll. A closed poll's vote page says "Voting closed — watch the screen". The state is stored as `state/polls.json` in the bucket and needs the PIN. Both polls are open until you close one. **RESET** deletes a poll's votes (PIN, with a confirmation): the `poll_votes` rows and, for `s2-challenge`, its bucket files. Reset both polls before the talk.
 - **`/feedback`** — a one-minute form (rating, most valuable part, one change, comments, optional contact). A server function validates each response and stores it as `feedback/<device-id>.json` in the private bucket: one per device. Nothing is readable anonymously.
 - **`/results`** (unlisted, noindex) asks for the presenter PIN. The server checks it against the PIN hash before returning the feedback. The page shows both polls live, a feedback summary, every response, and a CSV download for polls and for feedback.
-- Local dev without `SUPABASE_SERVICE_ROLE_KEY` keeps poll state, feedback and `s2-challenge` votes in memory (dev only; restarting the server clears them). The presenter PIN works the same locally (hash check in `src/lib/print-token.server.ts`); a dev server started with `DEV_PRESENTER_PIN` also accepts that test PIN.
+- Local dev without `SUPABASE_SERVICE_ROLE_KEY` keeps poll state, feedback and `s2-challenge` votes in memory (dev only; restarting the server clears them). The presenter PIN works locally only if `PRESENTER_PIN_HASH` / `PRESENTER_PIN_SALT` are set in the dev server's environment; a dev server started with `DEV_PRESENTER_PIN` also accepts that test PIN.

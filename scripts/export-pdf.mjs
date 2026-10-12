@@ -21,7 +21,7 @@ if (base !== LIVE) {
   });
 }
 // Before the deck opens (DECK_UNLOCK_AT), /print needs this browser unlocked with the presenter PIN:
-// DECK_PIN=xxxx node scripts/export-pdf.mjs …  (the PIN is typed into the lock screen, never stored).
+// DECK_PIN=<pin> node scripts/export-pdf.mjs …  (the PIN is typed into the lock screen, never stored).
 if (process.env.DECK_PIN) {
   await page.goto(`${base}/presenter`, { waitUntil: "networkidle", timeout: 120_000 });
   const pinLink = page.getByRole("button", { name: "Presenter? Enter PIN" });
