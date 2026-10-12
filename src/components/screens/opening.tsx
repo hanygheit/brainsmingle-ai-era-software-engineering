@@ -230,7 +230,7 @@ export function S2({ step }: ScreenProps) {
         <Eyebrow>{c.s2.question}</Eyebrow>
         <p className="mt-[8px] font-display text-[60px] leading-[1.05] font-bold tracking-[-0.03em] text-text">{c.poll.question}</p>
         <div className="mt-[44px]">
-          <LiveVote poll="s2-challenge" />
+          <LiveVote poll="s2-challenge" fullLink />
         </div>
       </Reveal>
       <Reveal on={step >= 2} className="absolute bottom-[64px] left-[96px]">

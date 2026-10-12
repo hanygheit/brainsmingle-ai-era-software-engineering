@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { usePrintMode } from "@/deck/print-mode";
 import { supabase } from "@/integrations/supabase/client";
-import { POLL_IDS, type PollId } from "@/config";
+import { POLL_IDS, STORED_POLLS, type PollId } from "@/config";
 import interview from "@/content/interview.json";
 import opening from "@/content/opening.json";
 import { CHOICE_EVENT, type ChoiceDetail } from "@/deck/events";
 import { DEFAULT_POLL_STATE, getPollState, type PollState } from "./poll-state.functions";
 import { voterId } from "./device-id";
+import { castStoredVote, getStoredCounts, getStoredVoteRows } from "./votes.functions";
 
-export type Counts = [number, number, number];
-const zero = (): Counts => [0, 0, 0];
+/** Votes per option, one entry per option (s2-challenge 4, s7-interview 3). */
+export type Counts = number[];
 
 export const POLL_SCREEN: Record<PollId, string> = { "s2-challenge": "S2", "s7-interview": "S12" };
 export const POLL_CONTENT: Record<PollId, { question: string; options: string[] }> = {
@@ -17,6 +18,9 @@ export const POLL_CONTENT: Record<PollId, { question: string; options: string[] 
   "s7-interview": interview.poll,
 };
 export const isPollId = (v: unknown): v is PollId => POLL_IDS.includes(v as PollId);
+export const optionCount = (poll: PollId) => POLL_CONTENT[poll].options.length;
+const zero = (poll: PollId): Counts => Array.from({ length: optionCount(poll) }, () => 0);
+const isStored = (poll: PollId) => STORED_POLLS.includes(poll);
 
 /** "Learning — student or recent graduate" → head "Learning", sub "student or recent graduate". */
 export function splitOption(label: string) {
@@ -29,7 +33,7 @@ export const MY_VOTE_KEY = (poll: PollId) => `ai-era-my-vote-${poll}`;
 export function readMyVote(poll: PollId): number | null {
   try {
     const v = Number(localStorage.getItem(MY_VOTE_KEY(poll)));
-    return v >= 1 && v <= 3 ? v : null;
+    return v >= 1 && v <= optionCount(poll) ? v : null;
   } catch {
     return null;
   }
@@ -74,21 +78,29 @@ export function currentOpenPoll(state: PollState): PollId | null {
   return open.find((p) => readMyVote(p) === null) ?? open[open.length - 1]!;
 }
 
-/** Raw vote rows for the results CSV (public data under the existing RLS). */
+/** Raw vote rows for the results CSV: poll_votes (public under the existing RLS) + the bucket-stored polls. */
 export async function fetchVoteRows() {
-  const { data, error } = await supabase
-    .from("poll_votes")
-    .select("poll_id, option, created_at")
-    .in("poll_id", [...POLL_IDS])
-    .order("created_at", { ascending: true });
+  const [{ data, error }, stored] = await Promise.all([
+    supabase
+      .from("poll_votes")
+      .select("poll_id, option, created_at")
+      .in("poll_id", POLL_IDS.filter((p) => !isStored(p)))
+      .order("created_at", { ascending: true }),
+    getStoredVoteRows(),
+  ]);
   if (error) throw error;
-  return (data ?? []) as { poll_id: PollId; option: number; created_at: string }[];
+  return [...stored, ...((data ?? []) as { poll_id: PollId; option: number; created_at: string }[])];
 }
 
 /* ---------- voter ---------- */
 export { voterId };
 
-export async function castVote(poll: PollId, option: 1 | 2 | 3) {
+export async function castVote(poll: PollId, option: number) {
+  if (isStored(poll)) {
+    const r = await castStoredVote({ data: { poll, option, voter: voterId() } }).catch(() => null);
+    if (!r?.ok) throw new Error("Your vote didn't go through. Try again.");
+    return;
+  }
   const { error } = await supabase
     .from("poll_votes")
     .upsert({ poll_id: poll, option, voter_id: voterId() }, { onConflict: "poll_id,voter_id" });
@@ -119,9 +131,9 @@ const channel = () => {
 export function readManual(poll: PollId): Counts {
   try {
     const v = JSON.parse(sessionStorage.getItem(MANUAL_KEY(poll)) ?? "null");
-    return Array.isArray(v) && v.length === 3 ? (v.map(Number) as Counts) : zero();
+    return Array.isArray(v) && v.length === optionCount(poll) ? v.map(Number) : zero(poll);
   } catch {
-    return zero();
+    return zero(poll);
   }
 }
 
@@ -136,43 +148,47 @@ function writeManual(poll: PollId, counts: Counts) {
 }
 
 export function addManual(poll: PollId, option: number) {
-  if (option < 1 || option > 3) return;
+  if (option < 1 || option > optionCount(poll)) return;
   const c = readManual(poll);
   c[option - 1] = (c[option - 1] ?? 0) + 1;
   writeManual(poll, c);
 }
-export const clearManual = (poll: PollId) => writeManual(poll, zero());
+export const clearManual = (poll: PollId) => writeManual(poll, zero(poll));
 
-/** Keys 1/2/3 add one manual vote on S2 (on S12 they reveal the answers instead). One listener per window, however many tallies are mounted. */
+/** Keys 1–4 add one manual vote on S2 (on S12 they reveal the answers instead). One listener per window, however many tallies are mounted. */
 let choiceKeysBound = false;
 function listenForChoiceKeys() {
   if (choiceKeysBound) return;
   choiceKeysBound = true;
   window.addEventListener(CHOICE_EVENT, (e) => {
     const d = (e as CustomEvent<ChoiceDetail>).detail;
-    if (d.screenId === POLL_SCREEN["s2-challenge"] && d.n <= 3) addManual("s2-challenge", d.n);
+    if (d.screenId === POLL_SCREEN["s2-challenge"] && d.n <= optionCount("s2-challenge")) addManual("s2-challenge", d.n);
   });
 }
 
 /* ---------- live counts ---------- */
 async function fetchCounts(poll: PollId): Promise<Counts> {
+  if (isStored(poll)) {
+    const c = await getStoredCounts({ data: { poll } });
+    return zero(poll).map((_, i) => c[i] ?? 0);
+  }
   const { data, error } = await supabase.from("poll_votes").select("option").eq("poll_id", poll);
   if (error) throw error;
-  const c = zero();
+  const c = zero(poll);
   (data ?? []).forEach((r) => {
-    if (r.option && r.option >= 1 && r.option <= 3) c[r.option - 1] = (c[r.option - 1] ?? 0) + 1;
+    if (r.option && r.option >= 1 && r.option <= c.length) c[r.option - 1] = (c[r.option - 1] ?? 0) + 1;
   });
   return c;
 }
 
 /**
- * Live tally for one poll: realtime subscription, 3 s polling fallback,
- * plus the manual 1/2/3 fallback (keys on the poll's screen, or presenter buttons).
+ * Live tally for one poll: realtime subscription with a 3 s polling fallback (poll_votes),
+ * or a 2 s server poll (bucket-stored polls), plus the manual fallback (keys on the poll's screen, or presenter buttons).
  */
 export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } = {}) {
   const print = usePrintMode();
-  const [remote, setRemote] = useState<Counts>(zero);
-  const [manual, setManual] = useState<Counts>(zero);
+  const [remote, setRemote] = useState<Counts>(() => zero(poll));
+  const [manual, setManual] = useState<Counts>(() => zero(poll));
   const [online, setOnline] = useState(false);
 
   useEffect(() => {
@@ -201,6 +217,18 @@ export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } 
     };
     void load();
     if (!live) return () => void (alive = false);
+    if (isStored(poll)) {
+      timer = setInterval(() => {
+        if (document.visibilityState !== "hidden") void load();
+      }, 2000);
+      const onVis = () => void load();
+      document.addEventListener("visibilitychange", onVis);
+      return () => {
+        alive = false;
+        if (timer) clearInterval(timer);
+        document.removeEventListener("visibilitychange", onVis);
+      };
+    }
     const startPolling = () => {
       if (!timer) timer = setInterval(() => void load(), 3000);
     };
@@ -225,6 +253,6 @@ export function usePollCounts(poll: PollId, { live = true }: { live?: boolean } 
     };
   }, [poll, live]);
 
-  const counts = remote.map((v, i) => v + manual[i]!) as Counts;
-  return { counts, remote, manual, online, total: counts[0] + counts[1] + counts[2], refresh: () => fetchCounts(poll).then(setRemote) };
+  const counts = remote.map((v, i) => v + (manual[i] ?? 0));
+  return { counts, remote, manual, online, total: counts.reduce((a, b) => a + b, 0), refresh: () => fetchCounts(poll).then(setRemote) };
 }

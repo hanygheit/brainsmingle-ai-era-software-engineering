@@ -153,7 +153,7 @@ function PollConsole({ poll, open, onToggle }: { poll: PollId; open: boolean | n
       </div>
       <p className="mt-1 truncate text-[13px] text-muted">{POLL_CONTENT[poll].question}</p>
       <div className="mt-2 flex gap-2">
-        {[1, 2, 3].map((n) => (
+        {POLL_CONTENT[poll].options.map((_, i) => i + 1).map((n) => (
           <button
             key={n}
             onClick={() => addManual(poll, n)}

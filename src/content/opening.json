@@ -4,7 +4,8 @@
     "options": [
       "Learning — student or recent graduate",
       "Building — developer or engineer",
-      "Leading or teaching — tech lead, manager, educator, L&D"
+      "Teaching — educator, professor or trainer",
+      "Leading — tech lead, manager or company leader"
     ]
   },
   "s0": {
@@ -49,7 +50,7 @@
   },
   "s2": {
     "question": "Ready for what?",
-    "prompt": "Watching without a phone? Type 1, 2 or 3 in chat.",
+    "prompt": "Watching without a phone? Type 1, 2, 3 or 4 in chat.",
     "title": "AI-Era Software Engineering",
     "subtitle": "From Graduate Readiness to Talent Development"
   }

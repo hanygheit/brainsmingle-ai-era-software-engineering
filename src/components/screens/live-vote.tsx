@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { QRTile } from "@/components/kit";
-import { VOTE_LINK_SHORT, voteUrl, type PollId } from "@/config";
+import { VOTE_LINK_SHORT, voteLinkText, voteUrl, type PollId } from "@/config";
 import { usePrintMode } from "@/deck/print-mode";
 import { POLL_CONTENT, splitOption, usePollCounts, usePollState } from "@/lib/poll";
 import v from "@/content/vote.json";
@@ -86,18 +86,22 @@ export function VoteBars({ poll, labels, compact = false, closed = false, closed
   );
 }
 
-/** Poll slides: large QR + short link on the left, live bar chart on the right. */
-export function LiveVote({ poll, labels }: { poll: PollId; labels?: string[] }) {
+/** Poll slides: large QR + link on the left (`fullLink`: the exact URL the QR encodes, one line), live bar chart on the right. */
+export function LiveVote({ poll, labels, fullLink = false }: { poll: PollId; labels?: string[]; fullLink?: boolean }) {
   const { state } = usePollState(5000);
   const closed = state ? !state[poll].open : false;
   return (
     <div className="flex items-start gap-[56px]">
-      <div className="flex w-[380px] shrink-0 flex-col items-center text-center">
+      <div className={`flex shrink-0 flex-col items-center text-center ${fullLink ? "min-w-[380px]" : "w-[380px]"}`}>
         <QRTile url={voteUrl(poll)} size={240} />
-        <p className="mt-[18px] font-mono text-[26px] text-text">{VOTE_LINK_SHORT}</p>
+        {fullLink ? (
+          <p className="mt-[18px] font-mono text-[18px] whitespace-nowrap text-muted">{voteLinkText(poll)}</p>
+        ) : (
+          <p className="mt-[18px] font-mono text-[26px] text-text">{VOTE_LINK_SHORT}</p>
+        )}
         <p className="mt-[8px] text-[20px] leading-[1.35] text-muted">{closed ? v.closedOnSlide : v.scan}</p>
       </div>
-      <VoteBars poll={poll} labels={labels} closed={closed} closedNote={false} />
+      <VoteBars poll={poll} labels={labels} compact={fullLink} closed={closed} closedNote={false} />
     </div>
   );
 }

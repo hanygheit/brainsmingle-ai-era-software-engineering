@@ -228,8 +228,8 @@ export function S47(_: ScreenProps) {
   const closed = state ? !state["s2-challenge"].open : false;
   return (
     <div className="relative h-full w-full overflow-hidden p-[96px]">
-      <p className={`${H} max-w-[1400px] text-[64px]`}>{rv.s21.headline}</p>
-      <div className="mt-[56px] flex items-start gap-[80px]">
+      <p className={`${H} max-w-[1400px] text-[64px] leading-[1.1]`}>{rv.s21.headline}</p>
+      <div className="mt-[44px] flex items-start gap-[80px]">
         <div className="w-[1020px] shrink-0">
           <Eyebrow>{rv.s21.mix}</Eyebrow>
           <div className="mt-[18px]">

@@ -69,7 +69,10 @@ async function hashPin(pin: string) {
 
 /** True when `pin` is the presenter PIN. A wrong PIN waits ~0.8 s to slow guessing. */
 export async function checkPin(pin: string | undefined | null) {
-  const ok = !!pin && /^\d{4}$/.test(pin) && safeEqual(await hashPin(pin), PIN_HASH.hash);
+  // Local dev only (compiled out of builds): a test PIN from the launch config, as in deck-gate.server.ts.
+  const devPin = import.meta.env.DEV ? process.env["DEV_PRESENTER_PIN"] : undefined;
+  if (devPin && pin === devPin) return true;
+  const ok =!!pin && /^\d{4}$/.test(pin) && safeEqual(await hashPin(pin), PIN_HASH.hash);
   if (!ok) await new Promise((r) => setTimeout(r, 800));
   return ok;
 }

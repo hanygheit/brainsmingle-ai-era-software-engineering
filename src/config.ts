@@ -63,6 +63,13 @@ export type Act = (typeof ACTS)[number];
 export const POLL_IDS = ["s2-challenge", "s7-interview"] as const;
 export type PollId = (typeof POLL_IDS)[number];
 export const voteUrl = (poll: PollId) => `${PRESENTATION_URL}/vote?poll=${poll}`;
+/** The vote link as printed under the QR: exactly the URL it encodes, without the scheme. */
+export const voteLinkText = (poll: PollId) => voteUrl(poll).replace(/^https?:\/\//, "");
+/**
+ * Polls whose votes live in the private `exports` bucket instead of `poll_votes`
+ * (s2-challenge has 4 options; the table's check constraint only allows 1–3).
+ */
+export const STORED_POLLS: readonly PollId[] = ["s2-challenge"];
 /** Short on-screen form of the vote link (bare /vote opens whichever poll is open). */
 export const VOTE_LINK_SHORT = "…lovable.app/vote";
 export const FEEDBACK_URL = `${PRESENTATION_URL}/feedback`;

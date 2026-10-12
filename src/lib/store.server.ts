@@ -46,6 +46,38 @@ export async function writeJson(path: string, value: unknown, { upsert = true } 
   throw new Error(error.message);
 }
 
+/** File names (one level) with their last-write time, without downloading them. `search` filters by name. */
+export async function listFiles(folder: string, search?: string): Promise<{ name: string; at: string }[]> {
+  if (useDevMemory()) {
+    return [...devMemory().entries()]
+      .filter(([k]) => k.startsWith(`${folder}/`) && !k.slice(folder.length + 1).includes("/"))
+      .map(([k, v]) => ({ name: k.slice(folder.length + 1), at: String((JSON.parse(v) as { at?: string }).at ?? "") }))
+      .filter((f) => !search || f.name.includes(search));
+  }
+  const b = await bucket();
+  const out: { name: string; at: string }[] = [];
+  for (let offset = 0; ; offset += 1000) {
+    const { data, error } = await b.list(folder, { limit: 1000, offset, sortBy: { column: "name", order: "asc" }, ...(search ? { search } : {}) });
+    if (error) throw new Error(error.message);
+    (data ?? []).forEach((f) => f.id && out.push({ name: f.name, at: f.updated_at ?? f.created_at ?? "" }));
+    if (!data || data.length < 1000) break;
+  }
+  return out;
+}
+
+export async function removeFiles(paths: string[]) {
+  if (!paths.length) return;
+  if (useDevMemory()) {
+    paths.forEach((p) => devMemory().delete(p));
+    return;
+  }
+  const b = await bucket();
+  for (let i = 0; i < paths.length; i += 500) {
+    const { error } = await b.remove(paths.slice(i, i + 500));
+    if (error) throw new Error(error.message);
+  }
+}
+
 /** Every JSON file in a folder (one level). */
 export async function readFolder<T>(folder: string): Promise<T[]> {
   if (useDevMemory()) {

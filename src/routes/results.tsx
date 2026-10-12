@@ -152,7 +152,7 @@ function Polls() {
 
 function PollResult({ poll }: { poll: PollId }) {
   const { remote } = usePollCounts(poll);
-  const total = remote[0] + remote[1] + remote[2];
+  const total = remote.reduce((a, b) => a + b, 0);
   return (
     <div>
       <p className="font-mono text-[12px] text-muted">{poll}</p>

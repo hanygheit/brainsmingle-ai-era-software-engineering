@@ -104,7 +104,7 @@ function PollScreen({ poll, open }: { poll: PollId; open: boolean }) {
   const [err, setErr] = useState<string | null>(null);
   useEffect(() => setMine(readMyVote(poll)), [poll]);
 
-  const vote = async (n: 1 | 2 | 3) => {
+  const vote = async (n: number) => {
     if (!open) return;
     const prev = mine;
     setMine(n);
@@ -146,9 +146,10 @@ function PollScreen({ poll, open }: { poll: PollId; open: boolean }) {
       </div>
 
       <div className="mt-4 space-y-3" role="group" aria-label={content.question}>
-        {([1, 2, 3] as const).map((n) => {
+        {content.options.map((option, i) => {
+          const n = i + 1;
           const on = mine === n;
-          const { head, sub } = splitOption(content.options[n - 1]!);
+          const { head, sub } = splitOption(option);
           return (
             <button
               key={n}
@@ -187,7 +188,7 @@ function PollScreen({ poll, open }: { poll: PollId; open: boolean }) {
 
 function LiveResults({ poll, mine }: { poll: PollId; mine: number | null }) {
   const { remote } = usePollCounts(poll);
-  const total = remote[0] + remote[1] + remote[2];
+  const total = remote.reduce((a, b) => a + b, 0);
   const labels = POLL_CONTENT[poll].options.map((o) => splitOption(o).head);
   return (
     <div className="mt-8 rounded-2xl border border-line bg-surface/60 p-4">
