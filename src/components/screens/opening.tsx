@@ -33,7 +33,7 @@ function Countdown() {
   const print = usePrintMode();
   const target = new Date(EVENT.start).getTime();
   const now = useServerNow();
-  if (print) return <p className="font-mono text-[26px] text-muted">Mon 12 Oct 2026 · 20:00 Cairo</p>;
+  if (print) return <p className="font-mono text-[26px] text-muted">Mon 12 Oct 2026 · 8:00PM Cairo time</p>;
   if (now === null) return <p className="h-[30px]" />;
   const left = Math.max(0, Math.floor((target - now) / 1000));
   if (left === 0) return <p className="font-mono text-[26px] text-own">{c.s0.startingNow}</p>;
