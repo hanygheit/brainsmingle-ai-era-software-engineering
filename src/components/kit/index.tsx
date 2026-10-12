@@ -6,6 +6,7 @@ import { Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { PDF_FILENAME } from "@/config";
 import { exportPdf } from "@/lib/export-pdf.functions";
+import { readUnlockToken } from "@/deck/gate";
 
 export const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -486,7 +487,7 @@ export function useDownloadPdf() {
     if (busy) return;
     setBusy(true);
     try {
-      const res = await run({ data: {} });
+      const res = await run({ data: { token: readUnlockToken() } });
       if (!res.ok) {
         if (res.missing) toast(res.error);
         else toast.error(res.error, { action: { label: "Retry", onClick: () => void download() } });

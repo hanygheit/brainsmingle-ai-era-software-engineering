@@ -20,6 +20,27 @@ export const EVENT = {
 
 export const BLUEPRINT_PATH = "/blueprint";
 
+/**
+ * The full deck (slides 2+, overview, presenter, /blueprint, /print, PDF) opens for
+ * everyone at this instant — the end of the live session, 21:00 Cairo. Checked against
+ * server time. Before it only the first PREVIEW_SLIDES slides are public; the presenter
+ * PIN unlocks one browser for UNLOCK_TOKEN_HOURS.
+ */
+export const DECK_UNLOCK_AT = "2026-10-12T18:00:00Z";
+export const PREVIEW_SLIDES = 2;
+export const UNLOCK_TOKEN_HOURS = 6;
+
+/** Link-preview card (Open Graph / Twitter). The image is public/og-image.png, 1200×630. */
+export const SHARE = {
+  title: "AI-Era Software Engineering — Hany Saad · Live · Mon 12 Oct · 20:00 Cairo",
+  description:
+    "From Graduate Readiness to Talent Development. Live keynote at BrainsMingle AI Summit 2026 · Mon 12 Oct · 20:00 Cairo. Six stops: The shift · Students · Universities & educators · Fresh graduates · Current engineers · Companies.",
+} as const;
+export const SHARE_IMAGE = {
+  url: `${PRESENTATION_URL}/og-image.png`,
+  alt: "AI-Era Software Engineering — Hany Saad. Live · Mon 12 Oct · 20:00 Cairo. Six stops from The shift to Companies.",
+} as const;
+
 /** Total talk target: 41:30. */
 export const TARGET_TOTAL_SEC = 41 * 60 + 30;
 

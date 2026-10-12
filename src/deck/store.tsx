@@ -11,7 +11,7 @@ import {
 import { BROADCAST_CHANNEL } from "@/config";
 import { screens, slideLabel, TOTAL_SCREENS, type Screen } from "@/content/screens";
 
-export type OverlayKey = "overview" | "sources" | "black" | "presenter";
+export type OverlayKey = "overview" | "sources" | "black" | "presenter" | "locked";
 
 export interface DeckState {
   index: number;
@@ -78,6 +78,7 @@ export function DeckProvider({
   isPresenter = false,
   initial,
   syncUrl = false,
+  canSee = () => true,
 }: {
   children: ReactNode;
   isPresenter?: boolean;
@@ -85,6 +86,8 @@ export function DeckProvider({
   initial?: { index: number };
   /** Audience windows mirror their position into /present/N. */
   syncUrl?: boolean;
+  /** Time gate: → stops on the first locked slide; ← from a locked slide returns to the last open one. */
+  canSee?: (index: number) => boolean;
 }) {
   const [state, setState] = useState<DeckState>(() => {
     const index = clampIndex(initial?.index ?? 0);
@@ -162,8 +165,19 @@ export function DeckProvider({
     document.title = slideLabel(state.index);
   }, [state, ready, syncUrl]);
 
-  const next = useCallback(() => setState(stepForward), []);
-  const prev = useCallback(() => setState(stepBack), []);
+  const canSeeRef = useRef(canSee);
+  canSeeRef.current = canSee;
+  const next = useCallback(() => setState((s) => (canSeeRef.current(s.index) ? stepForward(s) : s)), []);
+  const prev = useCallback(
+    () =>
+      setState((s) => {
+        if (canSeeRef.current(s.index) || s.index === 0) return stepBack(s);
+        let i = s.index - 1;
+        while (i > 0 && !canSeeRef.current(i)) i--;
+        return { ...s, index: i, enter: -1, choice: null };
+      }),
+    [],
+  );
   const goto = useCallback((index: number) => {
     const i = clampIndex(index);
     setState((s) => (s.index === i ? s : { ...s, index: i, enter: 1, choice: null }));

@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useGate } from "@/deck/gate";
+import { LockScreen } from "./LockScreen";
 import { DeckProvider, useDeck } from "@/deck/store";
 import { useKeyboard } from "@/deck/useKeyboard";
 import { useIsFullscreen } from "@/deck/useFullscreen";
@@ -21,8 +24,9 @@ import { ScreenRenderer } from "./ScreenRenderer";
 import { Stage } from "./Stage";
 
 export function Deck({ index = 0 }: { index?: number }) {
+  const gate = useGate();
   return (
-    <DeckProvider initial={{ index }} syncUrl>
+    <DeckProvider initial={{ index }} syncUrl canSee={gate.canSee}>
       <DeckInner />
     </DeckProvider>
   );
@@ -30,9 +34,28 @@ export function Deck({ index = 0 }: { index?: number }) {
 
 function DeckInner() {
   const deck = useDeck();
+  const gate = useGate();
   const reduce = useReducedMotion();
   useKeyboard();
   const fullscreen = useIsFullscreen();
+  const { overlay, setOverlay } = deck;
+  useEffect(() => {
+    if (gate.status === "open" && overlay === "locked") setOverlay(null);
+  }, [gate.status, overlay, setOverlay]);
+
+  // Time gate: a locked slide, or a locked control (overview, presenter, PDF…), shows the lock screen.
+  if (!gate.canSee(deck.index) || (gate.status !== "open" && overlay === "locked")) {
+    return (
+      <main className="relative h-dvh w-screen overflow-hidden bg-[var(--stage-bg)]">
+        <LockScreen
+          onBack={() => {
+            setOverlay(null);
+            if (!gate.canSee(deck.index)) deck.prev();
+          }}
+        />
+      </main>
+    );
+  }
   const paper = isPaper(deck.screen.id);
   const actColor = ACT_COLORS[deck.screen.act];
   // Windowed: ambient light around the framed slide follows the current act.

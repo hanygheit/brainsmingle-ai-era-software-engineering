@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { pointer } from "./pointer";
 import { useDeck } from "./store";
+import { useGate } from "./gate";
 import { CHOICE_EVENT, type ChoiceDetail } from "./events";
 
 export { CHOICE_EVENT, type ChoiceDetail };
@@ -11,6 +12,9 @@ export function useKeyboard({ presenterWindow = false }: { presenterWindow?: boo
   const deck = useDeck();
   const deckRef = useRef(deck);
   deckRef.current = deck;
+  const gate = useGate();
+  const gateRef = useRef(gate);
+  gateRef.current = gate;
   const gotoBuffer = useRef<string | null>(null);
 
   useEffect(() => {
@@ -77,6 +81,12 @@ export function useKeyboard({ presenterWindow = false }: { presenterWindow?: boo
         window.dispatchEvent(
           new CustomEvent<ChoiceDetail>(CHOICE_EVENT, { detail: { screenId: d.screen.id, n } }),
         );
+        return;
+      }
+
+      // Time gate: overview, presenter and PDF show the lock screen until the deck opens.
+      if (gateRef.current.status !== "open" && ["o", "n", "p", "d"].includes(k.toLowerCase())) {
+        d.setOverlay("locked");
         return;
       }
 

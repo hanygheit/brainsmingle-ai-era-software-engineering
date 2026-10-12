@@ -11,8 +11,12 @@ function countPdfPages(bytes: Uint8Array) {
 
 /** Serves the uploaded deck PDF (PDF_FILENAME) from backend storage. No rendering happens here. */
 export const exportPdf = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) => z.object({}).passthrough().parse(d ?? {}))
-  .handler(async () => {
+  .inputValidator((d: unknown) => z.object({ token: z.string().max(400).nullish() }).passthrough().parse(d ?? {}))
+  .handler(async ({ data }) => {
+    const { isDeckOpen } = await import("./deck-gate.server");
+    if (!(await isDeckOpen(data.token))) {
+      return { ok: false as const, missing: true as const, error: "The PDF opens after the live session — Mon 12 Oct, 21:00 Cairo." };
+    }
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
       const bucket = supabaseAdmin.storage.from(BUCKET);

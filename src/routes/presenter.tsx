@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PresenterPanel } from "@/components/deck/PresenterPanel";
 import { DeckProvider } from "@/deck/store";
 import { useKeyboard } from "@/deck/useKeyboard";
+import { DeckGate } from "@/components/deck/LockScreen";
 
 export const Route = createFileRoute("/presenter")({
   head: () => ({
@@ -16,9 +17,13 @@ export const Route = createFileRoute("/presenter")({
     ],
   }),
   component: () => (
-    <DeckProvider isPresenter>
-      <PresenterPage />
-    </DeckProvider>
+    <DeckGate>
+      {() => (
+        <DeckProvider isPresenter>
+          <PresenterPage />
+        </DeckProvider>
+      )}
+    </DeckGate>
   ),
 });
 

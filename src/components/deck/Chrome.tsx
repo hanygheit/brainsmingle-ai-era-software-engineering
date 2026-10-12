@@ -22,6 +22,7 @@ import { sourcesFor } from "@/content/sources";
 import separators from "@/content/separators.json";
 import { pointer, usePointer } from "@/deck/pointer";
 import { useDeck } from "@/deck/store";
+import { useGate } from "@/deck/gate";
 import { ACT_COLORS, ACT_COLORS_ON_NAVY, actInfo, isPaper, stopLabel } from "@/deck/theme";
 import { toggleFullscreen } from "@/deck/useFullscreen";
 import opening from "@/content/opening.json";
@@ -71,6 +72,13 @@ export function ActLabel() {
       {actLabel(screen.act)}
     </p>
   );
+}
+
+/** Time gate: wraps a control so it shows the lock screen until the full deck opens. */
+function useGuard() {
+  const { status } = useGate();
+  const { setOverlay } = useDeck();
+  return (fn: () => void) => () => (status === "open" ? fn() : setOverlay("locked"));
 }
 
 function useIdle(ms = 2000) {
@@ -138,6 +146,7 @@ export function ControlBar({ docked = false }: { docked?: boolean }) {
   const visible = docked || idleVisible;
   const { tool } = usePointer();
   const { download, busy } = useDownloadPdf();
+  const guard = useGuard();
 
   useEffect(() => {
     const onDl = () => void download();
@@ -175,10 +184,10 @@ export function ControlBar({ docked = false }: { docked?: boolean }) {
         </Btn>
       ) : null}
       <span className={`mx-1 h-5 w-px bg-line ${secondary}`} />
-      <Btn label="Overview (O)" className={secondary} onClick={() => deck.setOverlay(deck.overlay === "overview" ? null : "overview")}>
+      <Btn label="Overview (O)" className={secondary} onClick={guard(() => deck.setOverlay(deck.overlay === "overview" ? null : "overview"))}>
         <LayoutGrid className="h-4 w-4" />
       </Btn>
-      <Btn label="Presenter (N)" className={secondary} onClick={() => window.open("/presenter", "ai-era-presenter", "width=1440,height=900")}>
+      <Btn label="Presenter (N)" className={secondary} onClick={guard(() => window.open("/presenter", "ai-era-presenter", "width=1440,height=900"))}>
         <MonitorPlay className="h-4 w-4" />
       </Btn>
       <Btn label="Replay screen (R)" className={secondary} onClick={deck.resetScreen}>
@@ -193,7 +202,7 @@ export function ControlBar({ docked = false }: { docked?: boolean }) {
       <Btn label="Restart deck" className={secondary} onClick={() => deck.goto(0)}>
         <SkipBack className="h-4 w-4" />
       </Btn>
-      <Btn label="Download PDF (D)" className={secondary} onClick={() => void download()}>
+      <Btn label="Download PDF (D)" className={secondary} onClick={guard(() => void download())}>
         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
       </Btn>
     </div>
@@ -300,6 +309,7 @@ export function RoomHeader() {
 
 export function RoomFooter() {
   const { download, busy } = useDownloadPdf();
+  const guard = useGuard();
   return (
     <footer
       className="absolute inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 px-[var(--room-pad)]"
@@ -327,7 +337,7 @@ export function RoomFooter() {
       <div className="flex-1 justify-end max-xl:hidden xl:flex">
         <button
           type="button"
-          onClick={() => void download()}
+          onClick={guard(() => void download())}
           disabled={busy}
           className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 font-mono text-[12px] tracking-[0.06em] text-text transition-colors hover:border-[var(--own)]"
         >

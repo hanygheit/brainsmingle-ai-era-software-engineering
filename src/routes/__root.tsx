@@ -10,6 +10,8 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { Toaster } from "@/components/ui/sonner";
+import { GateProvider } from "@/deck/gate";
+import { SHARE_IMAGE } from "@/config";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -84,8 +86,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Interactive keynote by Hany Saad — BrainsMingle AI Summit 2026." },
       { name: "author", content: "Hany Saad" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "BrainsMingle AI Summit 2026" },
+      { property: "og:image", content: SHARE_IMAGE.url },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: SHARE_IMAGE.alt },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:image", content: SHARE_IMAGE.url },
+      { name: "twitter:image:alt", content: SHARE_IMAGE.alt },
     ],
     links: [
       {
@@ -121,7 +129,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <GateProvider>
+        <Outlet />
+      </GateProvider>
       <Toaster position="bottom-center" />
     </QueryClientProvider>
   );

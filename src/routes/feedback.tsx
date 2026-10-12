@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { LINKEDIN_URL, PDF_FILENAME, PRESENTATION_URL } from "@/config";
 import { submitFeedback } from "@/lib/feedback.functions";
 import { exportPdf } from "@/lib/export-pdf.functions";
+import { readUnlockToken } from "@/deck/gate";
 import { voterId } from "@/lib/device-id";
 import { MobileShell } from "@/components/mobile/shell";
 import fb from "@/content/feedback.json";
@@ -214,7 +215,7 @@ function ThankYou({ already }: { already: boolean }) {
   const downloadPdf = async () => {
     setPdfMsg("Preparing the PDF…");
     try {
-      const r = await getPdf({ data: {} });
+      const r = await getPdf({ data: { token: readUnlockToken() } });
       if (!r.ok) {
         setPdfMsg(r.error);
         return;

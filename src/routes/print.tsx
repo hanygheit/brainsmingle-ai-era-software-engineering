@@ -6,6 +6,7 @@ import { screens } from "@/content/screens";
 import { PrintMode } from "@/deck/print-mode";
 import { isPaper } from "@/deck/theme";
 import { SPEAKER } from "@/config";
+import { DeckGate } from "@/components/deck/LockScreen";
 
 declare global {
   interface Window {
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/print")({
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  component: PrintRoute,
+  component: () => <DeckGate>{() => <PrintRoute />}</DeckGate>,
 });
 
 function PrintRoute() {

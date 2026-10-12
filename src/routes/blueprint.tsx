@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { DownloadPdfButton } from "@/components/kit";
 import { EVENT, SPEAKER } from "@/config";
+import { DeckGate } from "@/components/deck/LockScreen";
 import { BrandBar, Pill } from "@/components/screens/shared";
 import { BLUEPRINT_DESC as DESC, BLUEPRINT_TITLE as TITLE, BlueprintFooter, BlueprintSections, SECTIONS } from "@/components/blueprint/content";
 
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/blueprint")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Blueprint,
+  component: () => <DeckGate>{() => <Blueprint />}</DeckGate>,
 });
 
 function Blueprint() {
