@@ -39,6 +39,17 @@ node scripts/export-pdf.mjs https://brainsmingle-ai-era-software-engineering.lov
 
 Then open the presenter window → **Upload PDF** (needs the presenter PIN). Every Download PDF button serves that file.
 
+Before the deck opens (see below), prefix the export with `DECK_PIN=<pin>` so the script unlocks its browser through the lock screen first.
+
+## Time gate (preview until the session ends)
+
+Until `DECK_UNLOCK_AT` in `src/config.ts` (2026-10-12T18:00:00Z = 21:00 Cairo), visitors get slides 0–1 plus `/vote` and `/feedback`. Every other slide, the overview, presenter window, `/blueprint`, `/print` and the PDF show a lock screen (navy, countdown, QR codes, "Presenter? Enter PIN").
+
+- The decision is made on the server (`src/lib/deck-gate.server.ts`): the `deckGate` server function returns the server clock, the unlock time and whether the browser's token is valid; `exportPdf` refuses without it. Locked pages never render on the server, so their HTML holds no slide content (the JS bundle still does).
+- The presenter PIN (same salted hash as everywhere else) returns an HMAC-signed token valid for 6 hours, kept in `localStorage` (`ai-era-unlock`) and shared with the presenter window. Wrong PINs: 0.8 s delay each, 5 per client per 15 minutes.
+- After the unlock time everything is open to everyone with no PIN. `/results` stays PIN-protected.
+- Tests: `scripts/test-gate.mjs` (Playwright) — run it against a dev server started with `DECK_UNLOCK_AT_OVERRIDE` (and `DEV_PRESENTER_PIN` for the PIN steps); both work in local dev only.
+
 ## Live polls, feedback and results
 
 No database migration is needed: everything uses the existing `poll_votes` table and the private `exports` storage bucket.
