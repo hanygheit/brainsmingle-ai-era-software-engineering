@@ -20,6 +20,9 @@ export const SITE_DESCRIPTION = "From Graduate Readiness to Talent Development: 
 export const SOCIAL_PREVIEW_URL = `${PRESENTATION_URL}/og-image.png`;
 export const SOCIAL_PREVIEW_ALT = "AI-Era Software Engineering — Hany Saad. Live · Mon 12 Oct · 8:00PM Cairo time. Seven stops from The shift to Software buyers & stakeholders.";
 export const PDF_FILENAME = "AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026.pdf";
+/** Versioned, release-bundled PDF. The download server function keeps this behind the deck gate. */
+export const PDF_ASSET_PATH = "/downloads/AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026-e5d44fb1.pdf";
+export const PDF_PAGE_COUNT = 80;
 
 export const EVENT = {
   name: "BrainsMingle AI Summit 2026",

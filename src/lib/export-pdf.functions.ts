@@ -1,35 +1,27 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { PDF_FILENAME } from "@/config";
+import { PDF_ASSET_PATH, PDF_FILENAME } from "@/config";
 
 const BUCKET = "exports";
+
+type ExportPdfResult =
+  | { ok: true; url: string }
+  | { ok: false; missing: boolean; error: string };
 
 function countPdfPages(bytes: Uint8Array) {
   const text = new TextDecoder("latin1").decode(bytes);
   return (text.match(/\/Type\s*\/Page(?!s)/g) ?? []).length;
 }
 
-/** Serves the uploaded deck PDF (PDF_FILENAME) from backend storage. No rendering happens here. */
+/** Returns the release-bundled PDF after the server-side deck gate opens. */
 export const exportPdf = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ token: z.string().max(400).nullish() }).passthrough().parse(d ?? {}))
-  .handler(async ({ data }) => {
+  .handler(async ({ data }): Promise<ExportPdfResult> => {
     const { isDeckOpen } = await import("./deck-gate.server");
     if (!(await isDeckOpen(data.token))) {
       return { ok: false as const, missing: true as const, error: "The PDF opens after the live session — Mon 12 Oct, 9:00PM Cairo time." };
     }
-    try {
-      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-      const bucket = supabaseAdmin.storage.from(BUCKET);
-      const { data: list } = await bucket.list("", { search: PDF_FILENAME, limit: 5 });
-      const hit = list?.find((f) => f.name === PDF_FILENAME);
-      if (!hit) return { ok: false as const, missing: true as const, error: "PDF available after the talk" };
-      const { data: signed, error } = await bucket.createSignedUrl(PDF_FILENAME, 600, { download: PDF_FILENAME });
-      if (error) throw error;
-      return { ok: true as const, url: signed.signedUrl };
-    } catch (e) {
-      console.error("exportPdf failed", e);
-      return { ok: false as const, missing: false as const, error: "Could not load the PDF. Try again." };
-    }
+    return { ok: true as const, url: PDF_ASSET_PATH };
   });
 
 /** Upload date and page count of the stored PDF, for the presenter window. */

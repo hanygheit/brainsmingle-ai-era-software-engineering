@@ -31,5 +31,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Locally generated deck PDF (uploaded via the presenter window, never committed)
+# Locally generated deck PDFs stay ignored; the current versioned release copy is committed.
 *.pdf
+!public/downloads/AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026-e5d44fb1.pdf
