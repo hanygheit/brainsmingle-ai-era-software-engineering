@@ -13,6 +13,11 @@ export const Route = createFileRoute("/results")({
   head: () => ({
     meta: [
       { title: "Results — AI-Era Software Engineering" },
+      { name: "description", content: "Private presenter results for Hany Saad’s BrainsMingle AI Summit 2026 keynote: audience polls and session feedback." },
+      { property: "og:title", content: "Results — AI-Era Software Engineering" },
+      { property: "og:description", content: "Private audience poll and session feedback results for Hany Saad’s keynote." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),

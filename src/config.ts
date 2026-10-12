@@ -9,6 +9,9 @@ export const SPEAKER = {
 export const LINKEDIN_URL = "https://www.linkedin.com/in/hanysaad";
 export const BRAINSMINGLE_URL = "https://brainsmingle.com/hanysaad";
 export const PRESENTATION_URL = "https://brainsmingle-ai-era-software-engineering.lovable.app";
+export const SITE_TITLE = "AI-Era Software Engineering — Hany Saad | BrainsMingle AI Summit 2026";
+export const SITE_DESCRIPTION = "From Graduate Readiness to Talent Development: Hany Saad’s keynote on AI-era software engineering, learning and talent development at BrainsMingle AI Summit 2026.";
+export const SOCIAL_PREVIEW_URL = `${PRESENTATION_URL}/social-keynote.jpg`;
 export const PDF_FILENAME = "AI-Era-Software-Engineering_Hany-Saad_BrainsMingle-2026.pdf";
 
 export const EVENT = {
