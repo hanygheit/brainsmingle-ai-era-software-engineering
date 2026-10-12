@@ -42,15 +42,14 @@ export const getPollState = createServerFn({ method: "GET" }).handler(async () =
   }
 });
 
-/** Presenter: open or close one poll. Requires the PRESENTER_PIN secret. */
+/** Presenter: open or close one poll. Requires the presenter PIN. */
 export const setPollOpen = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
     z.object({ pin: z.string().max(64), poll: z.enum(POLL_IDS), open: z.boolean() }).parse(d),
   )
   .handler(async ({ data }) => {
     const { checkPin } = await import("./print-token.server");
-    if (!process.env["PRESENTER_PIN"]) return { ok: false as const, error: "Add the PRESENTER_PIN secret first." };
-    if (!checkPin(data.pin)) return { ok: false as const, error: "Wrong presenter PIN." };
+    if (!(await checkPin(data.pin))) return { ok: false as const, error: "Wrong presenter PIN." };
     try {
       const { readJson, writeJson } = await import("./store.server");
       const state = normalise(await readJson(STATE_PATH).catch(() => null));

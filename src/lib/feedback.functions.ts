@@ -57,14 +57,12 @@ export const submitFeedback = createServerFn({ method: "POST" })
     }
   });
 
-/** Presenter only: every feedback response. The PIN is checked on the server against PRESENTER_PIN. */
+/** Presenter only: every feedback response. The presenter PIN is checked on the server. */
 export const getFeedbackResults = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ pin: z.string().max(64) }).parse(d))
   .handler(async ({ data }) => {
     const { checkPin } = await import("./print-token.server");
-    if (!process.env["PRESENTER_PIN"]) return { ok: false as const, error: "Add the PRESENTER_PIN secret first." };
-    if (!checkPin(data.pin)) {
-      await new Promise((r) => setTimeout(r, 800));
+    if (!(await checkPin(data.pin))) {
       return { ok: false as const, error: "Wrong presenter PIN." };
     }
     try {

@@ -72,6 +72,7 @@ function ResultsPage() {
             id="pin"
             type="password"
             autoComplete="current-password"
+            inputMode="numeric"
             value={pin}
             onChange={(e) => setPin(e.target.value)}
             maxLength={64}

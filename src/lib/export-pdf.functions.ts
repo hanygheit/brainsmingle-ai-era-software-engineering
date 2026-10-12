@@ -46,8 +46,7 @@ export const uploadPdf = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { checkPin } = await import("./print-token.server");
-    if (!process.env["PRESENTER_PIN"]) return { ok: false as const, error: "Add the PRESENTER_PIN secret first." };
-    if (!checkPin(data.pin)) return { ok: false as const, error: "Wrong presenter PIN." };
+    if (!(await checkPin(data.pin))) return { ok: false as const, error: "Wrong presenter PIN." };
     const bin = atob(data.base64);
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);

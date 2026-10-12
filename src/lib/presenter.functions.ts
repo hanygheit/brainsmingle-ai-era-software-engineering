@@ -7,8 +7,7 @@ export const verifyPin = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => Pin.parse(d))
   .handler(async ({ data }) => {
     const { checkPin } = await import("./print-token.server");
-    if (!process.env["PRESENTER_PIN"]) return { ok: true as const, configured: false };
-    return { ok: checkPin(data.pin), configured: true };
+    return { ok: await checkPin(data.pin), configured: true };
   });
 
 export const verifyPrintAccess = createServerFn({ method: "GET" })
@@ -24,17 +23,14 @@ export const verifyPrintAccess = createServerFn({ method: "GET" })
     }
   });
 
-/** Clears every vote of one poll. Requires the PRESENTER_PIN secret. */
+/** Clears every vote of one poll. Requires the presenter PIN. */
 export const resetPoll = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
     z.object({ pin: z.string().max(64), poll: z.enum(["s2-challenge", "s7-interview"]) }).parse(d),
   )
   .handler(async ({ data }) => {
     const { checkPin } = await import("./print-token.server");
-    if (!process.env["PRESENTER_PIN"]) {
-      return { ok: false as const, error: "Add the PRESENTER_PIN secret first." };
-    }
-    if (!checkPin(data.pin)) return { ok: false as const, error: "Wrong presenter PIN." };
+    if (!(await checkPin(data.pin))) return { ok: false as const, error: "Wrong presenter PIN." };
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("poll_votes").delete().eq("poll_id", data.poll);
     if (error) return { ok: false as const, error: error.message };
