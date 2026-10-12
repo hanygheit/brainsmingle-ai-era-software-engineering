@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { POLL_IDS, type PollId } from "@/config";
 import { getFeedbackResults, type FeedbackEntry } from "@/lib/feedback.functions";
 import { fetchVoteRows, POLL_CONTENT, splitOption, usePollCounts } from "@/lib/poll";
-import { readPin, savePin } from "@/lib/presenter-pin";
 import { downloadCsv, toCsv } from "@/lib/csv";
 import { MiniBars, MobileShell } from "@/components/mobile/shell";
 import fb from "@/content/feedback.json";
@@ -36,30 +35,24 @@ function ResultsPage() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  const unlock = async (p: string, quiet = false) => {
+  const unlock = async (p: string) => {
     if (!p) return;
     setBusy(true);
     setErr(null);
     try {
       const r = await load({ data: { pin: p } });
       if (!r.ok) {
-        if (!quiet) setErr(r.error);
+        setErr(r.error);
         return;
       }
-      savePin(p);
       setPin(p);
       setEntries(r.entries);
     } catch {
-      if (!quiet) setErr("Could not load the results. Try again.");
+      setErr("Could not load the results. Try again.");
     } finally {
       setBusy(false);
     }
   };
-
-  useEffect(() => {
-    const saved = readPin();
-    if (saved) void unlock(saved, true);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!entries) {
     return (
@@ -101,7 +94,6 @@ function ResultsPage() {
           <button
             className={btn}
             onClick={() => {
-              savePin("");
               setEntries(null);
               setPin("");
             }}
