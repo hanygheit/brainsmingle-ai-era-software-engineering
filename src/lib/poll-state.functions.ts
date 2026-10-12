@@ -6,10 +6,9 @@ import { POLL_IDS, type PollId } from "@/config";
 export type PollState = Record<PollId, { open: boolean; at: string | null }>;
 
 const STATE_PATH = "state/polls.json";
-/** Both polls open until the presenter closes one: a missing or unreadable state never blocks voting. */
+/** Open until the presenter closes it: a missing or unreadable state never blocks voting. */
 export const DEFAULT_POLL_STATE: PollState = {
   "s2-challenge": { open: true, at: null },
-  "s7-interview": { open: true, at: null },
 };
 
 function normalise(v: unknown): PollState {

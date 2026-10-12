@@ -2,20 +2,18 @@ import { useEffect, useState } from "react";
 import { usePrintMode } from "@/deck/print-mode";
 import { supabase } from "@/integrations/supabase/client";
 import { POLL_IDS, STORED_POLLS, type PollId } from "@/config";
-import interview from "@/content/interview.json";
 import opening from "@/content/opening.json";
 import { CHOICE_EVENT, type ChoiceDetail } from "@/deck/events";
 import { DEFAULT_POLL_STATE, getPollState, type PollState } from "./poll-state.functions";
 import { voterId } from "./device-id";
 import { castStoredVote, getStoredCounts, getStoredVoteRows } from "./votes.functions";
 
-/** Votes per option, one entry per option (s2-challenge 4, s7-interview 3). */
+/** Votes per option, one entry per option (s2-challenge has 4). */
 export type Counts = number[];
 
-export const POLL_SCREEN: Record<PollId, string> = { "s2-challenge": "S2", "s7-interview": "S12" };
+export const POLL_SCREEN: Record<PollId, string> = { "s2-challenge": "S2" };
 export const POLL_CONTENT: Record<PollId, { question: string; options: string[] }> = {
   "s2-challenge": opening.poll,
-  "s7-interview": interview.poll,
 };
 export const isPollId = (v: unknown): v is PollId => POLL_IDS.includes(v as PollId);
 export const optionCount = (poll: PollId) => POLL_CONTENT[poll].options.length;
@@ -155,7 +153,7 @@ export function addManual(poll: PollId, option: number) {
 }
 export const clearManual = (poll: PollId) => writeManual(poll, zero(poll));
 
-/** Keys 1–4 add one manual vote on S2 (on S12 they reveal the answers instead). One listener per window, however many tallies are mounted. */
+/** Keys 1–4 add one manual vote on S2. One listener per window, however many tallies are mounted. */
 let choiceKeysBound = false;
 function listenForChoiceKeys() {
   if (choiceKeysBound) return;

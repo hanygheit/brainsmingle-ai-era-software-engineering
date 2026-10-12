@@ -25,6 +25,9 @@ export const Route = createFileRoute("/vote")({
 });
 
 /** Bare /vote follows the open poll: it keeps the one shown until it closes or a poll is opened after it. */
+/** Poll ids compared without literal narrowing (there may be only one poll). */
+const differ = (a: PollId, b: PollId): boolean => a !== b;
+
 function useFollowedPoll(state: PollState | null) {
   const [shown, setShown] = useState<PollId | null>(null);
   useEffect(() => {
@@ -33,7 +36,7 @@ function useFollowedPoll(state: PollState | null) {
       const next = currentOpenPoll(state);
       if (!cur || !state[cur].open) return next;
       const nextAt = next ? state[next].at : null;
-      if (next && next !== cur && nextAt && (!state[cur].at || nextAt > state[cur].at!)) return next;
+      if (next && differ(next, cur) && nextAt && (!state[cur].at || nextAt > state[cur].at!)) return next;
       return cur;
     });
   }, [state]);
@@ -71,7 +74,7 @@ function VotePage() {
   }
   // An explicit poll shows straight away (open until the state says otherwise) — no wait on slow data.
   const open = state ? state[poll].open : true;
-  const other = POLL_IDS.find((p) => p !== poll && state?.[p].open);
+  const other = POLL_IDS.find((p) => differ(p, poll) && state?.[p].open);
   return (
     <MobileShell>
       <PollScreen key={poll} poll={poll} open={open} />

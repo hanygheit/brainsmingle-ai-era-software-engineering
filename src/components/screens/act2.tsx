@@ -2,7 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CodeDiff, EASE, Eyebrow, QuoteGlyph } from "@/components/kit";
 import type { ScreenProps } from "@/components/deck/ScreenRenderer";
-import iv from "@/content/interview.json";
+import tk from "@/content/tasks.json";
 import a2 from "@/content/act2.json";
 import asm from "@/content/assessment.json";
 import { LiveVote } from "./live-vote";
@@ -10,63 +10,49 @@ import { Chip, Reveal, SrcTag, Tag } from "./shared";
 
 const H = "font-display font-bold tracking-[-0.03em] text-text";
 
-/* ---------- S12 · Two graduates ---------- */
-export function S12({ step, choice }: ScreenProps) {
-  const s = iv.s7;
-  const picked = choice && choice <= 3 ? choice - 1 : null;
-  if (picked === null) {
-    return (
-      <div className="relative h-full w-full overflow-hidden p-[96px]">
-        <div className="grid grid-cols-2 gap-[48px]">
-          {s.candidates.map((cnd) => (
-            <div key={cnd} className="rounded-[20px] border border-line bg-surface p-[36px]">
-              <p className={`${H} text-[48px]`}>{cnd}</p>
-              <p className="mt-[14px] font-mono text-[24px] text-muted">{s.project}</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-[14px]"><Tag>{s.tag}</Tag></div>
-        <Reveal on={step >= 1} className="mt-[40px]">
-          <p className={`${H} text-[52px]`}>{s.prompt}</p>
-          <div className="mt-[32px]">
-            <LiveVote poll="s7-interview" />
-          </div>
-        </Reveal>
-      </div>
-    );
-  }
-  const ans = s.answers[picked]!;
+/* ---------- S12 · Tasks vs engineering (Act 1 close) ---------- */
+export function S12({ step }: ScreenProps) {
+  const s = tk.s12;
   return (
-    <div className="relative h-full w-full overflow-hidden p-[96px]">
-      <SrcTag items={["Veracode, Jul 2025", "GitHub, Apr 2026"]} />
-      <p className="font-mono text-[22px] text-muted">Q{picked + 1} · {iv.poll.options[picked]}</p>
-      <div className="mt-[20px] grid grid-cols-2 gap-[40px]">
-        <Reveal on className="rounded-[20px] border border-own bg-surface p-[28px]">
-          <p className="font-display text-[30px] font-bold text-own">Graduate A</p>
-          <p className="mt-[10px] text-[23px] leading-[1.4] text-text">{ans.a}</p>
-        </Reveal>
-        <Reveal on delay={0.06} className="rounded-[20px] border border-line bg-surface p-[28px]">
-          <p className="font-display text-[30px] font-bold text-muted">Graduate B</p>
-          <p className="mt-[10px] text-[23px] leading-[1.4] text-muted">{ans.b}</p>
-        </Reveal>
-      </div>
-      <div className="mt-[28px] flex gap-[48px]">
-        <Reveal on delay={0.12} className="origin-top-left" >
-          <div style={{ transform: "scale(0.86)", transformOrigin: "top left", width: 946 }}>
-            <CodeDiff code={s.code} highlightLines={[8]} title="Program.cs" />
+    <div className="relative flex h-full w-full flex-col p-[96px]">
+      <p className={`${H} max-w-[1600px] text-[64px] leading-[1.08]`}>{s.headline}</p>
+      <div className="flex flex-1 items-center py-[40px]">
+      <div className="grid w-full grid-cols-[660px_1fr] gap-[40px]">
+        {/* The agent's side: muted, terminal-style ticks — the opening's terminal, replayed. */}
+        <Reveal on={step >= 1} className="h-full">
+          <div className="h-full rounded-[20px] border border-line bg-surface px-[44px] py-[44px]">
+            <p className="font-mono text-[22px] tracking-[0.12em] text-muted uppercase">{s.agentLabel}</p>
+            <ul className="mt-[32px] space-y-[26px] font-mono text-[29px] text-muted">
+              {s.agent.map((t) => (
+                <li key={t} className="flex items-center gap-[16px]">
+                  <span className="text-own" aria-hidden>✓</span>
+                  {t}
+                </li>
+              ))}
+            </ul>
           </div>
         </Reveal>
-        <div className="flex flex-1 flex-col gap-[20px]">
-          {s.lines.map((l, i) => (
-            <Reveal key={l} on delay={0.18 + i * 0.06}>
-              <p className={`${H} text-[36px] leading-[1.15] ${i === 2 ? "!text-own" : ""}`}>{l}</p>
-            </Reveal>
-          ))}
-          <Reveal on delay={0.42} className="mt-[8px] flex flex-col gap-[8px]">
-            {s.tags.map((t) => <Tag key={t}>{t}</Tag>)}
-          </Reveal>
-        </div>
+        {/* Your side: the accent, larger. */}
+        <Reveal on={step >= 2} className="h-full">
+          <div className="h-full rounded-[20px] border-l-[8px] bg-surface px-[48px] py-[44px]" style={{ borderColor: "var(--act)" }}>
+            <p className="act-ink font-display text-[38px] font-bold tracking-[-0.01em]">{s.youLabel}</p>
+            <div className="mt-[26px] space-y-[20px]">
+              {s.you.map((t, i) => (
+                <Reveal key={t} on={step >= 2} delay={0.06 * (i + 1)} y={8}>
+                  <p className="flex items-baseline gap-[20px] text-[38px] leading-[1.25] font-semibold text-text">
+                    <span className="block h-[13px] w-[13px] shrink-0 -translate-y-[6px] rounded-full" style={{ background: "var(--act)" }} aria-hidden />
+                    {t}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </Reveal>
       </div>
+      </div>
+      <Reveal on={step >= 3}>
+        <p className={`${H} keyline text-[56px]`}>{s.line}</p>
+      </Reveal>
     </div>
   );
 }

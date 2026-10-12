@@ -6,7 +6,7 @@ import { POLL_IDS, TARGET_TOTAL_SEC, type PollId } from "@/config";
 import { closeTotalSec, QA_INDEX, screens, slideLabel, talkTotalSec, TOTAL_SCREENS } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
 import { useDeck } from "@/deck/store";
-import { addManual, clearManual, POLL_CONTENT, POLL_SCREEN, usePollCounts, usePollState } from "@/lib/poll";
+import { addManual, clearManual, POLL_CONTENT, usePollCounts, usePollState } from "@/lib/poll";
 import { setPollOpen } from "@/lib/poll-state.functions";
 import { resetPoll } from "@/lib/presenter.functions";
 import { pdfInfo, uploadPdf } from "@/lib/export-pdf.functions";
@@ -199,7 +199,6 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
           </div>
         ) : null}
         <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border border-line bg-surface/70 p-4 text-[22px] leading-[1.5] whitespace-pre-wrap">
-          {deck.screen.id === POLL_SCREEN["s7-interview"] ? <p className="mb-3 font-mono text-[18px] text-validate">Press 1/2/3 to reveal answers</p> : null}
           <Notes text={deck.screen.notes} />
         </div>
       </div>

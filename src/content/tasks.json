@@ -1,0 +1,10 @@
+{
+  "s12": {
+    "headline": "Agentic coding isn’t ‘the agent does my work’.",
+    "agentLabel": "The agent did the tasks",
+    "agent": ["Read the repository", "Edited 14 files", "Wrote 23 tests", "Opened the pull request"],
+    "youLabel": "Only you can do the engineering",
+    "you": ["Decide what “secure” means here", "Notice what’s missing, not just what’s wrong", "Say “no — not like that”", "Answer for it in production"],
+    "line": "The agent does the tasks. You do the engineering."
+  }
+}

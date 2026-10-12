@@ -60,7 +60,7 @@ export const ACTS = [
 ] as const;
 export type Act = (typeof ACTS)[number];
 
-export const POLL_IDS = ["s2-challenge", "s7-interview"] as const;
+export const POLL_IDS = ["s2-challenge"] as const;
 export type PollId = (typeof POLL_IDS)[number];
 export const voteUrl = (poll: PollId) => `${PRESENTATION_URL}/vote?poll=${poll}`;
 /** The vote link as printed under the QR: exactly the URL it encodes, without the scheme. */
