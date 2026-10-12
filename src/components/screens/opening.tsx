@@ -233,9 +233,6 @@ export function S2({ step }: ScreenProps) {
           <LiveVote poll="s2-challenge" />
         </div>
       </Reveal>
-      <Reveal on={step >= 2} className="absolute bottom-[64px] left-[96px]">
-        <SpeakerBlock compact />
-      </Reveal>
       <Reveal on={step >= 2} className="absolute right-[96px] bottom-[80px]">
         <p className="font-mono text-[20px] text-muted">{c.s2.prompt}</p>
       </Reveal>
