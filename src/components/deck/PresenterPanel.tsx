@@ -6,7 +6,8 @@ import { POLL_IDS, TARGET_TOTAL_SEC, type PollId } from "@/config";
 import { closeTotalSec, QA_INDEX, screens, slideLabel, talkTotalSec, TOTAL_SCREENS } from "@/content/screens";
 import { sourcesFor } from "@/content/sources";
 import { useDeck } from "@/deck/store";
-import { addManual, clearManual, POLL_CONTENT, POLL_SCREEN, usePollCounts } from "@/lib/poll";
+import { addManual, clearManual, POLL_CONTENT, POLL_SCREEN, usePollCounts, usePollState } from "@/lib/poll";
+import { setPollOpen } from "@/lib/poll-state.functions";
 import { resetPoll } from "@/lib/presenter.functions";
 import { pdfInfo, uploadPdf } from "@/lib/export-pdf.functions";
 import { readPin, savePin } from "@/lib/presenter-pin";
@@ -84,15 +85,43 @@ function Notes({ text }: { text: string }) {
   );
 }
 
-function PollConsole({ poll }: { poll: PollId }) {
+/** Presenter PIN from this session, or asked once (saved after the server accepts it). */
+function askPin() {
+  const pin = readPin() ?? window.prompt("Presenter PIN") ?? "";
+  return pin || null;
+}
+
+function PollConsoles() {
+  const { state, setState } = usePollState(5000);
+  const toggle = useServerFn(setPollOpen);
+  const onToggle = async (poll: PollId, open: boolean) => {
+    const pin = askPin();
+    if (!pin) return;
+    const r = await toggle({ data: { pin, poll, open } });
+    if (!r.ok) {
+      toast.error(r.error);
+      return;
+    }
+    savePin(pin);
+    setState(r.state);
+    toast.success(`${poll} ${open ? "open" : "closed"}`);
+  };
+  return (
+    <>
+      {POLL_IDS.map((p) => (
+        <PollConsole key={p} poll={p} open={state ? state[p].open : null} onToggle={(o) => void onToggle(p, o)} />
+      ))}
+    </>
+  );
+}
+
+function PollConsole({ poll, open, onToggle }: { poll: PollId; open: boolean | null; onToggle: (open: boolean) => void }) {
   const { counts, manual, online } = usePollCounts(poll);
   const reset = useServerFn(resetPoll);
   const doReset = async () => {
-    let pin = readPin();
-    if (!pin) {
-      pin = window.prompt("Presenter PIN") ?? "";
-      if (!pin) return;
-    }
+    if (!window.confirm(`Delete every vote in ${poll}?`)) return;
+    const pin = askPin();
+    if (!pin) return;
     const r = await reset({ data: { pin, poll } });
     if (!r.ok) {
       toast.error(r.error);
@@ -106,9 +135,21 @@ function PollConsole({ poll }: { poll: PollId }) {
     <div className="rounded-xl border border-line bg-surface/70 p-3">
       <div className="flex items-center justify-between">
         <p className="font-mono text-[12px] tracking-[0.12em] text-muted uppercase">{poll}</p>
-        <span className="font-mono text-[11px]" style={{ color: online ? "var(--own)" : "var(--validate)" }}>
-          {online ? "LIVE" : "OFFLINE"}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[11px]" style={{ color: online ? "var(--own)" : "var(--validate)" }}>
+            {online ? "LIVE" : "OFFLINE"}
+          </span>
+          <button
+            onClick={() => open !== null && onToggle(!open)}
+            disabled={open === null}
+            aria-label={open ? `Close voting for ${poll}` : `Open voting for ${poll}`}
+            className="rounded-full border px-2 py-[1px] font-mono text-[11px] transition-colors disabled:opacity-50"
+            style={{ borderColor: open ? "var(--own)" : "var(--validate)", color: open ? "var(--own)" : "var(--validate)" }}
+            title={open ? "Voting is open — click to close" : "Voting is closed — click to open"}
+          >
+            {open === null ? "…" : open ? "OPEN · close" : "CLOSED · open"}
+          </button>
+        </div>
       </div>
       <p className="mt-1 truncate text-[13px] text-muted">{POLL_CONTENT[poll].question}</p>
       <div className="mt-2 flex gap-2">
@@ -123,7 +164,7 @@ function PollConsole({ poll }: { poll: PollId }) {
             {manual[n - 1] ? <span className="text-muted"> (+{manual[n - 1]})</span> : null}
           </button>
         ))}
-        <button onClick={() => void doReset()} className="rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] px-2 font-mono text-[12px] text-muted hover:text-[var(--fail)]">
+        <button onClick={() => void doReset()} aria-label={`Reset votes for ${poll}`} title={`Delete every vote in ${poll} (PIN)`} className="rounded-lg border border-line bg-surface/70 transition-colors hover:border-[var(--accent)] px-2 font-mono text-[12px] text-muted hover:text-[var(--fail)]">
           RESET
         </button>
       </div>
@@ -222,9 +263,7 @@ export function PresenterPanel({ compact = false }: { compact?: boolean }) {
 
         <div className="space-y-2">
           <p className="font-mono text-[11px] text-muted">POLLS</p>
-          {POLL_IDS.map((p) => (
-            <PollConsole key={p} poll={p} />
-          ))}
+          <PollConsoles />
         </div>
 
         <PdfUpload />
