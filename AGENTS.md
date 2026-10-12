@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture rules
+- Shared keynote search and social metadata lives in src/config.ts; leaf route heads select page-specific text and images, while the root owns only site defaults and icons; why: consistent branding without leaking one page’s preview onto unrelated pages.
 - Screens are pure functions of (screen, phase, choice); ScreenRenderer auto-plays phases on a per-screen timeline when entered forward and renders the final phase when entered back, in print, overview and presenter; why: one press = one slide, and the final state is what the PDF captures.
 - All talk-wide values (speaker, URLs, acts, theme, poll ids) live in `src/config.ts`; content lives in `src/content/`; why: one place to edit.
 - Deck position syncs via BroadcastChannel + sessionStorage and mirrors to `/present/N` with replaceState; the deck route stays mounted across its own URL updates; why: reload resumes, no history spam.
